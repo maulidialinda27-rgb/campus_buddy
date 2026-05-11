@@ -40,13 +40,9 @@ class AppColors {
   static const Color categoryKeuangan = Color(0xFF10B981);
   static const Color categoryJadwal = Color(0xFFF59E0B);
 
-  // Gradient Colors
-  static const List<Color> gradientPrimary = [
-    Color(0xFF6366F1),
-    Color(0xFF00D4FF),
-  ];
-  static const List<Color> gradientSecondary = [
-    Color(0xFF8B5CF6),
-    Color(0xFFFF5E78),
-  ];
+  // Neon Colors for Futuristic Theme
+  static const Color neonBlue = Color(0xFF00D4FF);
+  static const Color neonPurple = Color(0xFF8B5CF6);
+  static const Color glowBlue = Color(0xFF00FFFF);
+  static const Color glowPurple = Color(0xFF9D4EDD);
 }

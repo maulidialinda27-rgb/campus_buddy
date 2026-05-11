@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
@@ -27,49 +28,71 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: FadeInDown(child: Text(AppStrings.dashboard)),
         elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(color: AppColors.darkSurface.withOpacity(0.1)),
+          ),
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Selamat datang
-              FadeInLeft(
-                child: Text(
-                  'Selamat datang kembali! 👋',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.darkBg,
+              AppColors.darkBg.withOpacity(0.9),
+              AppColors.darkBg.withOpacity(0.8),
+            ],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Selamat datang
+                FadeInLeft(
+                  child: Text(
+                    'Selamat datang kembali! 👋',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.darkText,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // Tugas Menunggu
-              _buildSectionTitle(AppStrings.tugasMenunggu),
-              _buildTugasSection(),
+                // Tugas Menunggu
+                _buildSectionTitle(AppStrings.tugasMenunggu),
+                _buildTugasSection(),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // Jadwal Hari Ini
-              _buildSectionTitle(AppStrings.jadwalHariIni),
-              _buildJadwalSection(),
+                // Jadwal Hari Ini
+                _buildSectionTitle(AppStrings.jadwalHariIni),
+                _buildJadwalSection(),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // Pengeluaran Hari Ini
-              _buildSectionTitle(AppStrings.pengeluaranHariIni),
-              _buildPengeluaranSection(),
+                // Pengeluaran Hari Ini
+                _buildSectionTitle(AppStrings.pengeluaranHariIni),
+                _buildPengeluaranSection(),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // Catatan Terbaru
-              _buildSectionTitle(AppStrings.catatanTerbaru),
-              _buildCatatanSection(),
+                // Catatan Terbaru
+                _buildSectionTitle(AppStrings.catatanTerbaru),
+                _buildCatatanSection(),
 
-              const SizedBox(height: 100),
-            ],
+                const SizedBox(height: 100),
+              ],
+            ),
           ),
         ),
       ),
@@ -125,6 +148,7 @@ class _HomePageState extends State<HomePage> {
         style: GoogleFonts.plusJakartaSans(
           fontSize: 16,
           fontWeight: FontWeight.w600,
+          color: AppColors.darkText,
         ),
       ),
     );
@@ -132,7 +156,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildTugasSection() {
     return FadeInUp(
-      child: CustomCard(
+      child: GlassmorphismCard(
+        glowColor: AppColors.categoryTugas,
         child: Column(
           children: [
             _buildDashboardItem(
@@ -157,7 +182,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildJadwalSection() {
     return FadeInUp(
       delay: const Duration(milliseconds: 100),
-      child: CustomCard(
+      child: GlassmorphismCard(
+        glowColor: AppColors.categoryJadwal,
         child: _buildDashboardItem(
           icon: Icons.access_time_outlined,
           title: 'Kuliah Algoritma',
@@ -171,7 +197,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildPengeluaranSection() {
     return FadeInUp(
       delay: const Duration(milliseconds: 200),
-      child: CustomCard(
+      child: GlassmorphismCard(
+        glowColor: AppColors.categoryKeuangan,
         child: Column(
           children: [
             Row(
@@ -221,7 +248,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCatatanSection() {
     return FadeInUp(
       delay: const Duration(milliseconds: 300),
-      child: CustomCard(
+      child: GlassmorphismCard(
+        glowColor: AppColors.categoryScan,
         child: _buildDashboardItem(
           icon: Icons.image_outlined,
           title: 'Catatan Kuliah Basis Data',

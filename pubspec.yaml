@@ -38,6 +38,7 @@ dependencies:
   # Database & Local Storage
   sqflite: ^2.3.0
   path: ^1.8.3
+  shared_preferences: ^2.2.2
 
   # Notifications
   flutter_local_notifications: ^17.0.0

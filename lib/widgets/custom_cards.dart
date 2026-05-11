@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 
@@ -51,28 +52,55 @@ class GlassmorphismCard extends StatelessWidget {
   final EdgeInsets padding;
   final EdgeInsets margin;
   final double borderRadius;
-  final double opacity;
+  final double blurSigma;
+  final Color? glowColor;
 
   const GlassmorphismCard({
     Key? key,
     required this.child,
     this.padding = const EdgeInsets.all(16),
     this.margin = const EdgeInsets.all(0),
-    this.borderRadius = 12,
-    this.opacity = 0.1,
+    this.borderRadius = 20,
+    this.blurSigma = 10,
+    this.glowColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: margin,
-      padding: padding,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
-        color: Colors.white.withOpacity(opacity),
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+        boxShadow: glowColor != null
+            ? [
+                BoxShadow(
+                  color: glowColor!.withOpacity(0.3),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                ),
+              ]
+            : null,
       ),
-      child: child,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+          child: Container(
+            padding: padding,
+            decoration: BoxDecoration(
+              color: (isDark ? AppColors.darkSurface : AppColors.lightSurface)
+                  .withOpacity(0.2),
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: Border.all(
+                color: (glowColor ?? AppColors.neonBlue).withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }
