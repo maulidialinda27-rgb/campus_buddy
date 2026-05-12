@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 import 'package:campus_buddy/services/user_service.dart';
-import 'package:campus_buddy/features/home/presentation/pages/home_page.dart';
 
 /// LoginPage - Halaman login dengan input nama dan email
 /// Fitur:
@@ -102,7 +101,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } catch (e) {
-      print('Error: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

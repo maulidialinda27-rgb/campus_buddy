@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 import 'package:campus_buddy/core/constants/app_strings.dart';
+import 'package:campus_buddy/services/local_storage_service.dart';
 import 'package:campus_buddy/widgets/custom_cards.dart';
 
 class StudyTask {
@@ -17,6 +18,24 @@ class StudyTask {
     required this.deadline,
     this.completed = false,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'subject': subject,
+      'deadline': deadline.toIso8601String(),
+      'completed': completed,
+    };
+  }
+
+  factory StudyTask.fromMap(Map<String, dynamic> map) {
+    return StudyTask(
+      title: map['title'] ?? '',
+      subject: map['subject'] ?? '',
+      deadline: DateTime.parse(map['deadline'] as String),
+      completed: map['completed'] as bool? ?? false,
+    );
+  }
 }
 
 class TugasPage extends StatefulWidget {
@@ -32,28 +51,8 @@ class _TugasPageState extends State<TugasPage> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDeadline;
 
-  final List<StudyTask> _tasks = [
-    StudyTask(
-      title: 'Tugas UAS - Riset Operasi',
-      subject: 'Riset Operasi',
-      deadline: DateTime(2026, 6, 23),
-    ),
-    StudyTask(
-      title: 'Presentasi Laporan - Kecerdasan Buatan',
-      subject: 'Kecerdasan Buatan',
-      deadline: DateTime(2026, 5, 12),
-    ),
-    StudyTask(
-      title: 'Tugas UTS - Analisa Algoritma',
-      subject: 'Analisa Algoritma',
-      deadline: DateTime(2026, 5, 8),
-    ),
-    StudyTask(
-      title: 'Tugas UAS - Mobile Programming',
-      subject: 'Mobile Programming',
-      deadline: DateTime(2026, 5, 31),
-    ),
-  ];
+  static const String _storageKeyTasks = 'study_tasks';
+  List<StudyTask> _tasks = [];
 
   Color _deadlineColor(DateTime deadline) {
     final difference = deadline.difference(DateTime.now()).inDays;
@@ -84,6 +83,12 @@ class _TugasPageState extends State<TugasPage> {
     return '${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}';
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _loadTasks();
+  }
+
   Future<void> _pickDeadline() async {
     final now = DateTime.now();
     final picked = await showDatePicker(
@@ -107,11 +112,72 @@ class _TugasPageState extends State<TugasPage> {
       },
     );
 
-    if (picked != null) {
+    if (!mounted || picked == null) return;
+
+    setState(() {
+      _selectedDeadline = picked;
+    });
+  }
+
+  Future<void> _loadTasks() async {
+    final data = await LocalStorageService.instance.loadJsonList(
+      _storageKeyTasks,
+    );
+    if (data.isNotEmpty) {
       setState(() {
-        _selectedDeadline = picked;
+        _tasks = data.map(StudyTask.fromMap).toList();
       });
+      return;
     }
+
+    final defaultTasks = [
+      StudyTask(
+        title: 'Tugas UAS - Riset Operasi',
+        subject: 'Riset Operasi',
+        deadline: DateTime(2026, 6, 23),
+      ),
+      StudyTask(
+        title: 'Presentasi Laporan - Kecerdasan Buatan',
+        subject: 'Kecerdasan Buatan',
+        deadline: DateTime(2026, 5, 12),
+      ),
+      StudyTask(
+        title: 'Tugas UTS - Analisa Algoritma',
+        subject: 'Analisa Algoritma',
+        deadline: DateTime(2026, 5, 8),
+      ),
+      StudyTask(
+        title: 'Tugas UAS - Mobile Programming',
+        subject: 'Mobile Programming',
+        deadline: DateTime(2026, 5, 31),
+      ),
+    ];
+
+    setState(() {
+      _tasks = defaultTasks;
+    });
+    await _saveTasks();
+  }
+
+  Future<void> _saveTasks() async {
+    await LocalStorageService.instance.saveJsonList(
+      _storageKeyTasks,
+      _tasks.map((task) => task.toMap()).toList(),
+    );
+  }
+
+  Future<void> _removeTaskAt(int index) async {
+    setState(() {
+      _tasks.removeAt(index);
+    });
+    await _saveTasks();
+  }
+
+  Future<void> _toggleTaskCompleted(int index, bool value) async {
+    setState(() {
+      _tasks[index].completed = value;
+    });
+    await _saveTasks();
   }
 
   void _openAddTaskSheet() {
@@ -289,7 +355,7 @@ class _TugasPageState extends State<TugasPage> {
     );
   }
 
-  void _saveTask() {
+  Future<void> _saveTask() async {
     if (_formKey.currentState?.validate() != true) return;
     if (_selectedDeadline == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -308,7 +374,10 @@ class _TugasPageState extends State<TugasPage> {
         ),
       );
     });
-    Navigator.of(context).pop();
+    final navigator = Navigator.of(context);
+    await _saveTasks();
+    if (!mounted) return;
+    navigator.pop();
   }
 
   Widget _buildTaskCard(StudyTask task, int index) {
@@ -353,11 +422,7 @@ class _TugasPageState extends State<TugasPage> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _tasks.removeAt(index);
-                      });
-                    },
+                    onPressed: () => _removeTaskAt(index),
                     icon: Icon(Icons.delete_outline, color: AppColors.error),
                   ),
                 ],
@@ -395,9 +460,7 @@ class _TugasPageState extends State<TugasPage> {
                     child: Checkbox(
                       value: task.completed,
                       onChanged: (value) {
-                        setState(() {
-                          task.completed = value ?? false;
-                        });
+                        _toggleTaskCompleted(index, value ?? false);
                       },
                       activeColor: AppColors.neonBlue,
                       checkColor: Colors.black,

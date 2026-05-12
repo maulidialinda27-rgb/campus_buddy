@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
-import 'package:campus_buddy/core/constants/app_strings.dart';
 import 'package:campus_buddy/services/user_service.dart';
 
-/// ProfilPage - Halaman profil user dengan fitur lengkap
+/// ProfilePage - Halaman profil user dengan fitur lengkap
 /// Fitur:
 /// - Tampilkan avatar, nama, email user
 /// - Dark mode toggle
 /// - Notifikasi toggle
 /// - Tentang aplikasi
 /// - Logout
-class ProfilPage extends StatefulWidget {
-  const ProfilPage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilPage> createState() => _ProfilPageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilPageState extends State<ProfilPage>
+class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   late UserService _userService;
   late AnimationController _animationController;
@@ -84,7 +82,7 @@ class _ProfilPageState extends State<ProfilPage>
 
         return Dialog(
           backgroundColor:
-              isDark ? AppColors.darkSurface : Colors.white,
+              isDark ? AppColors.darkSurface : AppColors.lightSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -116,7 +114,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color:
-                        isDark ? AppColors.darkText : Colors.black87,
+                        isDark ? AppColors.darkText : AppColors.lightText,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -129,7 +127,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontSize: 14,
                     color: isDark
                         ? AppColors.darkSubText
-                        : Colors.grey[600],
+                        : AppColors.lightSubText,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -158,7 +156,7 @@ class _ProfilPageState extends State<ProfilPage>
                             fontWeight: FontWeight.w600,
                             color: isDark
                                 ? AppColors.darkText
-                                : Colors.black87,
+                                : AppColors.lightText,
                           ),
                         ),
                       ),
@@ -210,7 +208,7 @@ class _ProfilPageState extends State<ProfilPage>
       builder: (context) {
         return Dialog(
           backgroundColor:
-              isDark ? AppColors.darkSurface : Colors.white,
+              isDark ? AppColors.darkSurface : AppColors.lightSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -246,7 +244,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color:
-                        isDark ? AppColors.darkText : Colors.black87,
+                        isDark ? AppColors.darkText : AppColors.lightText,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -258,7 +256,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontSize: 14,
                     color: isDark
                         ? AppColors.darkSubText
-                        : Colors.grey[600],
+                        : AppColors.lightSubText,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -271,7 +269,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontSize: 13,
                     color: isDark
                         ? AppColors.darkSubText
-                        : Colors.grey[600],
+                        : AppColors.lightSubText,
                     height: 1.6,
                   ),
                 ),
@@ -344,7 +342,7 @@ class _ProfilPageState extends State<ProfilPage>
           fontSize: 12,
           color: Theme.of(context).brightness == Brightness.dark
               ? AppColors.darkText
-              : Colors.black87,
+              : AppColors.lightText,
         ),
       ),
     );
@@ -355,352 +353,318 @@ class _ProfilPageState extends State<ProfilPage>
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBg : Colors.grey[50],
-      extendBodyBehindAppBar: true,
+      backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
         title: Text(
-          AppStrings.profil,
+          'Profil Saya',
           style: GoogleFonts.plusJakartaSans(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: isDark ? AppColors.darkText : Colors.black87,
+            color: isDark ? AppColors.darkText : AppColors.lightText,
           ),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
-        flexibleSpace: ClipRRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              color: isDark
-                  ? AppColors.darkSurface.withOpacity(0.1)
-                  : Colors.white.withOpacity(0.1),
-            ),
-          ),
-        ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? [
-                    AppColors.darkBg,
-                    AppColors.darkBg.withOpacity(0.8),
-                  ]
-                : [
-                    Colors.grey[50]!,
-                    Colors.grey[100]!,
-                  ],
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-
-                // Avatar dan Info User - dengan animasi
-                FadeInDown(
-                  duration: const Duration(milliseconds: 600),
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.darkSurface
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        // Avatar bulat dengan gradient
-                        ScaleTransition(
-                          scale: Tween<double>(begin: 0, end: 1).animate(
-                            CurvedAnimation(
-                              parent: _animationController,
-                              curve: const Interval(0, 0.5,
-                                  curve: Curves.elasticOut),
-                            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              // Avatar dan Info User - dengan animasi
+              FadeInDown(
+                duration: const Duration(milliseconds: 600),
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.darkSurface : Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      // Avatar bulat dengan gradient
+                      ScaleTransition(
+                        scale: Tween<double>(begin: 0, end: 1).animate(
+                          CurvedAnimation(
+                            parent: _animationController,
+                            curve: const Interval(0, 0.5,
+                                curve: Curves.elasticOut),
                           ),
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: AppColors.gradientPrimary,
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                        ),
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: AppColors.gradientPrimary,
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withOpacity(0.3),
+                                blurRadius: 16,
+                                offset: const Offset(0, 8),
                               ),
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary
-                                      .withOpacity(0.3),
-                                  blurRadius: 16,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Nama user (besar)
+                      FadeInUp(
+                        delay: const Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 600),
+                        child: Text(
+                          _userName ?? 'User',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: isDark
+                                ? AppColors.darkText
+                                : AppColors.lightText,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Email user (kecil)
+                      FadeInUp(
+                        delay: const Duration(milliseconds: 400),
+                        duration: const Duration(milliseconds: 600),
+                        child: Text(
+                          _userEmail ?? 'email@example.com',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 13,
+                            color: isDark
+                                ? AppColors.darkSubText
+                                : AppColors.lightSubText,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              // Section: Pengaturan
+              FadeInUp(
+                delay: const Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Pengaturan',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: isDark
+                            ? AppColors.darkText
+                            : AppColors.lightText,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Dark Mode Toggle
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? AppColors.darkSurface
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isDark
+                              ? AppColors.darkBorder
+                              : AppColors.lightBorder,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 50,
+                              Icons.dark_mode_outlined,
+                              color: AppColors.primary,
+                              size: 20,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        // Nama user (besar)
-                        FadeInUp(
-                          delay: const Duration(milliseconds: 300),
-                          duration: const Duration(milliseconds: 600),
-                          child: Text(
-                            _userName ?? 'User',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: isDark
-                                  ? AppColors.darkText
-                                  : Colors.black87,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Mode Gelap',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Email user (kecil)
-                        FadeInUp(
-                          delay: const Duration(milliseconds: 400),
-                          duration: const Duration(milliseconds: 600),
-                          child: Text(
-                            _userEmail ?? 'email@example.com',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 13,
-                              color: isDark
-                                  ? AppColors.darkSubText
-                                  : Colors.grey[600],
-                            ),
-                            textAlign: TextAlign.center,
+                          Switch(
+                            value: _isDarkMode,
+                            onChanged: _handleDarkModeToggle,
+                            activeColor: AppColors.primary,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ),
+                    const SizedBox(height: 12),
 
-                const SizedBox(height: 28),
-
-                // Section: Pengaturan
-                FadeInUp(
-                  delay: const Duration(milliseconds: 200),
-                  duration: const Duration(milliseconds: 600),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Pengaturan',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                    // Notification Toggle
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? AppColors.darkSurface
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
                           color: isDark
-                              ? AppColors.darkText
-                              : Colors.black87,
+                              ? AppColors.darkBorder
+                              : AppColors.lightBorder,
                         ),
                       ),
-                      const SizedBox(height: 12),
-
-                      // Dark Mode Toggle
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? AppColors.darkSurface
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: isDark
-                                ? AppColors.darkBorder
-                                : Colors.grey[300]!,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary
+                                  .withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.notifications_outlined,
+                              color: AppColors.secondary,
+                              size: 20,
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: AppColors.primary
-                                    .withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.dark_mode_outlined,
-                                color: AppColors.primary,
-                                size: 20,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Notifikasi',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                'Mode Gelap',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: isDark
-                                      ? AppColors.darkText
-                                      : Colors.black87,
-                                ),
-                              ),
-                            ),
-                            Switch(
-                              value: _isDarkMode,
-                              onChanged: _handleDarkModeToggle,
-                              activeColor: AppColors.primary,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Notification Toggle
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? AppColors.darkSurface
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: isDark
-                                ? AppColors.darkBorder
-                                : Colors.grey[300]!,
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: AppColors.secondary
-                                    .withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.notifications_outlined,
-                                color: AppColors.secondary,
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                'Notifikasi',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: isDark
-                                      ? AppColors.darkText
-                                      : Colors.black87,
-                                ),
-                              ),
-                            ),
-                            Switch(
-                              value: _isNotificationEnabled,
-                              onChanged: _handleNotificationToggle,
-                              activeColor: AppColors.secondary,
-                            ),
-                          ],
-                        ),
+                          Switch(
+                            value: _isNotificationEnabled,
+                            onChanged: _handleNotificationToggle,
+                            activeColor: AppColors.secondary,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
 
-                const SizedBox(height: 28),
+              const SizedBox(height: 28),
 
-                // Section: Informasi
-                FadeInUp(
-                  delay: const Duration(milliseconds: 300),
-                  duration: const Duration(milliseconds: 600),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Informasi',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isDark
-                              ? AppColors.darkText
-                              : Colors.black87,
-                        ),
+              // Section: Informasi
+              FadeInUp(
+                delay: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Informasi',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: isDark
+                            ? AppColors.darkText
+                            : AppColors.lightText,
                       ),
-                      const SizedBox(height: 12),
+                    ),
+                    const SizedBox(height: 12),
 
-                      // Tentang Aplikasi
-                      _buildMenuButton(
-                        icon: Icons.info_outline,
-                        title: 'Tentang Aplikasi',
-                        isDark: isDark,
-                        onTap: _showAboutDialog,
-                      ),
-                    ],
-                  ),
+                    // Tentang Aplikasi
+                    _buildMenuButton(
+                      icon: Icons.info_outline,
+                      title: 'Tentang Aplikasi',
+                      isDark: isDark,
+                      onTap: _showAboutDialog,
+                    ),
+                  ],
                 ),
+              ),
 
-                const SizedBox(height: 28),
+              const SizedBox(height: 28),
 
-                // Section: Akun
-                FadeInUp(
-                  delay: const Duration(milliseconds: 400),
-                  duration: const Duration(milliseconds: 600),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Akun',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isDark
-                              ? AppColors.darkText
-                              : Colors.black87,
-                        ),
+              // Section: Lainnya
+              FadeInUp(
+                delay: const Duration(milliseconds: 400),
+                duration: const Duration(milliseconds: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Akun',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: isDark
+                            ? AppColors.darkText
+                            : AppColors.lightText,
                       ),
-                      const SizedBox(height: 12),
+                    ),
+                    const SizedBox(height: 12),
 
-                      // Logout
-                      _buildMenuButton(
-                        icon: Icons.logout_outlined,
-                        title: 'Logout',
-                        isDark: isDark,
-                        isRed: true,
-                        onTap: _handleLogout,
-                      ),
-                    ],
-                  ),
+                    // Logout
+                    _buildMenuButton(
+                      icon: Icons.logout_outlined,
+                      title: 'Logout',
+                      isDark: isDark,
+                      isRed: true,
+                      onTap: _handleLogout,
+                    ),
+                  ],
                 ),
+              ),
 
-                const SizedBox(height: 40),
-              ],
-            ),
+              const SizedBox(height: 40),
+            ],
           ),
         ),
       ),
@@ -720,9 +684,7 @@ class _ProfilPageState extends State<ProfilPage>
         color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isDark
-              ? AppColors.darkBorder
-              : Colors.grey[300]!,
+          color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
         ),
       ),
       child: Material(
@@ -762,7 +724,7 @@ class _ProfilPageState extends State<ProfilPage>
                           ? AppColors.error
                           : (isDark
                               ? AppColors.darkText
-                              : Colors.black87),
+                              : AppColors.lightText),
                     ),
                   ),
                 ),
@@ -770,7 +732,7 @@ class _ProfilPageState extends State<ProfilPage>
                   Icons.chevron_right,
                   color: isDark
                       ? AppColors.darkSubText
-                      : Colors.grey[400],
+                      : AppColors.lightSubText,
                 ),
               ],
             ),
@@ -780,4 +742,3 @@ class _ProfilPageState extends State<ProfilPage>
     );
   }
 }
-
