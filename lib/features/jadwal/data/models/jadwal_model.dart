@@ -3,7 +3,8 @@ class Jadwal {
   final String judul;
   final String? deskripsi;
   final String hari;
-  final String jam;
+  final String jamMulai;
+  final String jamSelesai;
   final int notifikasi;
   final DateTime dibuatPada;
   final DateTime diperbarui;
@@ -13,7 +14,8 @@ class Jadwal {
     required this.judul,
     this.deskripsi,
     required this.hari,
-    required this.jam,
+    required this.jamMulai,
+    required this.jamSelesai,
     this.notifikasi = 1,
     required this.dibuatPada,
     required this.diperbarui,
@@ -25,7 +27,8 @@ class Jadwal {
       'judul': judul,
       'deskripsi': deskripsi,
       'hari': hari,
-      'jam': jam,
+      'jam_mulai': jamMulai,
+      'jam_selesai': jamSelesai,
       'notifikasi': notifikasi,
       'dibuat_pada': dibuatPada.toIso8601String(),
       'diperbarui_pada': diperbarui.toIso8601String(),
@@ -38,7 +41,9 @@ class Jadwal {
       judul: map['judul'],
       deskripsi: map['deskripsi'],
       hari: map['hari'],
-      jam: map['jam'],
+      jamMulai: map['jam_mulai'] ?? map['jam'] ?? '00:00', // Support old data
+      jamSelesai:
+          map['jam_selesai'] ?? map['jam'] ?? '00:00', // Support old data
       notifikasi: map['notifikasi'] ?? 1,
       dibuatPada: DateTime.parse(map['dibuat_pada']),
       diperbarui: DateTime.parse(map['diperbarui_pada']),
@@ -50,7 +55,8 @@ class Jadwal {
     String? judul,
     String? deskripsi,
     String? hari,
-    String? jam,
+    String? jamMulai,
+    String? jamSelesai,
     int? notifikasi,
     DateTime? dibuatPada,
     DateTime? diperbarui,
@@ -60,7 +66,8 @@ class Jadwal {
       judul: judul ?? this.judul,
       deskripsi: deskripsi ?? this.deskripsi,
       hari: hari ?? this.hari,
-      jam: jam ?? this.jam,
+      jamMulai: jamMulai ?? this.jamMulai,
+      jamSelesai: jamSelesai ?? this.jamSelesai,
       notifikasi: notifikasi ?? this.notifikasi,
       dibuatPada: dibuatPada ?? this.dibuatPada,
       diperbarui: diperbarui ?? this.diperbarui,
