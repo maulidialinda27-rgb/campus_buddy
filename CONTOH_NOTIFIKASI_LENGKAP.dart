@@ -49,7 +49,8 @@ Future<void> contohTambahJadwal() async {
     judul: 'Kuliah Algoritma',
     deskripsi: 'Kuliah',
     hari: 'Senin',
-    jam: '10:00',
+    jamMulai: '10:00',
+    jamSelesai: '11:30',
     notifikasi: 1, // Notifikasi aktif: akan muncul 09:50
     dibuatPada: DateTime.now(),
     diperbarui: DateTime.now(),
@@ -60,7 +61,7 @@ Future<void> contohTambahJadwal() async {
     print('✅ Jadwal ditambahkan!');
     print('   Judul: ${jadwalKuliah.judul}');
     print('   Hari: ${jadwalKuliah.hari}');
-    print('   Jam: ${jadwalKuliah.jam}');
+    print('   Jam: ${jadwalKuliah.jamMulai} – ${jadwalKuliah.jamSelesai}');
     print('   Notifikasi akan muncul: 09:50 (10 menit sebelum)');
   } catch (e) {
     print('❌ Error: $e');
@@ -89,7 +90,7 @@ void contohBacaSemuaJadwal() {
     final j = semuaJadwal[i];
     print('\n${i + 1}. ${j.judul}');
     print('   Hari: ${j.hari}');
-    print('   Jam: ${j.jam}');
+    print('   Jam: ${j.jamMulai} – ${j.jamSelesai}');
     print('   Notifikasi: ${j.notifikasi == 1 ? "✅ Aktif" : "❌ Nonaktif"}');
     print('   ID: ${j.id}');
   }
@@ -109,7 +110,7 @@ void contohBacaJadwalPerHari() {
 
   print('\nJadwal Senin: (${jadwalSenin.length} kegiatan)');
   for (var j in jadwalSenin) {
-    print('  • ${j.jam} - ${j.judul}');
+    print('  • ${j.jamMulai} – ${j.jamSelesai} - ${j.judul}');
   }
 }
 
@@ -134,12 +135,13 @@ Future<void> contohUpdateJadwal() async {
 
   print('Jadwal sebelum update:');
   print('  Judul: ${jadwalLama.judul}');
-  print('  Jam: ${jadwalLama.jam}');
+  print('  Jam: ${jadwalLama.jamMulai} – ${jadwalLama.jamSelesai}');
 
   // Update dengan data baru
   final jadwalBaru = jadwalLama.copyWith(
     judul: 'Kuliah Algoritma Lanjutan',
-    jam: '13:00', // Ubah jam
+    jamMulai: '13:00', // Ubah jam mulai
+    jamSelesai: '14:30', // Ubah jam selesai
     diperbarui: DateTime.now(),
   );
 
@@ -148,7 +150,7 @@ Future<void> contohUpdateJadwal() async {
     print('\n✅ Jadwal diupdate!');
     print('Jadwal setelah update:');
     print('  Judul: ${jadwalBaru.judul}');
-    print('  Jam: ${jadwalBaru.jam}');
+    print('  Jam: ${jadwalBaru.jamMulai} – ${jadwalBaru.jamSelesai}');
     print('  Notifikasi dijadwalkan ulang: 12:50');
   } catch (e) {
     print('❌ Error: $e');
@@ -281,7 +283,8 @@ Future<void> contohE2E() async {
       judul: 'Kuliah Algoritma',
       deskripsi: 'Kuliah',
       hari: 'Senin',
-      jam: '10:00',
+      jamMulai: '10:00',
+      jamSelesai: '11:30',
       notifikasi: 1,
       dibuatPada: DateTime.now(),
       diperbarui: DateTime.now(),
@@ -294,7 +297,8 @@ Future<void> contohE2E() async {
       judul: 'Tugas Pemrograman',
       deskripsi: 'Tugas',
       hari: 'Senin',
-      jam: '14:00',
+      jamMulai: '14:00',
+      jamSelesai: '15:30',
       notifikasi: 1,
       dibuatPada: DateTime.now(),
       diperbarui: DateTime.now(),
@@ -312,13 +316,14 @@ Future<void> contohE2E() async {
     print('\n3️⃣ Jadwal Senin:');
     final jadwalSenin = jadwalService.getJadwalByHari('Senin');
     for (var j in jadwalSenin) {
-      print('   • ${j.jam} - ${j.judul}');
+      print('   • ${j.jamMulai} – ${j.jamSelesai} - ${j.judul}');
     }
 
     // Step 4: Update jadwal
     print('\n4️⃣ Mengupdate jadwal pertama...');
     final jadwalUpdated = jadwal1.copyWith(
-      jam: '09:00',
+      jamMulai: '09:00',
+      jamSelesai: '10:30',
       diperbarui: DateTime.now(),
     );
     await jadwalService.updateJadwal(jadwalUpdated);
@@ -334,7 +339,7 @@ Future<void> contohE2E() async {
     final semuaJadwal = jadwalService.getAllJadwal();
     for (var j in semuaJadwal) {
       final notifStatus = j.notifikasi == 1 ? '✅' : '❌';
-      print('   $notifStatus ${j.jam} - ${j.judul}');
+      print('   $notifStatus ${j.jamMulai} – ${j.jamSelesai} - ${j.judul}');
     }
 
     print('\n✅ Skenario E2E selesai!');
@@ -376,7 +381,8 @@ class _ContohUIWidgetState extends State<ContohUIWidget> {
       id: uuid.v4(),
       judul: 'Jadwal Baru',
       hari: 'Selasa',
-      jam: '11:00',
+      jamMulai: '11:00',
+      jamSelesai: '12:30',
       notifikasi: 1,
       dibuatPada: DateTime.now(),
       diperbarui: DateTime.now(),
@@ -445,7 +451,9 @@ class _ContohUIWidgetState extends State<ContohUIWidget> {
                       final jadwal = _daftarJadwal[index];
                       return ListTile(
                         title: Text(jadwal.judul),
-                        subtitle: Text('${jadwal.hari} - ${jadwal.jam}'),
+                        subtitle: Text(
+                          '${jadwal.hari} - ${jadwal.jamMulai} – ${jadwal.jamSelesai}',
+                        ),
                         trailing: Icon(
                           jadwal.notifikasi == 1
                               ? Icons.notifications_active

@@ -36,12 +36,12 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
   ];
 
   final Map<String, Color> kategoriWarna = {
-    'Kuliah': const Color(0xFF6366F1),
-    'Tugas': const Color(0xFFF97316),
-    'Meeting': const Color(0xFF8B5CF6),
-    'Olahraga': const Color(0xFF10B981),
-    'Istirahat': const Color(0xFF00D4FF),
-    'Lainnya': const Color(0xFF64748B),
+    'Kuliah': const Color(0xFF00D4FF), // Neon blue
+    'Tugas': const Color(0xFF8B5CF6), // Purple
+    'Meeting': const Color(0xFFFF5E78), // Neon pink
+    'Olahraga': const Color(0xFF10B981), // Green
+    'Istirahat': const Color(0xFF6366F1), // Indigo
+    'Lainnya': const Color(0xFF64748B), // Gray
   };
 
   @override
@@ -144,15 +144,16 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: const Color(0xFF1E293B), // Navy surface
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(24.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,38 +166,76 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                       widget.jadwalEdit != null
                           ? 'Edit Jadwal'
                           : 'Tambah Jadwal',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close),
+                      icon: Icon(
+                        Icons.close,
+                        color: Colors.white.withOpacity(0.7),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
                 // Judul Input
                 TextField(
                   controller: judulController,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Nama Kegiatan',
                     hintText: 'Contoh: Kuliah Algoritma',
+                    labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
                     ),
-                    prefixIcon: const Icon(Icons.event),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF00D4FF),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0F172A),
+                    prefixIcon: Icon(
+                      Icons.event,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
                 // Pilih Hari
                 DropdownButtonFormField<String>(
                   value: selectedHari,
+                  dropdownColor: const Color(0xFF1E293B),
+                  style: const TextStyle(color: Colors.white),
                   items: daftarHari
                       .map(
-                        (hari) =>
-                            DropdownMenuItem(value: hari, child: Text(hari)),
+                        (hari) => DropdownMenuItem(
+                          value: hari,
+                          child: Text(
+                            hari,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
                       )
                       .toList(),
                   onChanged: (value) {
@@ -206,13 +245,35 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Pilih Hari',
+                    labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
                     ),
-                    prefixIcon: const Icon(Icons.calendar_today),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF00D4FF),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0F172A),
+                    prefixIcon: Icon(
+                      Icons.calendar_today,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
                 // Jam Mulai & Selesai Row
                 Row(
@@ -221,42 +282,106 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                       child: TextField(
                         controller: jamMulaiController,
                         readOnly: true,
+                        style: const TextStyle(color: Colors.white),
                         onTap: () => _selectTime(context, jamMulaiController),
                         decoration: InputDecoration(
                           labelText: 'Jam Mulai',
                           hintText: 'HH:MM',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                          labelStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
                           ),
-                          prefixIcon: const Icon(Icons.access_time),
-                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF00D4FF),
+                              width: 2,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFF0F172A),
+                          prefixIcon: Icon(
+                            Icons.access_time,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          suffixIcon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: TextField(
                         controller: jamSelesaiController,
                         readOnly: true,
+                        style: const TextStyle(color: Colors.white),
                         onTap: () => _selectTime(context, jamSelesaiController),
                         decoration: InputDecoration(
                           labelText: 'Jam Selesai',
                           hintText: 'HH:MM',
+                          labelStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                          ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
                           ),
-                          prefixIcon: const Icon(Icons.access_time),
-                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF00D4FF),
+                              width: 2,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFF0F172A),
+                          prefixIcon: Icon(
+                            Icons.access_time,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          suffixIcon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
                 // Kategori
                 DropdownButtonFormField<String>(
                   value: selectedKategori,
+                  dropdownColor: const Color(0xFF1E293B),
+                  style: const TextStyle(color: Colors.white),
                   items: kategoriWarna.keys
                       .map(
                         (kategori) => DropdownMenuItem(
@@ -269,10 +394,20 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                                 decoration: BoxDecoration(
                                   color: kategoriWarna[kategori],
                                   shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: kategoriWarna[kategori]!
+                                          .withOpacity(0.5),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              Text(kategori),
+                              const SizedBox(width: 12),
+                              Text(
+                                kategori,
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             ],
                           ),
                         ),
@@ -285,38 +420,74 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Kategori',
+                    labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
                     ),
-                    prefixIcon: const Icon(Icons.category),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF00D4FF),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0F172A),
+                    prefixIcon: Icon(
+                      Icons.category,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
                 // Toggle Notifikasi
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.2),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    color: const Color(0xFF0F172A),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.notifications_active),
+                          Icon(
+                            Icons.notifications_active,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
                           const SizedBox(width: 12),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'Aktifkan Notifikasi',
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
                               ),
                               Text(
                                 '10 menit sebelum jadwal',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -329,11 +500,15 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                             enableNotifikasi = value;
                           });
                         },
+                        activeColor: const Color(0xFF00D4FF),
+                        activeTrackColor: const Color(
+                          0xFF00D4FF,
+                        ).withOpacity(0.3),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
 
                 // Buttons
                 Row(
@@ -341,15 +516,42 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                     Expanded(
                       child: TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Batal'),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'Batal',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: FilledButton(
                         onPressed: _saveJadwal,
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          backgroundColor: const Color(0xFF00D4FF),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         child: Text(
                           widget.jadwalEdit != null ? 'Update' : 'Simpan',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
@@ -364,317 +566,3 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
   }
 }
 
-class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
-  late TextEditingController judulController;
-  late TextEditingController deskripsiController;
-  late TextEditingController jamController;
-  String? selectedHari;
-  String? selectedKategori;
-  bool enableNotifikasi = true;
-
-  final List<String> daftarHari = [
-    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jumat',
-    'Sabtu',
-    'Minggu',
-  ];
-
-  final Map<String, Color> kategoriWarna = {
-    'Kuliah': const Color(0xFF6366F1),
-    'Tugas': const Color(0xFFF97316),
-    'Meeting': const Color(0xFF8B5CF6),
-    'Olahraga': const Color(0xFF10B981),
-    'Istirahat': const Color(0xFF6366F1),
-    'Lainnya': const Color(0xFF64748B),
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    judulController = TextEditingController(
-      text: widget.jadwalEdit?.judul ?? '',
-    );
-    deskripsiController = TextEditingController(
-      text: widget.jadwalEdit?.deskripsi ?? '',
-    );
-    jamController = TextEditingController(text: widget.jadwalEdit?.jam ?? '');
-    selectedHari = widget.jadwalEdit?.hari;
-    enableNotifikasi = widget.jadwalEdit?.notifikasi == 1 ? true : false;
-    selectedKategori = 'Kuliah';
-  }
-
-  @override
-  void dispose() {
-    judulController.dispose();
-    deskripsiController.dispose();
-    jamController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (picked != null) {
-      jamController.text =
-          '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-    }
-  }
-
-  void _saveJadwal() {
-    if (judulController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Judul kegiatan tidak boleh kosong')),
-      );
-      return;
-    }
-
-    if (selectedHari == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Pilih hari terlebih dahulu')),
-      );
-      return;
-    }
-
-    if (jamController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Pilih jam terlebih dahulu')),
-      );
-      return;
-    }
-
-    final jadwal = Jadwal(
-      id: widget.jadwalEdit?.id ?? uuid.v4(),
-      judul: judulController.text,
-      deskripsi: deskripsiController.text.isNotEmpty
-          ? deskripsiController.text
-          : null,
-      hari: selectedHari!,
-      jam: jamController.text,
-      notifikasi: enableNotifikasi ? 1 : 0,
-      dibuatPada: widget.jadwalEdit?.dibuatPada ?? DateTime.now(),
-      diperbarui: DateTime.now(),
-    );
-
-    widget.onSave(jadwal);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.jadwalEdit != null
-                          ? 'Edit Jadwal'
-                          : 'Tambah Jadwal',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-
-                // Judul Input
-                TextField(
-                  controller: judulController,
-                  decoration: InputDecoration(
-                    labelText: 'Nama Kegiatan',
-                    hintText: 'Contoh: Kuliah Algoritma',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.event),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Deskripsi Input
-                TextField(
-                  controller: deskripsiController,
-                  decoration: InputDecoration(
-                    labelText: 'Deskripsi (Opsional)',
-                    hintText: 'Tambahkan catatan...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.description),
-                  ),
-                  maxLines: 2,
-                ),
-                const SizedBox(height: 16),
-
-                // Pilih Hari
-                DropdownButtonFormField<String>(
-                  value: selectedHari,
-                  items: daftarHari
-                      .map(
-                        (hari) =>
-                            DropdownMenuItem(value: hari, child: Text(hari)),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedHari = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Pilih Hari',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.calendar_today),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Pilih Jam
-                TextField(
-                  controller: jamController,
-                  readOnly: true,
-                  onTap: () => _selectTime(context),
-                  decoration: InputDecoration(
-                    labelText: 'Pilih Jam',
-                    hintText: 'HH:MM',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.access_time),
-                    suffixIcon: const Icon(Icons.arrow_drop_down),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Kategori
-                DropdownButtonFormField<String>(
-                  value: selectedKategori,
-                  items: kategoriWarna.keys
-                      .map(
-                        (kategori) => DropdownMenuItem(
-                          value: kategori,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  color: kategoriWarna[kategori],
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(kategori),
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedKategori = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Kategori',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.category),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Toggle Notifikasi
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.notifications_active),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Aktifkan Notifikasi',
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                '10 menit sebelum jadwal',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Switch(
-                        value: enableNotifikasi,
-                        onChanged: (value) {
-                          setState(() {
-                            enableNotifikasi = value;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Batal'),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: _saveJadwal,
-                        child: Text(
-                          widget.jadwalEdit != null ? 'Update' : 'Simpan',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
