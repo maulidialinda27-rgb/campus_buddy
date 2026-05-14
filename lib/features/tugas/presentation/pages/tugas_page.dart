@@ -220,7 +220,8 @@ class _TugasPageState extends State<TugasPage> {
                 const SizedBox(height: 16),
                 Text(
                   'Tambah Tugas Baru',
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppColors.darkText,
@@ -258,7 +259,8 @@ class _TugasPageState extends State<TugasPage> {
                           ),
                           child: Text(
                             'Simpan Tugas',
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -401,7 +403,8 @@ class _TugasPageState extends State<TugasPage> {
                       children: [
                         Text(
                           task.title,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
@@ -413,7 +416,8 @@ class _TugasPageState extends State<TugasPage> {
                         const SizedBox(height: 6),
                         Text(
                           task.subject,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             color: AppColors.darkSubText,
                           ),
@@ -444,7 +448,8 @@ class _TugasPageState extends State<TugasPage> {
                           ),
                           child: Text(
                             'Deadline: ${_formattedDate(task.deadline)}',
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
                               fontSize: 12,
                               color: deadlineColor,
                               fontWeight: FontWeight.w600,
@@ -509,7 +514,8 @@ class _TugasPageState extends State<TugasPage> {
                           children: [
                             Text(
                               'StudyMate',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -518,7 +524,8 @@ class _TugasPageState extends State<TugasPage> {
                             const SizedBox(height: 8),
                             Text(
                               'Kelola tugas kuliah dengan cepat dan jelas.',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
                                 fontSize: 13,
                                 color: AppColors.darkSubText,
                               ),
@@ -565,7 +572,8 @@ class _TugasPageState extends State<TugasPage> {
                     ? Center(
                         child: Text(
                           AppStrings.tugasKosong,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             color: AppColors.darkSubText,
                             fontSize: 16,
                           ),
@@ -621,7 +629,8 @@ class _TugasPageState extends State<TugasPage> {
       ),
       child: Text(
         label,
-        style: GoogleFonts.plusJakartaSans(
+        style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
           color: color,
           fontSize: 12,
           fontWeight: FontWeight.w600,

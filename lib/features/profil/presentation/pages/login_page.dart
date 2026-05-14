@@ -158,7 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                       // Title
                       Text(
                         'CampusBuddy',
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: isDark
@@ -171,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                       // Subtitle
                       Text(
                         'Manajemen Kampus Terpadu',
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: isDark
@@ -235,7 +237,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ? AppColors.darkSurface
                                 : Colors.white,
                           ),
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             color: isDark
                                 ? AppColors.darkText
                                 : AppColors.lightText,
@@ -297,7 +300,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ? AppColors.darkSurface
                                 : Colors.white,
                           ),
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             color: isDark
                                 ? AppColors.darkText
                                 : AppColors.lightText,
@@ -350,7 +354,8 @@ class _LoginPageState extends State<LoginPage> {
                             )
                           : Text(
                               'Masuk',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -369,7 +374,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     'Login dengan nama dan email Anda\nuntuk memulai',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
                       fontSize: 12,
                       color: isDark
                           ? AppColors.darkSubText

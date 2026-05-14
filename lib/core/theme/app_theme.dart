@@ -40,47 +40,56 @@ class AppTheme {
         : AppColors.lightSubText;
 
     return TextTheme(
-      displayLarge: GoogleFonts.plusJakartaSans(
+      displayLarge: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 32,
         fontWeight: FontWeight.bold,
         color: textColor,
       ),
-      displayMedium: GoogleFonts.plusJakartaSans(
+      displayMedium: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 28,
         fontWeight: FontWeight.bold,
         color: textColor,
       ),
-      headlineSmall: GoogleFonts.plusJakartaSans(
+      headlineSmall: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: textColor,
       ),
-      titleLarge: GoogleFonts.plusJakartaSans(
+      titleLarge: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: textColor,
       ),
-      titleMedium: GoogleFonts.plusJakartaSans(
+      titleMedium: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: textColor,
       ),
-      bodyLarge: GoogleFonts.plusJakartaSans(
+      bodyLarge: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 16,
         fontWeight: FontWeight.w500,
         color: textColor,
       ),
-      bodyMedium: GoogleFonts.plusJakartaSans(
+      bodyMedium: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: textColor,
       ),
-      bodySmall: GoogleFonts.plusJakartaSans(
+      bodySmall: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: subTextColor,
       ),
-      labelLarge: GoogleFonts.plusJakartaSans(
+      labelLarge: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w600,
         color: textColor,
@@ -96,7 +105,8 @@ class AppTheme {
       foregroundColor: isDark ? AppColors.darkText : AppColors.lightText,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: GoogleFonts.plusJakartaSans(
+      titleTextStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: isDark ? AppColors.darkText : AppColors.lightText,
@@ -115,11 +125,13 @@ class AppTheme {
       unselectedItemColor: isDark
           ? AppColors.darkSubText
           : AppColors.lightSubText,
-      selectedLabelStyle: GoogleFonts.plusJakartaSans(
+      selectedLabelStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         fontWeight: FontWeight.w600,
       ),
-      unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+      unselectedLabelStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         fontWeight: FontWeight.w500,
       ),
@@ -137,12 +149,14 @@ class AppTheme {
       selectedColor: AppColors.primary,
       secondarySelectedColor: AppColors.primary,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      labelStyle: GoogleFonts.plusJakartaSans(
+      labelStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: isDark ? AppColors.darkText : AppColors.lightText,
       ),
-      secondaryLabelStyle: GoogleFonts.plusJakartaSans(
+      secondaryLabelStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: Colors.white,
@@ -179,12 +193,14 @@ class AppTheme {
         borderSide: const BorderSide(color: AppColors.error),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      labelStyle: GoogleFonts.plusJakartaSans(
+      labelStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: isDark ? AppColors.darkSubText : AppColors.lightSubText,
       ),
-      hintStyle: GoogleFonts.plusJakartaSans(
+      hintStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: isDark ? AppColors.darkSubText : AppColors.lightSubText,

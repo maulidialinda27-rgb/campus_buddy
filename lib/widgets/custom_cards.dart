@@ -131,7 +131,8 @@ class CategoryBadge extends StatelessWidget {
       child: Text(
         label,
         textAlign: TextAlign.center,
-        style: GoogleFonts.plusJakartaSans(
+        style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
           fontSize: 12,
           fontWeight: FontWeight.w600,
           color: textColor,

@@ -49,6 +49,9 @@ dependencies:
   lottie: ^3.0.0
   animate_do: ^3.1.2
 
+  # Image Picker & OCR
+  google_mlkit_text_recognition: ^0.13.0
+
   # Image Processing
   image_picker: ^1.1.0
 
@@ -77,6 +80,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  fonts:
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -56,7 +56,8 @@ class CustomButton extends StatelessWidget {
                 )
               : Text(
                   label,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: textColor,
@@ -101,7 +102,8 @@ class SecondaryButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: GoogleFonts.plusJakartaSans(
+          style: TextStyle(
+            fontFamily: 'PlusJakartaSans',
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: textColor,

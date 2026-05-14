@@ -81,8 +81,9 @@ class _ProfilePageState extends State<ProfilePage>
         bool isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Dialog(
-          backgroundColor:
-              isDark ? AppColors.darkSurface : AppColors.lightSurface,
+          backgroundColor: isDark
+              ? AppColors.darkSurface
+              : AppColors.lightSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -110,11 +111,11 @@ class _ProfilePageState extends State<ProfilePage>
                 // Title
                 Text(
                   'Logout?',
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color:
-                        isDark ? AppColors.darkText : AppColors.lightText,
+                    color: isDark ? AppColors.darkText : AppColors.lightText,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -123,7 +124,8 @@ class _ProfilePageState extends State<ProfilePage>
                 Text(
                   'Apakah Anda yakin ingin keluar?\nAnda harus login kembali untuk menggunakan aplikasi.',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
                     color: isDark
                         ? AppColors.darkSubText
@@ -152,7 +154,8 @@ class _ProfilePageState extends State<ProfilePage>
                         ),
                         child: Text(
                           'Batal',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w600,
                             color: isDark
                                 ? AppColors.darkText
@@ -169,8 +172,9 @@ class _ProfilePageState extends State<ProfilePage>
                         onPressed: () async {
                           await _userService.logout();
                           if (mounted) {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/login');
+                            Navigator.of(
+                              context,
+                            ).pushReplacementNamed('/login');
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -182,7 +186,8 @@ class _ProfilePageState extends State<ProfilePage>
                         ),
                         child: Text(
                           'Logout',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
@@ -207,8 +212,9 @@ class _ProfilePageState extends State<ProfilePage>
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor:
-              isDark ? AppColors.darkSurface : AppColors.lightSurface,
+          backgroundColor: isDark
+              ? AppColors.darkSurface
+              : AppColors.lightSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -240,11 +246,11 @@ class _ProfilePageState extends State<ProfilePage>
                 // Title
                 Text(
                   'CampusBuddy',
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color:
-                        isDark ? AppColors.darkText : AppColors.lightText,
+                    color: isDark ? AppColors.darkText : AppColors.lightText,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -252,7 +258,8 @@ class _ProfilePageState extends State<ProfilePage>
                 // Version
                 Text(
                   'Versi 1.0.0',
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
                     color: isDark
                         ? AppColors.darkSubText
@@ -265,7 +272,8 @@ class _ProfilePageState extends State<ProfilePage>
                 Text(
                   'Aplikasi manajemen kampus terpadu untuk membantu mahasiswa mengelola tugas, jadwal, keuangan, dan catatan dengan mudah.',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     color: isDark
                         ? AppColors.darkSubText
@@ -287,7 +295,8 @@ class _ProfilePageState extends State<ProfilePage>
                     children: [
                       Text(
                         'Fitur Utama:',
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: AppColors.primary,
@@ -317,7 +326,8 @@ class _ProfilePageState extends State<ProfilePage>
                     ),
                     child: Text(
                       'Tutup',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
@@ -338,7 +348,8 @@ class _ProfilePageState extends State<ProfilePage>
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Text(
         text,
-        style: GoogleFonts.plusJakartaSans(
+        style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
           fontSize: 12,
           color: Theme.of(context).brightness == Brightness.dark
               ? AppColors.darkText
@@ -359,7 +370,8 @@ class _ProfilePageState extends State<ProfilePage>
         backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
         title: Text(
           'Profil Saya',
-          style: GoogleFonts.plusJakartaSans(
+          style: TextStyle(
+            fontFamily: 'PlusJakartaSans',
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: isDark ? AppColors.darkText : AppColors.lightText,
@@ -395,8 +407,11 @@ class _ProfilePageState extends State<ProfilePage>
                         scale: Tween<double>(begin: 0, end: 1).animate(
                           CurvedAnimation(
                             parent: _animationController,
-                            curve: const Interval(0, 0.5,
-                                curve: Curves.elasticOut),
+                            curve: const Interval(
+                              0,
+                              0.5,
+                              curve: Curves.elasticOut,
+                            ),
                           ),
                         ),
                         child: Container(
@@ -432,7 +447,8 @@ class _ProfilePageState extends State<ProfilePage>
                         duration: const Duration(milliseconds: 600),
                         child: Text(
                           _userName ?? 'User',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: isDark
@@ -450,7 +466,8 @@ class _ProfilePageState extends State<ProfilePage>
                         duration: const Duration(milliseconds: 600),
                         child: Text(
                           _userEmail ?? 'email@example.com',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             color: isDark
                                 ? AppColors.darkSubText
@@ -475,7 +492,8 @@ class _ProfilePageState extends State<ProfilePage>
                   children: [
                     Text(
                       'Pengaturan',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: isDark
@@ -492,9 +510,7 @@ class _ProfilePageState extends State<ProfilePage>
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.darkSurface
-                            : Colors.white,
+                        color: isDark ? AppColors.darkSurface : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isDark
@@ -521,7 +537,8 @@ class _ProfilePageState extends State<ProfilePage>
                           Expanded(
                             child: Text(
                               'Mode Gelap',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: isDark
@@ -547,9 +564,7 @@ class _ProfilePageState extends State<ProfilePage>
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.darkSurface
-                            : Colors.white,
+                        color: isDark ? AppColors.darkSurface : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isDark
@@ -563,8 +578,7 @@ class _ProfilePageState extends State<ProfilePage>
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: AppColors.secondary
-                                  .withOpacity(0.1),
+                              color: AppColors.secondary.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
@@ -577,7 +591,8 @@ class _ProfilePageState extends State<ProfilePage>
                           Expanded(
                             child: Text(
                               'Notifikasi',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: isDark
@@ -609,7 +624,8 @@ class _ProfilePageState extends State<ProfilePage>
                   children: [
                     Text(
                       'Informasi',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: isDark
@@ -641,7 +657,8 @@ class _ProfilePageState extends State<ProfilePage>
                   children: [
                     Text(
                       'Akun',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: isDark
@@ -693,10 +710,7 @@ class _ProfilePageState extends State<ProfilePage>
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Row(
               children: [
                 Container(
@@ -722,9 +736,7 @@ class _ProfilePageState extends State<ProfilePage>
                       fontWeight: FontWeight.w600,
                       color: isRed
                           ? AppColors.error
-                          : (isDark
-                              ? AppColors.darkText
-                              : AppColors.lightText),
+                          : (isDark ? AppColors.darkText : AppColors.lightText),
                     ),
                   ),
                 ),

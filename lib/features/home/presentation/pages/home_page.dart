@@ -59,7 +59,8 @@ class _HomePageState extends State<HomePage> {
                 FadeInLeft(
                   child: Text(
                     'Selamat datang kembali! 👋',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.darkText,
@@ -145,7 +146,8 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(
         title,
-        style: GoogleFonts.plusJakartaSans(
+        style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: AppColors.darkText,
@@ -209,7 +211,8 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Total Pengeluaran Hari Ini',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: AppColors.lightSubText,
@@ -218,7 +221,8 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 4),
                     Text(
                       'Rp 150.000',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: AppColors.categoryKeuangan,
@@ -283,14 +287,16 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(
                 title,
-                style: GoogleFonts.plusJakartaSans(
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
                 subtitle,
-                style: GoogleFonts.plusJakartaSans(
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: AppColors.lightSubText,
