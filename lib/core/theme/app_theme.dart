@@ -1,159 +1,197 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 
+/// Modern Light Theme for CampusBuddy
+/// Clean, minimalist design with soft colors
 class AppTheme {
-  // Light Theme
+  /// Light Theme - Primary theme for the app
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.lightBg,
-    textTheme: _buildTextTheme(Brightness.light),
-    appBarTheme: _buildAppBarTheme(Brightness.light),
-    bottomNavigationBarTheme: _buildBottomNavTheme(Brightness.light),
-    chipTheme: _buildChipTheme(Brightness.light),
-    inputDecorationTheme: _buildInputDecorationTheme(Brightness.light),
-    floatingActionButtonTheme: _buildFabTheme(Brightness.light),
+
+    // Color Scheme
+    colorScheme: ColorScheme.light(
+      primary: AppColors.primary,
+      secondary: AppColors.secondary,
+      tertiary: AppColors.accent,
+      surface: AppColors.lightSurface,
+      background: AppColors.lightBg,
+      error: AppColors.error,
+    ),
+
+    // Text Theme
+    textTheme: _buildTextTheme(),
+
+    // AppBar Theme
+    appBarTheme: _buildAppBarTheme(),
+
+    // Bottom Navigation Bar Theme
+    bottomNavigationBarTheme: _buildBottomNavTheme(),
+
+    // Chip Theme
+    chipTheme: _buildChipTheme(),
+
+    // Input Decoration Theme
+    inputDecorationTheme: _buildInputDecorationTheme(),
+
+    // FAB Theme
+    floatingActionButtonTheme: _buildFabTheme(),
+
+    // Card Theme
+    cardTheme: _buildCardTheme(),
+
+    // Dialog Theme
+    dialogTheme: _buildDialogTheme(),
+
+    // Button Themes
+    elevatedButtonTheme: _buildElevatedButtonTheme(),
+    outlinedButtonTheme: _buildOutlinedButtonTheme(),
+    textButtonTheme: _buildTextButtonTheme(),
   );
 
-  // Dark Theme
-  static ThemeData darkTheme = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    primaryColor: AppColors.primary,
-    scaffoldBackgroundColor: AppColors.darkBg,
-    textTheme: _buildTextTheme(Brightness.dark),
-    appBarTheme: _buildAppBarTheme(Brightness.dark),
-    bottomNavigationBarTheme: _buildBottomNavTheme(Brightness.dark),
-    chipTheme: _buildChipTheme(Brightness.dark),
-    inputDecorationTheme: _buildInputDecorationTheme(Brightness.dark),
-    floatingActionButtonTheme: _buildFabTheme(Brightness.dark),
-  );
-
-  // Text Theme
-  static TextTheme _buildTextTheme(Brightness brightness) {
-    final isDark = brightness == Brightness.dark;
-    final textColor = isDark ? AppColors.darkText : AppColors.lightText;
-    final subTextColor = isDark
-        ? AppColors.darkSubText
-        : AppColors.lightSubText;
-
+  /// Text Theme - Clean & Readable
+  static TextTheme _buildTextTheme() {
     return TextTheme(
       displayLarge: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 32,
-        fontWeight: FontWeight.bold,
-        color: textColor,
+        fontWeight: FontWeight.w700,
+        color: AppColors.lightText,
+        letterSpacing: -0.5,
       ),
       displayMedium: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 28,
-        fontWeight: FontWeight.bold,
-        color: textColor,
+        fontWeight: FontWeight.w700,
+        color: AppColors.lightText,
+        letterSpacing: -0.3,
+      ),
+      displaySmall: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+        color: AppColors.lightText,
       ),
       headlineSmall: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 24,
         fontWeight: FontWeight.w600,
-        color: textColor,
+        color: AppColors.lightText,
       ),
       titleLarge: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 20,
         fontWeight: FontWeight.w600,
-        color: textColor,
+        color: AppColors.lightText,
       ),
       titleMedium: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: textColor,
+        color: AppColors.lightText,
+      ),
+      titleSmall: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: AppColors.lightText,
       ),
       bodyLarge: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        color: textColor,
+        color: AppColors.lightText,
       ),
       bodyMedium: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: textColor,
+        color: AppColors.lightText,
       ),
       bodySmall: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         fontWeight: FontWeight.w400,
-        color: subTextColor,
+        color: AppColors.lightSubText,
       ),
       labelLarge: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: textColor,
+        color: AppColors.lightText,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: AppColors.lightSubText,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 11,
+        fontWeight: FontWeight.w500,
+        color: AppColors.lightSubText,
       ),
     );
   }
 
-  // AppBar Theme
-  static AppBarTheme _buildAppBarTheme(Brightness brightness) {
-    final isDark = brightness == Brightness.dark;
+  /// AppBar Theme - Clean white with subtle shadow
+  static AppBarTheme _buildAppBarTheme() {
     return AppBarTheme(
-      backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-      foregroundColor: isDark ? AppColors.darkText : AppColors.lightText,
-      elevation: 0,
+      backgroundColor: AppColors.lightSurface,
+      foregroundColor: AppColors.lightText,
+      elevation: 1,
+      shadowColor: AppColors.lightBorder.withOpacity(0.3),
       centerTitle: false,
       titleTextStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 20,
         fontWeight: FontWeight.w600,
-        color: isDark ? AppColors.darkText : AppColors.lightText,
+        color: AppColors.lightText,
       ),
+      iconTheme: IconThemeData(color: AppColors.lightText, size: 24),
     );
   }
 
-  // Bottom Navigation Theme
-  static BottomNavigationBarThemeData _buildBottomNavTheme(
-    Brightness brightness,
-  ) {
-    final isDark = brightness == Brightness.dark;
+  /// Bottom Navigation Bar Theme
+  static BottomNavigationBarThemeData _buildBottomNavTheme() {
     return BottomNavigationBarThemeData(
-      backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+      backgroundColor: AppColors.lightSurface,
       selectedItemColor: AppColors.primary,
-      unselectedItemColor: isDark
-          ? AppColors.darkSubText
-          : AppColors.lightSubText,
+      unselectedItemColor: AppColors.lightSubText,
       selectedLabelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         fontWeight: FontWeight.w600,
+        color: AppColors.primary,
       ),
       unselectedLabelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         fontWeight: FontWeight.w500,
+        color: AppColors.lightSubText,
       ),
       type: BottomNavigationBarType.fixed,
       elevation: 8,
+      enableFeedback: true,
     );
   }
 
-  // Chip Theme
-  static ChipThemeData _buildChipTheme(Brightness brightness) {
-    final isDark = brightness == Brightness.dark;
+  /// Chip Theme
+  static ChipThemeData _buildChipTheme() {
     return ChipThemeData(
-      backgroundColor: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-      disabledColor: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+      backgroundColor: AppColors.lightBorder,
+      disabledColor: AppColors.lightGray,
       selectedColor: AppColors.primary,
-      secondarySelectedColor: AppColors.primary,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      secondarySelectedColor: AppColors.secondary,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       labelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: isDark ? AppColors.darkText : AppColors.lightText,
+        color: AppColors.lightText,
       ),
       secondaryLabelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
@@ -161,60 +199,152 @@ class AppTheme {
         fontWeight: FontWeight.w500,
         color: Colors.white,
       ),
+      brightness: Brightness.light,
     );
   }
 
-  // Input Decoration Theme
-  static InputDecorationTheme _buildInputDecorationTheme(
-    Brightness brightness,
-  ) {
-    final isDark = brightness == Brightness.dark;
+  /// Input Decoration Theme - Clean & Simple
+  static InputDecorationTheme _buildInputDecorationTheme() {
     return InputDecorationTheme(
       filled: true,
-      fillColor: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+      fillColor: AppColors.lightGray,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-        ),
+        borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-        ),
+        borderSide: BorderSide(color: AppColors.lightBorder, width: 1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        borderSide: BorderSide(color: AppColors.primary, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.error),
+        borderSide: BorderSide(color: AppColors.error, width: 1),
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: AppColors.error, width: 2),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       labelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: isDark ? AppColors.darkSubText : AppColors.lightSubText,
+        color: AppColors.lightSubText,
       ),
       hintStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: isDark ? AppColors.darkSubText : AppColors.lightSubText,
+        color: AppColors.lightSubText,
+      ),
+      errorStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: AppColors.error,
       ),
     );
   }
 
-  // FAB Theme
-  static FloatingActionButtonThemeData _buildFabTheme(Brightness brightness) {
+  /// FAB Theme - Soft shadow
+  static FloatingActionButtonThemeData _buildFabTheme() {
     return FloatingActionButtonThemeData(
       backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
-      elevation: 8,
+      elevation: 4,
+      hoverElevation: 8,
+      highlightElevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    );
+  }
+
+  /// Card Theme - Light & Clean
+  static CardThemeData _buildCardTheme() {
+    return CardThemeData(
+      color: AppColors.lightSurface,
+      elevation: 1,
+      shadowColor: AppColors.lightBorder.withOpacity(0.2),
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: AppColors.lightBorder, width: 0.5),
+      ),
+    );
+  }
+
+  /// Dialog Theme
+  static DialogThemeData _buildDialogTheme() {
+    return DialogThemeData(
+      backgroundColor: AppColors.lightSurface,
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      titleTextStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: AppColors.lightText,
+      ),
+      contentTextStyle: TextStyle(
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.lightText,
+      ),
+    );
+  }
+
+  /// Elevated Button Theme
+  static ElevatedButtonThemeData _buildElevatedButtonTheme() {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 2,
+        textStyle: TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  /// Outlined Button Theme
+  static OutlinedButtonThemeData _buildOutlinedButtonTheme() {
+    return OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        side: BorderSide(color: AppColors.primary, width: 1.5),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  /// Text Button Theme
+  static TextButtonThemeData _buildTextButtonTheme() {
+    return TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        textStyle: TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 }

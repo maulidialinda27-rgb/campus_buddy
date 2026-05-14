@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 import 'package:campus_buddy/core/constants/app_strings.dart';
 import 'package:campus_buddy/core/constants/app_constants.dart';
 import 'package:campus_buddy/widgets/custom_cards.dart';
+import 'package:campus_buddy/widgets/notification_card.dart';
 import 'package:campus_buddy/features/tugas/presentation/pages/tugas_page.dart';
 import 'package:campus_buddy/features/scan/presentation/pages/scan_page.dart';
 import 'package:campus_buddy/features/keuangan/presentation/pages/keuangan_page.dart';
 import 'package:campus_buddy/features/jadwal/presentation/pages/jadwal_page.dart';
 import 'package:campus_buddy/features/profil/presentation/pages/profil_page.dart';
+import 'package:campus_buddy/models/notification_model.dart';
+import 'package:campus_buddy/models/expense_model.dart';
+import 'package:campus_buddy/services/notification_generator_service.dart';
+import 'package:campus_buddy/services/local_storage_service.dart';
+import 'package:campus_buddy/services/jadwal_service.dart';
+import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,6 +27,70 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  List<DashboardNotification> _notifications = [];
+  List<StudyTask> _tasks = [];
+  List<Jadwal> _schedules = [];
+  List<ExpenseItem> _expenses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAllData();
+  }
+
+  /// Load semua data dari berbagai sumber
+  Future<void> _loadAllData() async {
+    try {
+      // Load tasks
+      final tasksData = await LocalStorageService.instance.loadJsonList(
+        'study_tasks',
+      );
+      final tasks = tasksData.map((t) => StudyTask.fromMap(t)).toList();
+
+      // Load schedules
+      final jadwalService = JadwalService();
+      final schedules = jadwalService.getAllJadwal();
+
+      // Load expenses
+      final expensesData = await LocalStorageService.instance.loadJsonList(
+        'keuangan_expenses',
+      );
+      final expenses = expensesData.map((e) => ExpenseItem.fromMap(e)).toList();
+
+      setState(() {
+        _tasks = tasks;
+        _schedules = schedules;
+        _expenses = expenses;
+      });
+
+      // Generate notifikasi
+      _generateNotifications();
+    } catch (e) {
+      // Silent catch, notification generation will continue
+    }
+  }
+
+  /// Generate notifikasi berdasarkan data terkini
+  void _generateNotifications() {
+    final notifications = NotificationGeneratorService.generateNotifications(
+      tasks: _tasks,
+      schedules: _schedules,
+      expenses: _expenses,
+    );
+
+    if (mounted) {
+      setState(() {
+        _notifications = notifications;
+      });
+    }
+  }
+
+  /// Dismiss notifikasi
+  void _dismissNotification(String id) {
+    setState(() {
+      _notifications.removeWhere((n) => n.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +138,27 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 24),
+
+                // Dashboard Notifikasi
+                if (_notifications.isNotEmpty)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      NotificationHeader(
+                        notificationCount: _notifications.length,
+                      ),
+                      const SizedBox(height: 8),
+                      NotificationList(
+                        notifications: _notifications,
+                        onDismiss: _dismissNotification,
+                        onNotificationTap: (notification) {
+                          // Handle notifikasi tap based on type
+                          _handleNotificationTap(notification);
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
 
                 // Tugas Menunggu
                 _buildSectionTitle(AppStrings.tugasMenunggu),
@@ -309,6 +400,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// Handle notifikasi tap - navigate ke halaman yang sesuai
+  void _handleNotificationTap(DashboardNotification notification) {
+    switch (notification.type) {
+      case NotificationType.deadline:
+        // Navigate ke Tugas Page
+        _navigateTo(1);
+        break;
+      case NotificationType.schedule:
+        // Navigate ke Jadwal Page
+        _navigateTo(4);
+        break;
+      case NotificationType.expense:
+        // Navigate ke Keuangan Page
+        _navigateTo(3);
+        break;
+    }
+  }
+
   void _navigateTo(int index) {
     Widget nextPage;
 
@@ -342,24 +451,5 @@ class _HomePageState extends State<HomePage> {
         _selectedIndex = 0; // Reset ke home setelah kembali
       });
     });
-  }
-
-  String _getMenuName(int index) {
-    switch (index) {
-      case 0:
-        return 'Beranda';
-      case 1:
-        return 'Tugas';
-      case 2:
-        return 'Scan';
-      case 3:
-        return 'Keuangan';
-      case 4:
-        return 'Jadwal';
-      case 5:
-        return 'Profil';
-      default:
-        return '';
-    }
   }
 }

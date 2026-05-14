@@ -50,8 +50,7 @@ class _CampusBuddyAppState extends State<CampusBuddyApp> {
         title: 'CampusBuddy',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         home: Scaffold(
           body: Center(
             child: Column(
@@ -71,8 +70,7 @@ class _CampusBuddyAppState extends State<CampusBuddyApp> {
       title: 'CampusBuddy',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       // Arahkan ke halaman sesuai status login
       home: _isLoggedIn ? const HomePage() : const LoginPage(),
       // Named routes untuk navigasi
