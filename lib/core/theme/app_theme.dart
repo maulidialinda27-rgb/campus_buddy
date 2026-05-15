@@ -17,7 +17,6 @@ class AppTheme {
       secondary: AppColors.secondary,
       tertiary: AppColors.accent,
       surface: AppColors.lightSurface,
-      background: AppColors.lightBg,
       error: AppColors.error,
     ),
 
@@ -143,7 +142,7 @@ class AppTheme {
       backgroundColor: AppColors.lightSurface,
       foregroundColor: AppColors.lightText,
       elevation: 1,
-      shadowColor: AppColors.lightBorder.withOpacity(0.3),
+      shadowColor: AppColors.lightBorder.withValues(alpha: 0.3),
       centerTitle: false,
       titleTextStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
@@ -267,7 +266,7 @@ class AppTheme {
     return CardThemeData(
       color: AppColors.lightSurface,
       elevation: 1,
-      shadowColor: AppColors.lightBorder.withOpacity(0.2),
+      shadowColor: AppColors.lightBorder.withValues(alpha: 0.2),
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

@@ -7,7 +7,7 @@ import 'package:campus_buddy/features/jadwal/presentation/pages/tambah_jadwal_di
 import 'package:campus_buddy/services/jadwal_service.dart';
 
 class JadwalPage extends StatefulWidget {
-  const JadwalPage({Key? key}) : super(key: key);
+  const JadwalPage({super.key});
 
   @override
   State<JadwalPage> createState() => _JadwalPageState();
@@ -94,10 +94,13 @@ class _JadwalPageState extends State<JadwalPage> {
               const Color(0xFF0F172A), // Darker navy
             ],
           ),
-          border: Border.all(color: kategoriColor.withOpacity(0.3), width: 1),
+          border: Border.all(
+            color: kategoriColor.withValues(alpha: 0.3),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
-              color: kategoriColor.withOpacity(0.2),
+              color: kategoriColor.withValues(alpha: 0.2),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -108,10 +111,10 @@ class _JadwalPageState extends State<JadwalPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: kategoriColor.withOpacity(0.2),
+                color: kategoriColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: kategoriColor.withOpacity(0.5),
+                  color: kategoriColor.withValues(alpha: 0.5),
                   width: 1,
                 ),
               ),
@@ -125,7 +128,7 @@ class _JadwalPageState extends State<JadwalPage> {
                   Text(
                     'Kegiatan Berikutnya',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.5,
@@ -149,13 +152,13 @@ class _JadwalPageState extends State<JadwalPage> {
                       Icon(
                         Icons.access_time,
                         size: 14,
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white.withValues(alpha: 0.6),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '${nextSchedule.jamMulai} • Dalam $minutes menit',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
@@ -173,7 +176,7 @@ class _JadwalPageState extends State<JadwalPage> {
                 borderRadius: BorderRadius.circular(2),
                 boxShadow: [
                   BoxShadow(
-                    color: kategoriColor.withOpacity(0.5),
+                    color: kategoriColor.withValues(alpha: 0.5),
                     blurRadius: 6,
                   ),
                 ],
@@ -200,7 +203,7 @@ class _JadwalPageState extends State<JadwalPage> {
         background: Container(
           margin: const EdgeInsets.only(bottom: 16, left: 60),
           decoration: BoxDecoration(
-            color: Colors.red.withOpacity(0.8),
+            color: Colors.red.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(16),
           ),
           alignment: Alignment.centerRight,
@@ -215,15 +218,15 @@ class _JadwalPageState extends State<JadwalPage> {
             color: const Color(0xFF1E293B), // Navy surface
             border: Border.all(
               color: isOngoing
-                  ? kategoriColor.withOpacity(0.5)
+                  ? kategoriColor.withValues(alpha: 0.5)
                   : Colors.transparent,
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
                 color: isOngoing
-                    ? kategoriColor.withOpacity(0.1)
-                    : Colors.black.withOpacity(0.1),
+                    ? kategoriColor.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -241,19 +244,19 @@ class _JadwalPageState extends State<JadwalPage> {
                   color: isOngoing ? Colors.green : kategoriColor,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     width: 2,
                   ),
                   boxShadow: isOngoing
                       ? [
                           BoxShadow(
-                            color: Colors.green.withOpacity(0.5),
+                            color: Colors.green.withValues(alpha: 0.5),
                             blurRadius: 8,
                           ),
                         ]
                       : [
                           BoxShadow(
-                            color: kategoriColor.withOpacity(0.5),
+                            color: kategoriColor.withValues(alpha: 0.5),
                             blurRadius: 6,
                           ),
                         ],
@@ -272,7 +275,7 @@ class _JadwalPageState extends State<JadwalPage> {
                         Icon(
                           Icons.access_time,
                           size: 16,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                         ),
                         const SizedBox(width: 6),
                         Text(
@@ -314,13 +317,13 @@ class _JadwalPageState extends State<JadwalPage> {
                           ),
                           decoration: BoxDecoration(
                             color: isOngoing
-                                ? Colors.green.withOpacity(0.2)
-                                : kategoriColor.withOpacity(0.2),
+                                ? Colors.green.withValues(alpha: 0.2)
+                                : kategoriColor.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: isOngoing
-                                  ? Colors.green.withOpacity(0.5)
-                                  : kategoriColor.withOpacity(0.5),
+                                  ? Colors.green.withValues(alpha: 0.5)
+                                  : kategoriColor.withValues(alpha: 0.5),
                               width: 1,
                             ),
                           ),
@@ -342,10 +345,10 @@ class _JadwalPageState extends State<JadwalPage> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: kategoriColor.withOpacity(0.1),
+                            color: kategoriColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: kategoriColor.withOpacity(0.3),
+                              color: kategoriColor.withValues(alpha: 0.3),
                               width: 1,
                             ),
                           ),
@@ -376,7 +379,7 @@ class _JadwalPageState extends State<JadwalPage> {
                           : Icons.notifications_off,
                       color: jadwal.notifikasi == 1
                           ? kategoriColor
-                          : Colors.white.withOpacity(0.4),
+                          : Colors.white.withValues(alpha: 0.4),
                       size: 20,
                     ),
                     padding: EdgeInsets.zero,
@@ -414,7 +417,7 @@ class _JadwalPageState extends State<JadwalPage> {
                     ],
                     icon: Icon(
                       Icons.more_vert,
-                      color: Colors.white.withOpacity(0.6),
+                      color: Colors.white.withValues(alpha: 0.6),
                       size: 20,
                     ),
                     padding: EdgeInsets.zero,
@@ -430,28 +433,36 @@ class _JadwalPageState extends State<JadwalPage> {
   }
 
   Future<void> _showTambahJadwalDialog({Jadwal? jadwalEdit}) async {
+    final parentContext = context;
     showDialog(
-      context: context,
-      builder: (context) => TambahJadwalDialog(
+      context: parentContext,
+      builder: (dialogContext) => TambahJadwalDialog(
         onSave: (jadwal) async {
+          final currentContext = context;
+          final messenger = ScaffoldMessenger.of(currentContext);
+          final navigator = Navigator.of(currentContext);
           try {
             if (jadwalEdit != null) {
               await _jadwalService.updateJadwal(jadwal);
-              ScaffoldMessenger.of(context).showSnackBar(
+              if (!mounted) return;
+              messenger.showSnackBar(
                 const SnackBar(content: Text('Jadwal berhasil diupdate')),
               );
             } else {
               await _jadwalService.addJadwal(jadwal);
-              ScaffoldMessenger.of(context).showSnackBar(
+              if (!mounted) return;
+              messenger.showSnackBar(
                 const SnackBar(content: Text('Jadwal berhasil ditambahkan')),
               );
             }
-            Navigator.pop(context);
+            if (!mounted) return;
+            navigator.pop();
             _loadJadwal();
           } catch (e) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+            if (!mounted) return;
+            messenger.showSnackBar(
+              SnackBar(content: Text('Error: ${e.toString()}')),
+            );
           }
         },
         jadwalEdit: jadwalEdit,
@@ -460,9 +471,10 @@ class _JadwalPageState extends State<JadwalPage> {
   }
 
   Future<void> _deleteJadwal(String jadwalId) async {
+    final parentContext = context;
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+      context: parentContext,
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Hapus Jadwal?'),
         content: const Text('Jadwal yang dihapus tidak bisa dikembalikan.'),
         actions: [
@@ -472,15 +484,20 @@ class _JadwalPageState extends State<JadwalPage> {
           ),
           TextButton(
             onPressed: () async {
+              final currentContext = context;
+              final messenger = ScaffoldMessenger.of(currentContext);
+              final navigator = Navigator.of(currentContext);
               try {
                 await _jadwalService.deleteJadwal(jadwalId);
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
+                if (!mounted) return;
+                navigator.pop();
+                messenger.showSnackBar(
                   const SnackBar(content: Text('Jadwal berhasil dihapus')),
                 );
                 _loadJadwal();
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
+                if (!mounted) return;
+                messenger.showSnackBar(
                   SnackBar(content: Text('Error: ${e.toString()}')),
                 );
               }
@@ -495,8 +512,10 @@ class _JadwalPageState extends State<JadwalPage> {
   Future<void> _toggleNotifikasi(Jadwal jadwal) async {
     try {
       await _jadwalService.toggleNotifikasi(jadwal.id);
+      if (!mounted) return;
       _loadJadwal();
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
@@ -530,7 +549,7 @@ class _JadwalPageState extends State<JadwalPage> {
                   'Total: ${_daftarJadwal.length}',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -550,14 +569,14 @@ class _JadwalPageState extends State<JadwalPage> {
                         color: const Color(0xFF1E293B),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                           width: 1,
                         ),
                       ),
                       child: Icon(
                         Icons.event_note,
                         size: 64,
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withValues(alpha: 0.5),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -574,7 +593,7 @@ class _JadwalPageState extends State<JadwalPage> {
                     Text(
                       'Tambahkan jadwal untuk memulai',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white.withValues(alpha: 0.6),
                         fontSize: 14,
                       ),
                     ),
@@ -621,7 +640,7 @@ class _JadwalPageState extends State<JadwalPage> {
                           child: Container(
                             width: 2,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(1),
                             ),
                           ),
@@ -661,4 +680,3 @@ class _JadwalPageState extends State<JadwalPage> {
     );
   }
 }
-

@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsets padding;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.isLoading = false,
@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
     this.height = 48,
     this.borderRadius,
     this.padding = const EdgeInsets.all(0),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
           onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
-            disabledBackgroundColor: backgroundColor?.withOpacity(0.5),
+            disabledBackgroundColor: backgroundColor?.withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(
               borderRadius: borderRadius ?? BorderRadius.circular(12),
             ),
@@ -77,14 +77,14 @@ class SecondaryButton extends StatelessWidget {
   final double height;
 
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.borderColor = AppColors.primary,
     this.textColor = AppColors.primary,
     this.width,
     this.height = 48,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:campus_buddy/features/scan/presentation/scan_to_note_page.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ScanPage extends StatefulWidget {
-  const ScanPage({Key? key}) : super(key: key);
+  const ScanPage({super.key});
 
   @override
   State<ScanPage> createState() => _ScanPageState();
@@ -19,6 +19,7 @@ class _ScanPageState extends State<ScanPage> {
     try {
       final XFile? image = await _picker.pickImage(source: ImageSource.camera);
       if (image != null) {
+        if (!mounted) return;
         Navigator.push(
           context,
           MaterialPageRoute(

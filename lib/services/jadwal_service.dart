@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/services/notification_service.dart';
+import 'dart:developer';
 
 class JadwalService {
   static final JadwalService _instance = JadwalService._internal();
@@ -34,7 +35,7 @@ class JadwalService {
           .map((item) => Jadwal.fromMap(item as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      print('Error loading jadwal: $e');
+      log('Error loading jadwal: $e');
       return [];
     }
   }
@@ -69,9 +70,9 @@ class JadwalService {
         );
       }
 
-      print('Jadwal ditambahkan: ${jadwal.judul}');
+      log('Jadwal ditambahkan: ${jadwal.judul}');
     } catch (e) {
-      print('Error adding jadwal: $e');
+      log('Error adding jadwal: $e');
       rethrow;
     }
   }
@@ -106,10 +107,10 @@ class JadwalService {
           );
         }
 
-        print('Jadwal diupdate: ${jadwal.judul}');
+        log('Jadwal diupdate: ${jadwal.judul}');
       }
     } catch (e) {
-      print('Error updating jadwal: $e');
+      log('Error updating jadwal: $e');
       rethrow;
     }
   }
@@ -126,9 +127,9 @@ class JadwalService {
       // Batalkan notifikasi
       await _notificationService.cancelNotification(jadwalId.hashCode);
 
-      print('Jadwal dihapus: $jadwalId');
+      log('Jadwal dihapus: $jadwalId');
     } catch (e) {
-      print('Error deleting jadwal: $e');
+      log('Error deleting jadwal: $e');
       rethrow;
     }
   }
@@ -164,12 +165,12 @@ class JadwalService {
           );
         }
 
-        print(
+        log(
           'Notifikasi untuk jadwal $jadwalId: ${newNotifikasi == 1 ? "aktif" : "nonaktif"}',
         );
       }
     } catch (e) {
-      print('Error toggling notifikasi: $e');
+      log('Error toggling notifikasi: $e');
       rethrow;
     }
   }
@@ -179,9 +180,9 @@ class JadwalService {
     try {
       await _prefs.remove(_jadwalKey);
       await _notificationService.cancelAllNotifications();
-      print('Semua jadwal dihapus');
+      log('Semua jadwal dihapus');
     } catch (e) {
-      print('Error clearing jadwal: $e');
+      log('Error clearing jadwal: $e');
       rethrow;
     }
   }

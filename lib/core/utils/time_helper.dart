@@ -1,4 +1,5 @@
 /// Helper functions untuk time management
+library;
 
 /// Parse jam format HH:MM ke DateTime hari ini
 DateTime parseJam(String jam) {

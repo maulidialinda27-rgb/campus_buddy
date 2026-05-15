@@ -9,11 +9,11 @@ class NotificationCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.notification,
     this.onDismiss,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +32,13 @@ class NotificationCard extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 const Color(0xFF1E293B),
-                const Color(0xFF0F172A).withOpacity(0.8),
+                const Color(0xFF0F172A).withValues(alpha: 0.8),
               ],
             ),
-            border: Border.all(color: bgColor.withOpacity(0.3), width: 1),
+            border: Border.all(color: bgColor.withValues(alpha: 0.3), width: 1),
             boxShadow: [
               BoxShadow(
-                color: bgColor.withOpacity(0.2),
+                color: bgColor.withValues(alpha: 0.2),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -54,8 +54,8 @@ class NotificationCard extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      bgColor.withOpacity(0.1),
-                      bgColor.withOpacity(0.05),
+                      bgColor.withValues(alpha: 0.1),
+                      bgColor.withValues(alpha: 0.05),
                     ],
                   ),
                 ),
@@ -86,7 +86,7 @@ class NotificationCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: bgColor.withOpacity(0.15),
+                        color: bgColor.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -123,7 +123,7 @@ class NotificationCard extends StatelessWidget {
                             notification.description,
                             style: TextStyle(
                               fontSize: 12,
-                              color: const Color(0xFF94A3B8).withOpacity(0.9),
+                              color: const Color(0xFF94A3B8).withValues(alpha: 0.9),
                               fontWeight: FontWeight.w400,
                             ),
                             maxLines: 2,
@@ -155,10 +155,10 @@ class NotificationCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: bgColor.withOpacity(0.2),
+                            color: bgColor.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                              color: bgColor.withOpacity(0.4),
+                              color: bgColor.withValues(alpha: 0.4),
                               width: 0.5,
                             ),
                           ),
@@ -180,7 +180,7 @@ class NotificationCard extends StatelessWidget {
                           child: Icon(
                             Icons.close,
                             size: 18,
-                            color: const Color(0xFF64748B).withOpacity(0.7),
+                            color: const Color(0xFF64748B).withValues(alpha: 0.7),
                           ),
                         ),
                       ),
@@ -201,9 +201,9 @@ class NotificationCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: priorityColor.withOpacity(0.15),
+        color: priorityColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: priorityColor.withOpacity(0.3), width: 0.5),
+        border: Border.all(color: priorityColor.withValues(alpha: 0.3), width: 0.5),
       ),
       child: Text(
         priorityLabel,
@@ -247,12 +247,12 @@ class NotificationList extends StatefulWidget {
   final bool showEmpty;
 
   const NotificationList({
-    Key? key,
+    super.key,
     required this.notifications,
     this.onDismiss,
     this.onNotificationTap,
     this.showEmpty = true,
-  }) : super(key: key);
+  });
 
   @override
   State<NotificationList> createState() => _NotificationListState();
@@ -297,7 +297,7 @@ class _NotificationListState extends State<NotificationList> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xFF94A3B8).withOpacity(0.8),
+                        color: const Color(0xFF94A3B8).withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -331,10 +331,10 @@ class NotificationHeader extends StatelessWidget {
   final VoidCallback? onViewAll;
 
   const NotificationHeader({
-    Key? key,
+    super.key,
     required this.notificationCount,
     this.onViewAll,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -362,10 +362,10 @@ class NotificationHeader extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFF5E78).withOpacity(0.2),
+                      color: const Color(0xFFFF5E78).withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(
-                        color: const Color(0xFFFF5E78).withOpacity(0.3),
+                        color: const Color(0xFFFF5E78).withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(

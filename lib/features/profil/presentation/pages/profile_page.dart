@@ -12,7 +12,7 @@ import 'package:campus_buddy/services/user_service.dart';
 /// - Tentang aplikasi
 /// - Logout
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage>
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: AppColors.error.withOpacity(0.1),
+                    color: AppColors.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
@@ -170,12 +170,11 @@ class _ProfilePageState extends State<ProfilePage>
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
+                          final currentContext = context;
+                          final navigator = Navigator.of(currentContext);
                           await _userService.logout();
-                          if (mounted) {
-                            Navigator.of(
-                              context,
-                            ).pushReplacementNamed('/login');
-                          }
+                          if (!mounted) return;
+                          navigator.pushReplacementNamed('/login');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.error,
@@ -287,7 +286,7 @@ class _ProfilePageState extends State<ProfilePage>
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -394,7 +393,7 @@ class _ProfilePageState extends State<ProfilePage>
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -426,7 +425,7 @@ class _ProfilePageState extends State<ProfilePage>
                             borderRadius: BorderRadius.circular(50),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withOpacity(0.3),
+                                color: AppColors.primary.withValues(alpha: 0.3),
                                 blurRadius: 16,
                                 offset: const Offset(0, 8),
                               ),
@@ -524,7 +523,7 @@ class _ProfilePageState extends State<ProfilePage>
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
+                              color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
@@ -550,7 +549,7 @@ class _ProfilePageState extends State<ProfilePage>
                           Switch(
                             value: _isDarkMode,
                             onChanged: _handleDarkModeToggle,
-                            activeColor: AppColors.primary,
+                            activeThumbColor: AppColors.primary,
                           ),
                         ],
                       ),
@@ -578,7 +577,7 @@ class _ProfilePageState extends State<ProfilePage>
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: AppColors.secondary.withOpacity(0.1),
+                              color: AppColors.secondary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
@@ -604,7 +603,7 @@ class _ProfilePageState extends State<ProfilePage>
                           Switch(
                             value: _isNotificationEnabled,
                             onChanged: _handleNotificationToggle,
-                            activeColor: AppColors.secondary,
+                            activeThumbColor: AppColors.secondary,
                           ),
                         ],
                       ),
@@ -718,7 +717,7 @@ class _ProfilePageState extends State<ProfilePage>
                   height: 40,
                   decoration: BoxDecoration(
                     color: (isRed ? AppColors.error : AppColors.primary)
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(

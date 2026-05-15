@@ -19,7 +19,7 @@ import 'package:campus_buddy/services/jadwal_service.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
         flexibleSpace: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(color: AppColors.darkSurface.withOpacity(0.1)),
+            child: Container(color: AppColors.darkSurface.withValues(alpha: 0.1)),
           ),
         ),
       ),
@@ -114,8 +114,8 @@ class _HomePageState extends State<HomePage> {
             end: Alignment.bottomCenter,
             colors: [
               AppColors.darkBg,
-              AppColors.darkBg.withOpacity(0.9),
-              AppColors.darkBg.withOpacity(0.8),
+              AppColors.darkBg.withValues(alpha: 0.9),
+              AppColors.darkBg.withValues(alpha: 0.8),
             ],
           ),
         ),
@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.categoryKeuangan.withOpacity(0.1),
+                    color: AppColors.categoryKeuangan.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
@@ -366,7 +366,7 @@ class _HomePageState extends State<HomePage> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: color, size: 24),

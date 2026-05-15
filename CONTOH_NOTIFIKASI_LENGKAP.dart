@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print
+
 /// ============================================================================
 /// CONTOH LENGKAP: SISTEM NOTIFIKASI JADWAL CAMPUSBUDDY
 /// ============================================================================
 /// File ini menunjukkan contoh penggunaan NotificationService dan JadwalService
 /// Untuk integrasi ke dalam aplikasi CampusBuddy
 /// ============================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:campus_buddy/services/notification_service.dart';
@@ -353,6 +356,8 @@ Future<void> contohE2E() async {
 /// ============================================================================
 
 class ContohUIWidget extends StatefulWidget {
+  const ContohUIWidget({super.key});
+
   @override
   State<ContohUIWidget> createState() => _ContohUIWidgetState();
 }
@@ -390,11 +395,13 @@ class _ContohUIWidgetState extends State<ContohUIWidget> {
 
     try {
       await _jadwalService.addJadwal(jadwalBaru);
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('✅ Jadwal ditambahkan')));
       _loadJadwal();
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('❌ Error: $e')));
@@ -404,10 +411,12 @@ class _ContohUIWidgetState extends State<ContohUIWidget> {
   Future<void> _testNotifikasi() async {
     try {
       await _notificationService.showTestNotification('Test Notifikasi');
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('✅ Test notifikasi ditampilkan')),
       );
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('❌ Error: $e')));

@@ -38,7 +38,7 @@ class StudyTask {
 }
 
 class TugasPage extends StatefulWidget {
-  const TugasPage({Key? key}) : super(key: key);
+  const TugasPage({super.key});
 
   @override
   State<TugasPage> createState() => _TugasPageState();
@@ -195,11 +195,11 @@ class _TugasPageState extends State<TugasPage> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.darkSurface.withOpacity(0.96),
+              color: AppColors.darkSurface.withValues(alpha: 0.96),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(28),
               ),
-              border: Border.all(color: AppColors.neonBlue.withOpacity(0.2)),
+              border: Border.all(color: AppColors.neonBlue.withValues(alpha: 0.2)),
             ),
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
             child: Column(
@@ -211,7 +211,7 @@ class _TugasPageState extends State<TugasPage> {
                     width: 50,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: AppColors.darkText.withOpacity(0.2),
+                      color: AppColors.darkText.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -294,25 +294,25 @@ class _TugasPageState extends State<TugasPage> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.darkSubText.withOpacity(0.9)),
+        hintStyle: TextStyle(color: AppColors.darkSubText.withValues(alpha: 0.9)),
         prefixIcon: Icon(icon, color: AppColors.neonBlue),
         filled: true,
-        fillColor: AppColors.darkSurface.withOpacity(0.7),
+        fillColor: AppColors.darkSurface.withValues(alpha: 0.7),
         contentPadding: const EdgeInsets.symmetric(
           vertical: 18,
           horizontal: 20,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+          borderSide: BorderSide(color: AppColors.darkBorder.withValues(alpha: 0.3)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+          borderSide: BorderSide(color: AppColors.darkBorder.withValues(alpha: 0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: AppColors.neonBlue.withOpacity(0.9)),
+          borderSide: BorderSide(color: AppColors.neonBlue.withValues(alpha: 0.9)),
         ),
       ),
     );
@@ -325,9 +325,9 @@ class _TugasPageState extends State<TugasPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         decoration: BoxDecoration(
-          color: AppColors.darkSurface.withOpacity(0.7),
+          color: AppColors.darkSurface.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+          border: Border.all(color: AppColors.darkBorder.withValues(alpha: 0.3)),
         ),
         child: Row(
           children: [
@@ -341,7 +341,7 @@ class _TugasPageState extends State<TugasPage> {
                 style: TextStyle(
                   color: _selectedDeadline != null
                       ? AppColors.darkText
-                      : AppColors.darkSubText.withOpacity(0.9),
+                      : AppColors.darkSubText.withValues(alpha: 0.9),
                 ),
               ),
             ),
@@ -442,7 +442,7 @@ class _TugasPageState extends State<TugasPage> {
                             horizontal: 12,
                           ),
                           decoration: BoxDecoration(
-                            color: deadlineColor.withOpacity(0.12),
+                            color: deadlineColor.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: Text(
@@ -469,7 +469,7 @@ class _TugasPageState extends State<TugasPage> {
                       activeColor: AppColors.neonBlue,
                       checkColor: Colors.black,
                       side: BorderSide(
-                        color: AppColors.neonBlue.withOpacity(0.7),
+                        color: AppColors.neonBlue.withValues(alpha: 0.7),
                       ),
                     ),
                   ),
@@ -533,12 +533,12 @@ class _TugasPageState extends State<TugasPage> {
                             Row(
                               children: [
                                 _buildInfoChip(
-                                  '${pendingCount} Pending',
+                                  '$pendingCount Pending',
                                   AppColors.neonBlue,
                                 ),
                                 const SizedBox(width: 10),
                                 _buildInfoChip(
-                                  '${completedCount} Selesai',
+                                  '$completedCount Selesai',
                                   AppColors.neonPurple,
                                 ),
                               ],
@@ -580,7 +580,7 @@ class _TugasPageState extends State<TugasPage> {
                       )
                     : ListView.separated(
                         itemCount: _tasks.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 16),
+                        separatorBuilder: (_, _) => const SizedBox(height: 16),
                         itemBuilder: (context, index) {
                           final task = _tasks[index];
                           return _buildTaskCard(task, index);
@@ -603,7 +603,7 @@ class _TugasPageState extends State<TugasPage> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.neonBlue.withOpacity(0.35),
+              color: AppColors.neonBlue.withValues(alpha: 0.35),
               blurRadius: 20,
               spreadRadius: 1,
             ),
@@ -623,7 +623,7 @@ class _TugasPageState extends State<TugasPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.16),
+        color: color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(

@@ -9,7 +9,7 @@ import 'package:campus_buddy/services/user_service.dart';
 /// - Simpan data ke SharedPreferences
 /// - Navigasi ke home setelah login
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -333,7 +333,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: _isLoading ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        disabledBackgroundColor: AppColors.primary.withOpacity(
+                        disabledBackgroundColor: AppColors.primary.withValues(alpha: 
                           0.5,
                         ),
                         shape: RoundedRectangleBorder(

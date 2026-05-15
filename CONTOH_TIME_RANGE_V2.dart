@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 /// ============================================================================
 /// CONTOH LENGKAP: TIME RANGE & STATUS WAKTU (UPGRADE V2)
 /// ============================================================================
+library;
 
 import 'package:campus_buddy/services/jadwal_service.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';

@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 /// UserService mengelola data user menggunakan SharedPreferences
 /// Digunakan untuk menyimpan, mengambil, dan menghapus data user secara lokal
@@ -38,7 +39,7 @@ class UserService {
       await _prefs.setBool(_keyIsLoggedIn, true);
       return true;
     } catch (e) {
-      print('Error saving user: $e');
+      log('Error saving user: $e');
       return false;
     }
   }
@@ -64,7 +65,7 @@ class UserService {
       await _prefs.setBool(_keyDarkMode, isDark);
       return true;
     } catch (e) {
-      print('Error setting dark mode: $e');
+      log('Error setting dark mode: $e');
       return false;
     }
   }
@@ -80,7 +81,7 @@ class UserService {
       await _prefs.setBool(_keyNotification, isEnabled);
       return true;
     } catch (e) {
-      print('Error setting notification: $e');
+      log('Error setting notification: $e');
       return false;
     }
   }
@@ -98,7 +99,7 @@ class UserService {
       await _prefs.setBool(_keyIsLoggedIn, false);
       return true;
     } catch (e) {
-      print('Error logging out: $e');
+      log('Error logging out: $e');
       return false;
     }
   }
@@ -109,7 +110,7 @@ class UserService {
       await _prefs.clear();
       return true;
     } catch (e) {
-      print('Error clearing all data: $e');
+      log('Error clearing all data: $e');
       return false;
     }
   }

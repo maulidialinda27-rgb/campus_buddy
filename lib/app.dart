@@ -11,7 +11,7 @@ import 'package:campus_buddy/services/user_service.dart';
 /// - Theme dan dark mode
 /// - Routing aplikasi
 class CampusBuddyApp extends StatefulWidget {
-  const CampusBuddyApp({Key? key}) : super(key: key);
+  const CampusBuddyApp({super.key});
 
   @override
   State<CampusBuddyApp> createState() => _CampusBuddyAppState();
