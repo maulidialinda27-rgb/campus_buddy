@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 
 /// Warna-warna untuk aplikasi CampusBuddy - Light Modern Theme
 class AppColors {
-  // Primary Colors - Soft Blue
-  static const Color primary = Color(0xFF5B7FFF); // Soft Blue
-  static const Color primaryDark = Color(0xFF4A6FE8);
-  static const Color primaryLight = Color(0xFFF0F4FF);
+  // Primary Colors - Modern Blue (more vibrant)
+  static const Color primary = Color(0xFF2563EB); // Modern Blue
+  static const Color primaryDark = Color(0xFF1D4ED8);
+  static const Color primaryLight = Color(0xFFDBEAFE);
 
-  // Secondary Colors - Soft Purple (Accent)
-  static const Color secondary = Color(0xFFB592FF); // Soft Purple
-  static const Color secondaryDark = Color(0xFFA07FFF);
-  static const Color secondaryLight = Color(0xFFF5EFFF);
+  // Secondary Colors - Soft Purple (more vibrant)
+  static const Color secondary = Color(0xFF8B5CF6); // Soft Purple
+  static const Color secondaryDark = Color(0xFF7C3AED);
+  static const Color secondaryLight = Color(0xFFF3E8FF);
 
   // Accent Colors
-  static const Color accent = Color(0xFF7DD3FC); // Sky Blue
-  static const Color accentDark = Color(0xFF38BDF8);
+  static const Color accent = Color(0xFF06B6D4); // Cyan
+  static const Color accentDark = Color(0xFF0891B2);
 
   // Status Colors
   static const Color success = Color(0xFF34D399); // Soft Green

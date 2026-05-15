@@ -141,16 +141,16 @@ class AppTheme {
     return AppBarTheme(
       backgroundColor: AppColors.lightSurface,
       foregroundColor: AppColors.lightText,
-      elevation: 1,
-      shadowColor: AppColors.lightBorder.withValues(alpha: 0.3),
+      elevation: 2,
+      shadowColor: AppColors.lightText.withValues(alpha: 0.08),
       centerTitle: false,
       titleTextStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: AppColors.lightText,
       ),
-      iconTheme: IconThemeData(color: AppColors.lightText, size: 24),
+      iconTheme: IconThemeData(color: AppColors.primary, size: 24),
     );
   }
 
@@ -162,18 +162,19 @@ class AppTheme {
       unselectedItemColor: AppColors.lightSubText,
       selectedLabelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: FontWeight.w600,
         color: AppColors.primary,
       ),
       unselectedLabelStyle: TextStyle(
         fontFamily: 'PlusJakartaSans',
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: FontWeight.w500,
         color: AppColors.lightSubText,
       ),
       type: BottomNavigationBarType.fixed,
-      elevation: 8,
+      elevation: 12,
+      showUnselectedLabels: true,
       enableFeedback: true,
     );
   }
@@ -249,27 +250,27 @@ class AppTheme {
     );
   }
 
-  /// FAB Theme - Soft shadow
+  /// FAB Theme - Soft shadow with modern styling
   static FloatingActionButtonThemeData _buildFabTheme() {
     return FloatingActionButtonThemeData(
       backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
-      elevation: 4,
-      hoverElevation: 8,
-      highlightElevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 6,
+      hoverElevation: 10,
+      highlightElevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     );
   }
 
-  /// Card Theme - Light & Clean
+  /// Card Theme - Light & Clean with subtle shadow
   static CardThemeData _buildCardTheme() {
     return CardThemeData(
       color: AppColors.lightSurface,
-      elevation: 1,
-      shadowColor: AppColors.lightBorder.withValues(alpha: 0.2),
+      elevation: 2,
+      shadowColor: AppColors.lightText.withValues(alpha: 0.08),
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: AppColors.lightBorder, width: 0.5),
       ),
     );
