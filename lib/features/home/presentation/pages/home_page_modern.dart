@@ -22,6 +22,9 @@ class HomePageModern extends StatefulWidget {
 
 class _HomePageModernState extends State<HomePageModern> {
   int _selectedIndex = 0;
+
+  String userName = 'Mila';
+
   List<DashboardNotification> _notifications = [];
   List<StudyTask> _tasks = [];
   List<Jadwal> _schedules = [];
@@ -38,15 +41,19 @@ class _HomePageModernState extends State<HomePageModern> {
       final tasksData = await LocalStorageService.instance.loadJsonList(
         'study_tasks',
       );
+
       final tasks = tasksData.map((t) => StudyTask.fromMap(t)).toList();
 
       final jadwalService = JadwalService();
+
       final schedules = jadwalService.getAllJadwal();
 
       final expensesData = await LocalStorageService.instance.loadJsonList(
         'keuangan_expenses',
       );
-      final expenses = expensesData.map((e) => ExpenseItem.fromMap(e)).toList();
+
+      final expenses =
+          expensesData.map((e) => ExpenseItem.fromMap(e)).toList();
 
       setState(() {
         _tasks = tasks;
@@ -55,13 +62,12 @@ class _HomePageModernState extends State<HomePageModern> {
       });
 
       _generateNotifications();
-    } catch (_) {
-      // Dashboard will still show with placeholder values
-    }
+    } catch (_) {}
   }
 
   void _generateNotifications() {
-    final notifications = NotificationGeneratorService.generateNotifications(
+    final notifications =
+        NotificationGeneratorService.generateNotifications(
       tasks: _tasks,
       schedules: _schedules,
       expenses: _expenses,
@@ -83,190 +89,380 @@ class _HomePageModernState extends State<HomePageModern> {
   @override
   Widget build(BuildContext context) {
     final taskCount = _tasks.length;
+
     final scheduleCount = _schedules.length;
+
     final totalExpense = _expenses.fold<double>(
       0,
       (sum, item) => sum + item.amount,
     );
-    final todaySchedule = _schedules.isNotEmpty ? _schedules.first : null;
+
+    final todaySchedule =
+        _schedules.isNotEmpty ? _schedules.first : null;
 
     return Scaffold(
-      backgroundColor: AppColors.lightBg,
-      extendBody: true,
+      backgroundColor: const Color(0xFFF6F8FC),
+
+      /// HAPUS extendBody supaya tidak overflow
+      extendBody: false,
+
       floatingActionButton: _buildModernFAB(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: _buildModernBottomBar(),
+
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: constraints.maxWidth * 0.04,
-                  vertical: 18,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            18,
+            18,
+            18,
+            140,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// HEADER
+              DashboardHeader(
+                userName: userName,
+                subtitle:
+                    'Lihat rencana hari ini dan raih fokus maksimal ✨',
+                notificationCount: _notifications.length,
+                onNotificationTap: () {},
+                onProfileTap: () => _navigateTo(4),
+              ),
+
+              const SizedBox(height: 24),
+
+              /// SUMMARY CARD
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(22),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(28),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF5B67F1),
+                      Color(0xFF8B5CF6),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
-                    // Header dengan greeting
-                    DashboardHeader(
-                      userName: 'Mila',
-                      subtitle:
-                          'Lihat rencana hari ini dan raih fokus maksimal! 🎯',
-                      notificationCount: _notifications.length,
-                      onNotificationTap: () {},
-                      onProfileTap: () => _navigateTo(4),
-                    ),
-                    const SizedBox(height: 28),
-
-                    // Summary Card dengan Gradient
-                    DashboardSummaryCard(
-                      taskCount: taskCount,
-                      scheduleCount: scheduleCount,
-                      expenseAmount: totalExpense,
-                    ),
-                    const SizedBox(height: 28),
-
-                    // Notifikasi Penting Section
-                    SectionTitle(title: 'Notifikasi Penting', onSeeAll: null),
-                    const SizedBox(height: 14),
-                    if (_notifications.isEmpty)
-                      EmptyStateWidget(
-                        message:
-                            'Tidak ada notifikasi penting. Nikmati hari yang tenang! ✨',
-                        icon: Icons.inbox_rounded,
-                        iconColor: AppColors.gray400,
-                      )
-                    else
-                      Column(
-                        children: _notifications
-                            .take(3)
-                            .map(
-                              (notification) => Column(
-                                children: [
-                                  _buildNotificationCardModern(notification),
-                                  const SizedBox(height: 12),
-                                ],
-                              ),
-                            )
-                            .toList(),
+                    const Text(
+                      'Ringkasan Hari Ini',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'PlusJakartaSans',
                       ),
-                    const SizedBox(height: 28),
+                    ),
 
-                    // Menu Utama Section
-                    SectionTitle(title: 'Menu Utama', onSeeAll: null),
-                    const SizedBox(height: 14),
-                    _buildModernMenuGrid(),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 8),
 
-                    // Jadwal Terdekat Section
-                    if (todaySchedule != null)
-                      Column(
-                        children: [
-                          ScheduleCard(
-                            scheduleTitle: todaySchedule.judul,
-                            scheduleDay: todaySchedule.hari,
-                            startTime: todaySchedule.jamMulai,
-                            endTime: todaySchedule.jamSelesai,
-                            location: todaySchedule.deskripsi ?? 'Lokasi',
-                            tagColor: AppColors.primary,
-                          ),
-                          const SizedBox(height: 28),
-                        ],
-                      )
-                    else
-                      Column(
-                        children: [
-                          ScheduleCard(
-                            scheduleTitle: 'Tambahkan jadwal baru',
-                            scheduleDay: 'Senin',
-                            startTime: '08:00',
-                            endTime: '10:00',
-                            location: 'Ruang Kuliah',
-                            tagColor: AppColors.primary,
-                          ),
-                          const SizedBox(height: 28),
-                        ],
+                    Text(
+                      'Pantau tugas, jadwal, dan pengeluaranmu dengan tampilan modern.',
+                      style: TextStyle(
+                        color:
+                            Colors.white.withOpacity(0.9),
+                        fontSize: 13,
+                        height: 1.5,
+                        fontFamily: 'PlusJakartaSans',
                       ),
+                    ),
 
-                    // Bottom spacing untuk FAB
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.12),
+                    const SizedBox(height: 24),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatCard(
+                            'Tugas',
+                            '$taskCount',
+                            Icons.assignment_rounded,
+                          ),
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: _buildStatCard(
+                            'Jadwal',
+                            '$scheduleCount',
+                            Icons.calendar_month_rounded,
+                          ),
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: _buildStatCard(
+                            'Uang',
+                            'Rp ${totalExpense.toStringAsFixed(0)}',
+                            Icons.wallet_rounded,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            );
-          },
+
+              const SizedBox(height: 30),
+
+              /// NOTIFIKASI
+              SectionTitle(
+                title: 'Notifikasi Penting',
+                onSeeAll: null,
+              ),
+
+              const SizedBox(height: 14),
+
+              if (_notifications.isEmpty)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(22),
+                  ),
+                  child: const Text(
+                    'Tidak ada notifikasi saat ini ✨',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontFamily: 'PlusJakartaSans',
+                    ),
+                  ),
+                )
+              else
+                Column(
+                  children: _notifications
+                      .take(3)
+                      .map(
+                        (notification) => Padding(
+                          padding:
+                              const EdgeInsets.only(
+                            bottom: 12,
+                          ),
+                          child:
+                              _buildNotificationCardModern(
+                            notification,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+
+              const SizedBox(height: 28),
+
+              /// MENU
+              SectionTitle(
+                title: 'Menu Utama',
+                onSeeAll: null,
+              ),
+
+              const SizedBox(height: 14),
+
+              _buildModernMenuGrid(),
+
+              const SizedBox(height: 28),
+
+              /// JADWAL
+              SectionTitle(
+                title: 'Jadwal Terdekat',
+                onSeeAll: null,
+              ),
+
+              const SizedBox(height: 14),
+
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.circular(26),
+                ),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      todaySchedule?.judul ??
+                          'Belum ada jadwal',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'PlusJakartaSans',
+                      ),
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons
+                              .access_time_filled_rounded,
+                          size: 18,
+                          color: Color(0xFF5B67F1),
+                        ),
+
+                        const SizedBox(width: 8),
+
+                        Text(
+                          todaySchedule != null
+                              ? '${todaySchedule.jamMulai} - ${todaySchedule.jamSelesai}'
+                              : '08:00 - 10:00',
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_rounded,
+                          size: 18,
+                          color: Color(0xFF8B5CF6),
+                        ),
+
+                        const SizedBox(width: 8),
+
+                        Expanded(
+                          child: Text(
+                            todaySchedule?.deskripsi ??
+                                'Tambahkan jadwal baru',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  /// Build Modern FAB
+  /// CARD STATISTIK
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.18),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 24,
+          ),
+
+          const SizedBox(height: 10),
+
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              fontFamily: 'PlusJakartaSans',
+            ),
+          ),
+
+          const SizedBox(height: 4),
+
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.9),
+              fontSize: 11,
+              fontFamily: 'PlusJakartaSans',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// FLOATING BUTTON
   Widget _buildModernFAB() {
     return FloatingActionButton(
+      elevation: 4,
+      backgroundColor: const Color(0xFF5B67F1),
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ScanPage()),
+          MaterialPageRoute(
+            builder: (context) => const ScanPage(),
+          ),
         );
       },
-      elevation: 8,
-      backgroundColor: AppColors.primary,
-      child: Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: const LinearGradient(
-            colors: AppColors.gradientPrimary,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 16,
-              color: AppColors.primary.withOpacity(0.4),
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: const Icon(
-          Icons.qr_code_2_rounded,
-          size: 28,
-          color: Colors.white,
-        ),
+      child: const Icon(
+        Icons.qr_code_scanner_rounded,
+        color: Colors.white,
+        size: 28,
       ),
     );
   }
 
-  /// Build Modern Bottom Navigation Bar
+  /// BOTTOM BAR
   Widget _buildModernBottomBar() {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
-      notchMargin: 10,
-      elevation: 16,
-      color: AppColors.lightSurface,
+      notchMargin: 8,
+      elevation: 8,
+      color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 10,
+        ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
           children: [
             _buildBottomBarItemModern(
               icon: Icons.home_rounded,
               label: 'Home',
               index: 0,
             ),
+
             _buildBottomBarItemModern(
               icon: Icons.assignment_rounded,
               label: 'Tugas',
               index: 1,
             ),
-            const SizedBox(width: 70),
+
+            const SizedBox(width: 55),
+
             _buildBottomBarItemModern(
               icon: Icons.schedule_rounded,
               label: 'Jadwal',
               index: 2,
             ),
+
             _buildBottomBarItemModern(
               icon: Icons.person_rounded,
               label: 'Profil',
@@ -278,36 +474,36 @@ class _HomePageModernState extends State<HomePageModern> {
     );
   }
 
-  /// Build Bottom Bar Item Modern
   Widget _buildBottomBarItemModern({
     required IconData icon,
     required String label,
     required int index,
   }) {
     final isActive = _selectedIndex == index;
-    final color = isActive ? AppColors.primary : AppColors.gray400;
+
+    final color = isActive
+        ? const Color(0xFF5B67F1)
+        : Colors.grey;
 
     return GestureDetector(
       onTap: () {
         setState(() {
           _selectedIndex = index;
         });
+
         _navigateTo(index);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: isActive
-                  ? AppColors.primary.withOpacity(0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: color, size: 24),
+          Icon(
+            icon,
+            color: color,
+            size: 24,
           ),
+
           const SizedBox(height: 4),
+
           Text(
             label,
             style: TextStyle(
@@ -322,62 +518,68 @@ class _HomePageModernState extends State<HomePageModern> {
     );
   }
 
-  /// Build Notification Card Modern
-  Widget _buildNotificationCardModern(DashboardNotification notification) {
-    final (iconBgColor, iconColor) = _getNotificationColors(notification.type);
-
+  /// NOTIFICATION CARD
+  Widget _buildNotificationCardModern(
+    DashboardNotification notification,
+  ) {
     return DashboardNotificationItem(
       title: notification.title,
       description: notification.description,
       timeInfo: notification.getTimeRemaining(),
-      icon: _getNotificationIcon(notification.type),
-      iconBackgroundColor: iconBgColor,
-      iconColor: iconColor,
-      onDismiss: () => _dismissNotification(notification.id),
-      onTap: () => _handleNotificationTap(notification),
+      icon: Icons.notifications_active_rounded,
+      iconBackgroundColor:
+          const Color(0xFF5B67F1).withOpacity(0.1),
+      iconColor: const Color(0xFF5B67F1),
+      onDismiss: () =>
+          _dismissNotification(notification.id),
+      onTap: () =>
+          _handleNotificationTap(notification),
     );
   }
 
-  /// Build Modern Menu Grid
+  /// MENU GRID
   Widget _buildModernMenuGrid() {
     return GridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 14,
       crossAxisSpacing: 14,
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 1.08,
+      physics:
+          const NeverScrollableScrollPhysics(),
+      childAspectRatio: 1.05,
       children: [
-        MenuGridButton(
+        _buildMenuItem(
           label: 'Tugas',
           icon: Icons.assignment_turned_in_rounded,
-          backgroundColor: AppColors.primaryLight,
-          iconColor: AppColors.primary,
+          color: const Color(0xFF5B67F1),
           onTap: () => _navigateTo(1),
         ),
-        MenuGridButton(
+
+        _buildMenuItem(
           label: 'Jadwal',
           icon: Icons.calendar_month_rounded,
-          backgroundColor: AppColors.secondaryLight,
-          iconColor: AppColors.secondary,
+          color: const Color(0xFF8B5CF6),
           onTap: () => _navigateTo(2),
         ),
-        MenuGridButton(
+
+        _buildMenuItem(
           label: 'Keuangan',
           icon: Icons.wallet_rounded,
-          backgroundColor: AppColors.categoryKeuangan.withOpacity(0.15),
-          iconColor: AppColors.categoryKeuangan,
+          color: const Color(0xFF22C7F0),
           onTap: () => _navigateTo(3),
         ),
-        MenuGridButton(
-          label: 'Scan & Catatan',
+
+        _buildMenuItem(
+          label: 'Scan',
           icon: Icons.qr_code_scanner_rounded,
-          backgroundColor: AppColors.accentLight,
-          iconColor: AppColors.accent,
+          color: const Color(0xFFEC4899),
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ScanPage()),
+              MaterialPageRoute(
+                builder: (context) =>
+                    const ScanPage(),
+              ),
             );
           },
         ),
@@ -385,40 +587,67 @@ class _HomePageModernState extends State<HomePageModern> {
     );
   }
 
-  /// Helper functions
-  (Color, Color) _getNotificationColors(NotificationType type) {
-    switch (type) {
-      case NotificationType.deadline:
-        return (AppColors.primaryLight, AppColors.primary);
-      case NotificationType.schedule:
-        return (AppColors.secondaryLight, AppColors.secondary);
-      case NotificationType.expense:
-        return (
-          AppColors.categoryKeuangan.withOpacity(0.15),
-          AppColors.categoryKeuangan,
-        );
-    }
+  Widget _buildMenuItem({
+    required String label,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.grey.shade200,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment:
+              MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 28,
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'PlusJakartaSans',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  IconData _getNotificationIcon(NotificationType type) {
-    switch (type) {
-      case NotificationType.deadline:
-        return Icons.event_note_rounded;
-      case NotificationType.schedule:
-        return Icons.access_time_rounded;
-      case NotificationType.expense:
-        return Icons.receipt_long_rounded;
-    }
-  }
-
-  void _handleNotificationTap(DashboardNotification notification) {
+  void _handleNotificationTap(
+    DashboardNotification notification,
+  ) {
     switch (notification.type) {
       case NotificationType.deadline:
         _navigateTo(1);
         break;
+
       case NotificationType.schedule:
         _navigateTo(2);
         break;
+
       case NotificationType.expense:
         _navigateTo(3);
         break;
@@ -431,30 +660,39 @@ class _HomePageModernState extends State<HomePageModern> {
     switch (index) {
       case 0:
         return;
+
       case 1:
         nextPage = const TugasPage();
         break;
+
       case 2:
         nextPage = const JadwalPage();
         break;
+
       case 3:
         nextPage = const KeuanganPage();
         break;
+
       case 4:
         nextPage = const ProfilPage();
         break;
+
       default:
         return;
     }
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => nextPage),
+      MaterialPageRoute(
+        builder: (context) => nextPage,
+      ),
     ).then((_) {
       if (mounted) {
         setState(() {
           _selectedIndex = 0;
         });
+
+        _loadAllData();
       }
     });
   }
