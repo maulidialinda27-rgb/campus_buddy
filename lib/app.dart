@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:campus_buddy/core/theme/app_theme.dart';
-import 'package:campus_buddy/features/home/presentation/pages/home_page.dart';
+import 'package:campus_buddy/features/home/presentation/pages/home_page_modern.dart';
 import 'package:campus_buddy/features/profil/presentation/pages/login_page.dart';
 import 'package:campus_buddy/features/profil/presentation/pages/profile_page.dart';
 import 'package:campus_buddy/services/user_service.dart';
@@ -72,10 +72,10 @@ class _CampusBuddyAppState extends State<CampusBuddyApp> {
       theme: AppTheme.lightTheme,
       themeMode: ThemeMode.light,
       // Arahkan ke halaman sesuai status login
-      home: _isLoggedIn ? const HomePage() : const LoginPage(),
+      home: _isLoggedIn ? const HomePageModern() : const LoginPage(),
       // Named routes untuk navigasi
       routes: {
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const HomePageModern(),
         '/login': (context) => const LoginPage(),
         '/profile': (context) => const ProfilePage(),
       },

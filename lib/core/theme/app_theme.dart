@@ -183,7 +183,7 @@ class AppTheme {
   static ChipThemeData _buildChipTheme() {
     return ChipThemeData(
       backgroundColor: AppColors.lightBorder,
-      disabledColor: AppColors.lightGray,
+      disabledColor: AppColors.gray100,
       selectedColor: AppColors.primary,
       secondarySelectedColor: AppColors.secondary,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -207,7 +207,7 @@ class AppTheme {
   static InputDecorationTheme _buildInputDecorationTheme() {
     return InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.lightGray,
+      fillColor: AppColors.gray100,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
