@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:campus_buddy/core/constants/app_colors.dart';
 import 'package:campus_buddy/core/constants/app_strings.dart';
 import 'package:campus_buddy/widgets/custom_buttons.dart';
 import 'package:campus_buddy/features/scan/presentation/scan_to_note_page.dart';
@@ -38,18 +39,41 @@ class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.scan), elevation: 0),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: Text(
+          AppStrings.scan,
+          style: TextStyle(
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Theme.of(context).cardColor,
+        iconTheme: IconThemeData(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+        elevation: 0,
+      ),
       body: FadeInUp(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Fitur Scan & Catatan - Scan2Note'),
+              Text(
+                'Fitur Scan & Catatan - Scan2Note',
+                style: TextStyle(
+                  color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Ambil foto atau pilih dari galeri untuk OCR:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
+                ),
               ),
               const SizedBox(height: 24),
               Row(

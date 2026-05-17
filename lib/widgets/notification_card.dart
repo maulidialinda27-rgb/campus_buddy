@@ -91,7 +91,7 @@ class NotificationCard extends StatelessWidget {
                       ),
                       child: Text(
                         notification.icon,
-                        style: const TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -105,7 +105,7 @@ class NotificationCard extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   notification.title,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xFFE2E8F0),
@@ -370,7 +370,7 @@ class NotificationHeader extends StatelessWidget {
                     ),
                     child: Text(
                       notificationCount.toString(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFFFF5E78),

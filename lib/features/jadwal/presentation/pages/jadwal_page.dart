@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:campus_buddy/core/constants/app_colors.dart';
 
 import 'package:campus_buddy/core/utils/time_helper.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
@@ -19,16 +20,16 @@ class _JadwalPageState extends State<JadwalPage> {
   List<Jadwal> _daftarJadwal = [];
 
   /// WARNA MODERN BARU
-  final Color primaryColor = const Color(0xFF5B67F1);
-  final Color secondaryColor = const Color(0xFF8B5CF6);
+  final Color primaryColor = AppColors.primary;
+  final Color secondaryColor = AppColors.secondary;
 
   final Map<String, Color> kategoriWarna = {
-    'Kuliah': const Color(0xFF5B67F1),
-    'Tugas': const Color(0xFF8B5CF6),
-    'Meeting': const Color(0xFFEC4899),
-    'Olahraga': const Color(0xFF10B981),
-    'Istirahat': const Color(0xFF6366F1),
-    'Lainnya': const Color(0xFF64748B),
+    'Kuliah': AppColors.primary,
+    'Tugas': AppColors.secondary,
+    'Meeting': AppColors.accent,
+    'Olahraga': AppColors.success,
+    'Istirahat': AppColors.warning,
+    'Lainnya': AppColors.gray500,
   };
 
   final List<String> daftarHari = [
@@ -103,20 +104,12 @@ class _JadwalPageState extends State<JadwalPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(28),
 
-          gradient: LinearGradient(
-            colors: [
-              primaryColor,
-              secondaryColor,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-
+          color: AppColors.primary,
           boxShadow: [
             BoxShadow(
-              blurRadius: 20,
-              color: primaryColor.withValues(alpha: 0.25),
-              offset: const Offset(0, 10),
+              blurRadius: 15,
+              color: AppColors.primary.withValues(alpha: 0.15),
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -127,11 +120,11 @@ class _JadwalPageState extends State<JadwalPage> {
               padding: const EdgeInsets.all(14),
 
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.18),
+                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(18),
               ),
 
-              child: const Icon(
+              child: Icon(
                 Icons.schedule_rounded,
                 color: Colors.white,
                 size: 28,
@@ -157,7 +150,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
                   Text(
                     nextSchedule.judul,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -170,7 +163,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.access_time_filled_rounded,
                         color: Colors.white,
                         size: 16,
@@ -180,7 +173,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
                       Text(
                         '${nextSchedule.jamMulai} • $minutes menit lagi',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 13,
                         ),
@@ -246,7 +239,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
           padding: const EdgeInsets.only(right: 20),
 
-          child: const Icon(
+          child: Icon(
             Icons.delete_rounded,
             color: Colors.white,
             size: 28,
@@ -262,7 +255,7 @@ class _JadwalPageState extends State<JadwalPage> {
           padding: const EdgeInsets.all(20),
 
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
 
             borderRadius: BorderRadius.circular(24),
 
@@ -335,7 +328,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
                     Text(
                       jadwal.judul,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black87,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -454,7 +447,7 @@ class _JadwalPageState extends State<JadwalPage> {
                       ),
                     ],
 
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.more_vert,
                       color: Colors.grey,
                     ),
@@ -525,7 +518,7 @@ class _JadwalPageState extends State<JadwalPage> {
     final nextSchedule = _getNextSchedule();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8FC),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -534,11 +527,11 @@ class _JadwalPageState extends State<JadwalPage> {
 
         centerTitle: true,
 
-        iconTheme: const IconThemeData(
+        iconTheme: IconThemeData(
           color: Colors.black,
         ),
 
-        title: const Text(
+        title: Text(
           'Jadwal',
           style: TextStyle(
             color: Colors.black87,
@@ -578,7 +571,7 @@ class _JadwalPageState extends State<JadwalPage> {
                     padding: const EdgeInsets.all(24),
 
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
 
                       borderRadius:
                           BorderRadius.circular(24),
@@ -593,7 +586,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
                   const SizedBox(height: 24),
 
-                  const Text(
+                  Text(
                     'Belum ada jadwal',
                     style: TextStyle(
                       fontSize: 22,
@@ -677,7 +670,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
         backgroundColor: primaryColor,
 
-        child: const Icon(
+        child: Icon(
           Icons.add_rounded,
           color: Colors.white,
           size: 30,

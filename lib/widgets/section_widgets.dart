@@ -26,7 +26,7 @@ class SectionHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
@@ -105,7 +105,7 @@ class EmptyStateWidget extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -141,7 +141,7 @@ class EmptyStateWidget extends StatelessWidget {
                   ),
                   child: Text(
                     actionLabel!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 13,
                       fontWeight: FontWeight.w600,

@@ -82,8 +82,8 @@ class _ProfilePageState extends State<ProfilePage>
 
         return Dialog(
           backgroundColor: isDark
-              ? AppColors.darkSurface
-              : AppColors.lightSurface,
+              ? Theme.of(context).cardColor
+              : Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -100,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage>
                     color: AppColors.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.logout_outlined,
                     color: AppColors.error,
                     size: 30,
@@ -115,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? AppColors.darkText : AppColors.lightText,
+                    color: isDark ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText) : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -128,8 +128,8 @@ class _ProfilePageState extends State<ProfilePage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
                     color: isDark
-                        ? AppColors.darkSubText
-                        : AppColors.lightSubText,
+                        ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                        : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -144,8 +144,8 @@ class _ProfilePageState extends State<ProfilePage>
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
                             color: isDark
-                                ? AppColors.darkBorder
-                                : AppColors.lightBorder,
+                                ? Theme.of(context).dividerColor
+                                : Theme.of(context).dividerColor,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -158,8 +158,8 @@ class _ProfilePageState extends State<ProfilePage>
                             fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w600,
                             color: isDark
-                                ? AppColors.darkText
-                                : AppColors.lightText,
+                                ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                                : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                           ),
                         ),
                       ),
@@ -212,8 +212,8 @@ class _ProfilePageState extends State<ProfilePage>
       builder: (context) {
         return Dialog(
           backgroundColor: isDark
-              ? AppColors.darkSurface
-              : AppColors.lightSurface,
+              ? Theme.of(context).cardColor
+              : Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -234,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage>
                     ),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.school_outlined,
                     color: Colors.white,
                     size: 40,
@@ -249,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? AppColors.darkText : AppColors.lightText,
+                    color: isDark ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText) : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -261,8 +261,8 @@ class _ProfilePageState extends State<ProfilePage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
                     color: isDark
-                        ? AppColors.darkSubText
-                        : AppColors.lightSubText,
+                        ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                        : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -275,8 +275,8 @@ class _ProfilePageState extends State<ProfilePage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     color: isDark
-                        ? AppColors.darkSubText
-                        : AppColors.lightSubText,
+                        ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                        : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                     height: 1.6,
                   ),
                 ),
@@ -351,8 +351,8 @@ class _ProfilePageState extends State<ProfilePage>
           fontFamily: 'PlusJakartaSans',
           fontSize: 12,
           color: Theme.of(context).brightness == Brightness.dark
-              ? AppColors.darkText
-              : AppColors.lightText,
+              ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+              : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
         ),
       ),
     );
@@ -363,17 +363,17 @@ class _ProfilePageState extends State<ProfilePage>
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
+      backgroundColor: isDark ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
+        backgroundColor: isDark ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).scaffoldBackgroundColor,
         title: Text(
           'Profil Saya',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: isDark ? AppColors.darkText : AppColors.lightText,
+            color: isDark ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText) : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
           ),
         ),
         centerTitle: true,
@@ -389,7 +389,7 @@ class _ProfilePageState extends State<ProfilePage>
                 child: Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: isDark ? AppColors.darkSurface : Colors.white,
+                    color: isDark ? Theme.of(context).cardColor : Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -431,7 +431,7 @@ class _ProfilePageState extends State<ProfilePage>
                               ),
                             ],
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.person,
                             color: Colors.white,
                             size: 50,
@@ -451,8 +451,8 @@ class _ProfilePageState extends State<ProfilePage>
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: isDark
-                                ? AppColors.darkText
-                                : AppColors.lightText,
+                                ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                                : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -469,8 +469,8 @@ class _ProfilePageState extends State<ProfilePage>
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             color: isDark
-                                ? AppColors.darkSubText
-                                : AppColors.lightSubText,
+                                ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                                : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -496,8 +496,8 @@ class _ProfilePageState extends State<ProfilePage>
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: isDark
-                            ? AppColors.darkText
-                            : AppColors.lightText,
+                            ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                            : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -509,12 +509,12 @@ class _ProfilePageState extends State<ProfilePage>
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: isDark ? AppColors.darkSurface : Colors.white,
+                        color: isDark ? Theme.of(context).cardColor : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isDark
-                              ? AppColors.darkBorder
-                              : AppColors.lightBorder,
+                              ? Theme.of(context).dividerColor
+                              : Theme.of(context).dividerColor,
                         ),
                       ),
                       child: Row(
@@ -526,7 +526,7 @@ class _ProfilePageState extends State<ProfilePage>
                               color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.dark_mode_outlined,
                               color: AppColors.primary,
                               size: 20,
@@ -541,8 +541,8 @@ class _ProfilePageState extends State<ProfilePage>
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: isDark
-                                    ? AppColors.darkText
-                                    : AppColors.lightText,
+                                    ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                                    : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                               ),
                             ),
                           ),
@@ -563,12 +563,12 @@ class _ProfilePageState extends State<ProfilePage>
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: isDark ? AppColors.darkSurface : Colors.white,
+                        color: isDark ? Theme.of(context).cardColor : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isDark
-                              ? AppColors.darkBorder
-                              : AppColors.lightBorder,
+                              ? Theme.of(context).dividerColor
+                              : Theme.of(context).dividerColor,
                         ),
                       ),
                       child: Row(
@@ -580,7 +580,7 @@ class _ProfilePageState extends State<ProfilePage>
                               color: AppColors.secondary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.notifications_outlined,
                               color: AppColors.secondary,
                               size: 20,
@@ -595,8 +595,8 @@ class _ProfilePageState extends State<ProfilePage>
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: isDark
-                                    ? AppColors.darkText
-                                    : AppColors.lightText,
+                                    ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                                    : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                               ),
                             ),
                           ),
@@ -628,8 +628,8 @@ class _ProfilePageState extends State<ProfilePage>
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: isDark
-                            ? AppColors.darkText
-                            : AppColors.lightText,
+                            ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                            : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -661,8 +661,8 @@ class _ProfilePageState extends State<ProfilePage>
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: isDark
-                            ? AppColors.darkText
-                            : AppColors.lightText,
+                            ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                            : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -697,10 +697,10 @@ class _ProfilePageState extends State<ProfilePage>
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : Colors.white,
+        color: isDark ? Theme.of(context).cardColor : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+          color: isDark ? Theme.of(context).dividerColor : Theme.of(context).dividerColor,
         ),
       ),
       child: Material(
@@ -735,15 +735,15 @@ class _ProfilePageState extends State<ProfilePage>
                       fontWeight: FontWeight.w600,
                       color: isRed
                           ? AppColors.error
-                          : (isDark ? AppColors.darkText : AppColors.lightText),
+                          : (isDark ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText) : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                     ),
                   ),
                 ),
                 Icon(
                   Icons.chevron_right,
                   color: isDark
-                      ? AppColors.darkSubText
-                      : AppColors.lightSubText,
+                      ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                      : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                 ),
               ],
             ),

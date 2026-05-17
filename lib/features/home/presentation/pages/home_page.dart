@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
     final todaySchedule = _schedules.isNotEmpty ? _schedules.first : null;
 
     return Scaffold(
-      backgroundColor: AppColors.lightBg,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
         },
         elevation: 8,
         backgroundColor: AppColors.primary,
-        child: const Icon(Icons.qr_code_scanner, size: 28),
+        child: Icon(Icons.qr_code_scanner, size: 28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _buildBottomBar(),
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.lightText,
+                  color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                 ),
               ),
               const SizedBox(height: 6),
@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.lightSubText,
+                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                   height: 1.5,
                 ),
               ),
@@ -184,23 +184,23 @@ class _HomePageState extends State<HomePage> {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: AppColors.lightSurface,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
                 blurRadius: 12,
-                color: AppColors.lightText.withValues(alpha: 0.08),
+                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withValues(alpha: 0.08),
                 offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: const Icon(Icons.notifications_none, color: AppColors.primary),
+          child: Icon(Icons.notifications_none, color: AppColors.primary),
         ),
         const SizedBox(width: 12),
         CircleAvatar(
           radius: 24,
           backgroundColor: AppColors.lightGray,
-          child: const Icon(Icons.person, color: AppColors.primary, size: 26),
+          child: Icon(Icons.person, color: AppColors.primary, size: 26),
         ),
       ],
     );
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
@@ -232,10 +232,10 @@ class _HomePageState extends State<HomePage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(22),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.dashboard_customize,
                   color: AppColors.primary,
                   size: 24,
@@ -249,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.lightText,
+                    color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   ),
                 ),
               ),
@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 13,
               fontWeight: FontWeight.w400,
-              color: AppColors.lightSubText,
+              color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
               height: 1.5,
             ),
           ),
@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.lightSubText,
+                      color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                     ),
                   ),
                 ),
@@ -337,7 +337,7 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: AppColors.lightText,
+                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
               ),
             ),
           ],
@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: AppColors.lightText,
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
           ),
         ),
         const SizedBox(height: 14),
@@ -365,16 +365,16 @@ class _HomePageState extends State<HomePage> {
             width: double.infinity,
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: AppColors.lightSurface,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: AppColors.lightBorder),
+              border: Border.all(color: Theme.of(context).dividerColor),
             ),
             child: Text(
               'Tidak ada notifikasi penting saat ini.',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
-                color: AppColors.lightSubText,
+                color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
               ),
             ),
           )
@@ -402,13 +402,13 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.only(bottom: 14),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: AppColors.lightBorder),
+          border: Border.all(color: Theme.of(context).dividerColor),
           boxShadow: [
             BoxShadow(
               blurRadius: 18,
-              color: AppColors.lightText.withAlpha(8),
+              color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withAlpha(8),
               offset: const Offset(0, 10),
             ),
           ],
@@ -429,7 +429,7 @@ class _HomePageState extends State<HomePage> {
                     : notification.type == NotificationType.schedule
                     ? Icons.access_time_outlined
                     : Icons.receipt_long_outlined,
-                color: AppColors.lightText,
+                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                 size: 26,
               ),
             ),
@@ -444,7 +444,7 @@ class _HomePageState extends State<HomePage> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.lightText,
+                      color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -454,7 +454,7 @@ class _HomePageState extends State<HomePage> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.lightSubText,
+                      color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                       height: 1.5,
                     ),
                   ),
@@ -476,7 +476,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 8),
             GestureDetector(
               onTap: () => _dismissNotification(notification.id),
-              child: Icon(Icons.close, color: AppColors.lightSubText, size: 20),
+              child: Icon(Icons.close, color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText), size: 20),
             ),
           ],
         ),
@@ -494,7 +494,7 @@ class _HomePageState extends State<HomePage> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: AppColors.lightText,
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
           ),
         ),
         const SizedBox(height: 14),
@@ -545,7 +545,7 @@ class _HomePageState extends State<HomePage> {
               label: 'Laporan',
               icon: Icons.bar_chart_outlined,
               backgroundColor: AppColors.lightGray,
-              iconColor: AppColors.lightText,
+              iconColor: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
               onTap: () {},
             ),
           ],
@@ -570,7 +570,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: AppColors.lightText.withAlpha(8),
+              color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withAlpha(8),
               blurRadius: 16,
               offset: const Offset(0, 10),
             ),
@@ -583,7 +583,7 @@ class _HomePageState extends State<HomePage> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Icon(icon, color: iconColor, size: 24),
@@ -595,7 +595,7 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: AppColors.lightText,
+                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
               ),
             ),
           ],
@@ -609,11 +609,11 @@ class _HomePageState extends State<HomePage> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lightText.withAlpha(8),
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withAlpha(8),
             blurRadius: 22,
             offset: const Offset(0, 14),
           ),
@@ -631,7 +631,7 @@ class _HomePageState extends State<HomePage> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.lightText,
+                    color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   ),
                 ),
               ),
@@ -663,13 +663,13 @@ class _HomePageState extends State<HomePage> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: AppColors.lightText,
+              color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
             ),
           ),
           const SizedBox(height: 10),
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.access_time_filled,
                 size: 18,
                 color: AppColors.primary,
@@ -682,12 +682,12 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
-                  color: AppColors.lightSubText,
+                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(width: 18),
-              const Icon(
+              Icon(
                 Icons.location_on_outlined,
                 size: 18,
                 color: AppColors.secondaryDark,
@@ -699,7 +699,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
-                    color: AppColors.lightSubText,
+                    color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -716,7 +716,7 @@ class _HomePageState extends State<HomePage> {
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       elevation: 16,
-      color: AppColors.lightSurface,
+      color: Theme.of(context).cardColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
         child: Row(
@@ -755,7 +755,7 @@ class _HomePageState extends State<HomePage> {
     required int index,
   }) {
     final isActive = _selectedIndex == index;
-    final color = isActive ? AppColors.primary : AppColors.lightSubText;
+    final color = isActive ? AppColors.primary : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText);
 
     return GestureDetector(
       onTap: () {

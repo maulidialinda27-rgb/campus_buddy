@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 import 'package:campus_buddy/core/constants/app_strings.dart';
 import 'package:campus_buddy/services/user_service.dart';
+import 'package:campus_buddy/app.dart';
 
 /// ProfilPage - Halaman profil user dengan fitur lengkap
 /// Fitur:
@@ -61,6 +62,7 @@ class _ProfilPageState extends State<ProfilPage>
   /// Handle dark mode toggle
   void _handleDarkModeToggle(bool value) async {
     await _userService.setDarkMode(value);
+    CampusBuddyApp.themeNotifier.value = value ? ThemeMode.dark : ThemeMode.light;
     setState(() {
       _isDarkMode = value;
     });
@@ -79,10 +81,8 @@ class _ProfilPageState extends State<ProfilPage>
     showDialog(
       context: context,
       builder: (context) {
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
-
         return Dialog(
-          backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+          backgroundColor: Theme.of(context).dialogTheme.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -99,7 +99,7 @@ class _ProfilPageState extends State<ProfilPage>
                     color: AppColors.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.logout_outlined,
                     color: AppColors.error,
                     size: 30,
@@ -114,7 +114,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? AppColors.darkText : Colors.black87,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -126,7 +126,7 @@ class _ProfilPageState extends State<ProfilPage>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
-                    color: isDark ? AppColors.darkSubText : Colors.grey[600],
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -140,9 +140,7 @@ class _ProfilPageState extends State<ProfilPage>
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
-                            color: isDark
-                                ? AppColors.darkBorder
-                                : AppColors.lightBorder,
+                            color: Theme.of(context).dividerColor,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -154,7 +152,7 @@ class _ProfilPageState extends State<ProfilPage>
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w600,
-                            color: isDark ? AppColors.darkText : Colors.black87,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                       ),
@@ -200,13 +198,11 @@ class _ProfilPageState extends State<ProfilPage>
 
   /// Dialog tentang aplikasi
   void _showAboutDialog() {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
-
     showDialog(
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+          backgroundColor: Theme.of(context).dialogTheme.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -227,7 +223,7 @@ class _ProfilPageState extends State<ProfilPage>
                     ),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.school_outlined,
                     color: Colors.white,
                     size: 40,
@@ -242,7 +238,7 @@ class _ProfilPageState extends State<ProfilPage>
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? AppColors.darkText : Colors.black87,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -253,7 +249,7 @@ class _ProfilPageState extends State<ProfilPage>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
-                    color: isDark ? AppColors.darkSubText : Colors.grey[600],
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -265,7 +261,7 @@ class _ProfilPageState extends State<ProfilPage>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
-                    color: isDark ? AppColors.darkSubText : Colors.grey[600],
+                    color: Theme.of(context).textTheme.bodySmall?.color,
                     height: 1.6,
                   ),
                 ),
@@ -339,9 +335,7 @@ class _ProfilPageState extends State<ProfilPage>
         style: TextStyle(
           fontFamily: 'PlusJakartaSans',
           fontSize: 12,
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppColors.darkText
-              : Colors.black87,
+          color: Theme.of(context).textTheme.bodyMedium?.color,
         ),
       ),
     );
@@ -349,10 +343,8 @@ class _ProfilPageState extends State<ProfilPage>
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBg : Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
@@ -361,7 +353,7 @@ class _ProfilPageState extends State<ProfilPage>
             fontFamily: 'PlusJakartaSans',
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: isDark ? AppColors.darkText : Colors.black87,
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -371,9 +363,7 @@ class _ProfilPageState extends State<ProfilPage>
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
-              color: isDark
-                  ? AppColors.darkSurface.withValues(alpha: 0.1)
-                  : Colors.white.withValues(alpha: 0.1),
+              color: Theme.of(context).cardColor.withValues(alpha: 0.1),
             ),
           ),
         ),
@@ -383,9 +373,10 @@ class _ProfilPageState extends State<ProfilPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isDark
-                ? [AppColors.darkBg, AppColors.darkBg.withValues(alpha: 0.8)]
-                : [Colors.grey[50]!, Colors.grey[100]!],
+            colors: [
+              Theme.of(context).scaffoldBackgroundColor,
+              Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.8)
+            ],
           ),
         ),
         child: SafeArea(
@@ -401,7 +392,7 @@ class _ProfilPageState extends State<ProfilPage>
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkSurface : Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
@@ -445,7 +436,7 @@ class _ProfilPageState extends State<ProfilPage>
                                 ),
                               ],
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.person,
                               color: Colors.white,
                               size: 50,
@@ -464,9 +455,7 @@ class _ProfilPageState extends State<ProfilPage>
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: isDark
-                                  ? AppColors.darkText
-                                  : Colors.black87,
+                              color: Theme.of(context).textTheme.titleLarge?.color,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -482,9 +471,7 @@ class _ProfilPageState extends State<ProfilPage>
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 13,
-                              color: isDark
-                                  ? AppColors.darkSubText
-                                  : Colors.grey[600],
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -509,7 +496,7 @@ class _ProfilPageState extends State<ProfilPage>
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? AppColors.darkText : Colors.black87,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -521,12 +508,10 @@ class _ProfilPageState extends State<ProfilPage>
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: isDark ? AppColors.darkSurface : Colors.white,
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isDark
-                                ? AppColors.darkBorder
-                                : Colors.grey[300]!,
+                            color: Theme.of(context).dividerColor,
                           ),
                         ),
                         child: Row(
@@ -538,7 +523,7 @@ class _ProfilPageState extends State<ProfilPage>
                                 color: AppColors.primary.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.dark_mode_outlined,
                                 color: AppColors.primary,
                                 size: 20,
@@ -552,9 +537,7 @@ class _ProfilPageState extends State<ProfilPage>
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
-                                  color: isDark
-                                      ? AppColors.darkText
-                                      : Colors.black87,
+                                  color: Theme.of(context).textTheme.bodyMedium?.color,
                                 ),
                               ),
                             ),
@@ -575,12 +558,10 @@ class _ProfilPageState extends State<ProfilPage>
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: isDark ? AppColors.darkSurface : Colors.white,
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isDark
-                                ? AppColors.darkBorder
-                                : Colors.grey[300]!,
+                            color: Theme.of(context).dividerColor,
                           ),
                         ),
                         child: Row(
@@ -594,7 +575,7 @@ class _ProfilPageState extends State<ProfilPage>
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.notifications_outlined,
                                 color: AppColors.secondary,
                                 size: 20,
@@ -608,9 +589,7 @@ class _ProfilPageState extends State<ProfilPage>
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
-                                  color: isDark
-                                      ? AppColors.darkText
-                                      : Colors.black87,
+                                  color: Theme.of(context).textTheme.bodyMedium?.color,
                                 ),
                               ),
                             ),
@@ -641,7 +620,7 @@ class _ProfilPageState extends State<ProfilPage>
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? AppColors.darkText : Colors.black87,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -650,7 +629,6 @@ class _ProfilPageState extends State<ProfilPage>
                       _buildMenuButton(
                         icon: Icons.info_outline,
                         title: 'Tentang Aplikasi',
-                        isDark: isDark,
                         onTap: _showAboutDialog,
                       ),
                     ],
@@ -672,7 +650,7 @@ class _ProfilPageState extends State<ProfilPage>
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? AppColors.darkText : Colors.black87,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -681,7 +659,6 @@ class _ProfilPageState extends State<ProfilPage>
                       _buildMenuButton(
                         icon: Icons.logout_outlined,
                         title: 'Logout',
-                        isDark: isDark,
                         isRed: true,
                         onTap: _handleLogout,
                       ),
@@ -702,16 +679,15 @@ class _ProfilPageState extends State<ProfilPage>
   Widget _buildMenuButton({
     required IconData icon,
     required String title,
-    required bool isDark,
     bool isRed = false,
     required VoidCallback onTap,
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isDark ? AppColors.darkBorder : Colors.grey[300]!,
+          color: Theme.of(context).dividerColor,
         ),
       ),
       child: Material(
@@ -747,13 +723,13 @@ class _ProfilPageState extends State<ProfilPage>
                       fontWeight: FontWeight.w600,
                       color: isRed
                           ? AppColors.error
-                          : (isDark ? AppColors.darkText : Colors.black87),
+                          : Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                 ),
                 Icon(
                   Icons.chevron_right,
-                  color: isDark ? AppColors.darkSubText : Colors.grey[400],
+                  color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5),
                 ),
               ],
             ),

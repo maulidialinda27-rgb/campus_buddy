@@ -28,10 +28,10 @@ class DashboardHeader extends StatelessWidget {
             children: [
               Text(
                 'Halo, ${userName.isEmpty ? "Pengguna" : userName} 👋',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   fontFamily: 'PlusJakartaSans',
                 ),
               ),
@@ -40,9 +40,9 @@ class DashboardHeader extends StatelessWidget {
 
               Text(
                 subtitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                   height: 1.5,
                   fontFamily: 'PlusJakartaSans',
                 ),
@@ -56,12 +56,12 @@ class DashboardHeader extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Stack(
               children: [
-                const Icon(
+                Icon(
                   Icons.notifications_none_rounded,
                   color: AppColors.primary,
                 ),
@@ -80,7 +80,7 @@ class DashboardHeader extends StatelessWidget {
                       child: Center(
                         child: Text(
                           '$notificationCount',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class DashboardHeader extends StatelessWidget {
                 colors: AppColors.gradientPrimary,
               ),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.person,
               color: Colors.white,
             ),
@@ -148,7 +148,7 @@ class DashboardNotificationItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
 
           /// SHADOW DIPERHALUS
@@ -185,10 +185,10 @@ class DashboardNotificationItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: Colors.black87,
+                      color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                       fontFamily: 'PlusJakartaSans',
                     ),
                   ),
@@ -197,9 +197,9 @@ class DashboardNotificationItem extends StatelessWidget {
 
                   Text(
                     description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey,
+                      color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                       height: 1.4,
                       fontFamily: 'PlusJakartaSans',
                     ),
@@ -215,13 +215,13 @@ class DashboardNotificationItem extends StatelessWidget {
                         vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         timeInfo!,
-                        style: const TextStyle(
-                          color: Colors.black87,
+                        style: TextStyle(
+                          color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           fontFamily: 'PlusJakartaSans',
@@ -235,10 +235,10 @@ class DashboardNotificationItem extends StatelessWidget {
 
             GestureDetector(
               onTap: onDismiss,
-              child: const Icon(
+              child: Icon(
                 Icons.close,
                 size: 20,
-                color: Colors.grey,
+                color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
               ),
             ),
           ],
@@ -272,7 +272,7 @@ class MenuGridButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(22),
 
           /// SHADOW DIBUAT SOFT
@@ -305,10 +305,10 @@ class MenuGridButton extends StatelessWidget {
 
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                 fontFamily: 'PlusJakartaSans',
               ),
             ),
@@ -337,10 +337,10 @@ class SectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
             fontFamily: 'PlusJakartaSans',
           ),
         ),
@@ -348,7 +348,7 @@ class SectionTitle extends StatelessWidget {
         if (onSeeAll != null)
           GestureDetector(
             onTap: onSeeAll,
-            child: const Text(
+            child: Text(
               'Lihat Semua',
               style: TextStyle(
                 color: AppColors.primary,

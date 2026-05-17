@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:campus_buddy/core/constants/app_colors.dart';
 
 import 'package:campus_buddy/widgets/dashboard_widgets.dart';
 import 'package:campus_buddy/features/tugas/presentation/pages/tugas_page.dart';
@@ -114,7 +115,7 @@ class _HomePageModernState extends State<HomePageModern> {
         _schedules.isNotEmpty ? _schedules.first : null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8FC),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       /// HAPUS extendBody supaya tidak overflow
       extendBody: false,
@@ -155,20 +156,20 @@ class _HomePageModernState extends State<HomePageModern> {
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF5B67F1),
-                      Color(0xFF8B5CF6),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: AppColors.primary,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    )
+                  ],
                 ),
                 child: Column(
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Ringkasan Hari Ini',
                       style: TextStyle(
                         color: Colors.white,
@@ -243,11 +244,11 @@ class _HomePageModernState extends State<HomePageModern> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius:
                         BorderRadius.circular(22),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Tidak ada notifikasi saat ini ✨',
                     style: TextStyle(
                       fontSize: 14,
@@ -301,7 +302,7 @@ class _HomePageModernState extends State<HomePageModern> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius:
                       BorderRadius.circular(26),
                 ),
@@ -312,7 +313,7 @@ class _HomePageModernState extends State<HomePageModern> {
                     Text(
                       todaySchedule?.judul ??
                           'Belum ada jadwal',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'PlusJakartaSans',
@@ -323,11 +324,11 @@ class _HomePageModernState extends State<HomePageModern> {
 
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons
                               .access_time_filled_rounded,
                           size: 18,
-                          color: Color(0xFF5B67F1),
+                          color: AppColors.primary,
                         ),
 
                         const SizedBox(width: 8),
@@ -344,10 +345,10 @@ class _HomePageModernState extends State<HomePageModern> {
 
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.location_on_rounded,
                           size: 18,
-                          color: Color(0xFF8B5CF6),
+                          color: AppColors.secondary,
                         ),
 
                         const SizedBox(width: 8),
@@ -379,7 +380,7 @@ class _HomePageModernState extends State<HomePageModern> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.18),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -396,7 +397,7 @@ class _HomePageModernState extends State<HomePageModern> {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 13,
@@ -423,7 +424,7 @@ class _HomePageModernState extends State<HomePageModern> {
   Widget _buildModernFAB() {
     return FloatingActionButton(
       elevation: 4,
-      backgroundColor: const Color(0xFF5B67F1),
+      backgroundColor: AppColors.primary,
       onPressed: () {
         Navigator.push(
           context,
@@ -432,7 +433,7 @@ class _HomePageModernState extends State<HomePageModern> {
           ),
         );
       },
-      child: const Icon(
+      child: Icon(
         Icons.qr_code_scanner_rounded,
         color: Colors.white,
         size: 28,
@@ -446,7 +447,7 @@ class _HomePageModernState extends State<HomePageModern> {
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       elevation: 8,
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -495,8 +496,8 @@ class _HomePageModernState extends State<HomePageModern> {
     final isActive = _selectedIndex == index;
 
     final color = isActive
-        ? const Color(0xFF5B67F1)
-        : Colors.grey;
+        ? AppColors.primary
+        : AppColors.gray400;
 
     return GestureDetector(
       onTap: () {
@@ -541,8 +542,8 @@ class _HomePageModernState extends State<HomePageModern> {
       timeInfo: notification.getTimeRemaining(),
       icon: Icons.notifications_active_rounded,
       iconBackgroundColor:
-          const Color(0xFF5B67F1).withValues(alpha: 0.1),
-      iconColor: const Color(0xFF5B67F1),
+          AppColors.primary.withValues(alpha: 0.1),
+      iconColor: AppColors.primary,
       onDismiss: () =>
           _dismissNotification(notification.id),
       onTap: () =>
@@ -564,28 +565,28 @@ class _HomePageModernState extends State<HomePageModern> {
         _buildMenuItem(
           label: 'Tugas',
           icon: Icons.assignment_turned_in_rounded,
-          color: const Color(0xFF5B67F1),
+          color: AppColors.categoryTugas,
           onTap: () => _navigateTo(1),
         ),
 
         _buildMenuItem(
           label: 'Jadwal',
           icon: Icons.calendar_month_rounded,
-          color: const Color(0xFF8B5CF6),
+          color: AppColors.categoryJadwal,
           onTap: () => _navigateTo(2),
         ),
 
         _buildMenuItem(
           label: 'Keuangan',
           icon: Icons.wallet_rounded,
-          color: const Color(0xFF22C7F0),
+          color: AppColors.categoryKeuangan,
           onTap: () => _navigateTo(3),
         ),
 
         _buildMenuItem(
           label: 'Scan',
           icon: Icons.qr_code_scanner_rounded,
-          color: const Color(0xFFEC4899),
+          color: AppColors.categoryScan,
           onTap: () {
             Navigator.push(
               context,
@@ -610,10 +611,10 @@ class _HomePageModernState extends State<HomePageModern> {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: Colors.grey.shade200,
+            color: Theme.of(context).dividerColor,
           ),
         ),
         child: Column(
@@ -637,7 +638,7 @@ class _HomePageModernState extends State<HomePageModern> {
 
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'PlusJakartaSans',

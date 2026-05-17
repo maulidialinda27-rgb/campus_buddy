@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 
 class CustomCard extends StatelessWidget {
@@ -18,7 +17,7 @@ class CustomCard extends StatelessWidget {
     this.backgroundColor,
     this.padding = const EdgeInsets.all(16),
     this.margin = const EdgeInsets.all(0),
-    this.borderRadius = 12,
+    this.borderRadius = 18,
     this.onTap,
     this.border,
     this.shadow,
@@ -26,19 +25,24 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: margin,
         padding: padding,
         decoration: BoxDecoration(
-          color:
-              backgroundColor ??
-              (isDark ? AppColors.darkSurface : AppColors.lightSurface),
+          color: backgroundColor ?? Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(borderRadius),
-          border: border,
-          boxShadow: shadow != null ? [shadow!] : null,
+          border: border ?? Border.all(color: Theme.of(context).dividerColor, width: 1),
+          boxShadow: shadow != null 
+              ? [shadow!] 
+              : [
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
         child: child,
       ),
@@ -51,8 +55,8 @@ class GlassmorphismCard extends StatelessWidget {
   final EdgeInsets padding;
   final EdgeInsets margin;
   final double borderRadius;
-  final double blurSigma;
-  final Color? glowColor;
+  final double blurSigma; // Kept for compatibility, but unused
+  final Color? glowColor; // Kept for compatibility, used for soft shadow
 
   const GlassmorphismCard({
     super.key,
@@ -66,40 +70,24 @@ class GlassmorphismCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Redesigned to Soft Minimalist Card, removing glass and neon glow
     return Container(
       margin: margin,
+      padding: padding,
       decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: glowColor != null
-            ? [
-                BoxShadow(
-                  color: glowColor!.withValues(alpha: 0.3),
-                  blurRadius: 20,
-                  spreadRadius: 2,
-                ),
-              ]
-            : null,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-          child: Container(
-            padding: padding,
-            decoration: BoxDecoration(
-              color: (isDark ? AppColors.darkSurface : AppColors.lightSurface)
-                  .withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(borderRadius),
-              border: Border.all(
-                color: (glowColor ?? AppColors.neonBlue).withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: child,
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: (glowColor ?? AppColors.shadowColor).withValues(alpha: 0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+            spreadRadius: 0,
           ),
-        ),
+        ],
       ),
+      child: child,
     );
   }
 }

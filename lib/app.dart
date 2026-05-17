@@ -13,6 +13,9 @@ import 'package:campus_buddy/services/user_service.dart';
 class CampusBuddyApp extends StatefulWidget {
   const CampusBuddyApp({super.key});
 
+  /// Global notifier for theme mode, defaults to system
+  static final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.system);
+
   @override
   State<CampusBuddyApp> createState() => _CampusBuddyAppState();
 }
@@ -36,6 +39,10 @@ class _CampusBuddyAppState extends State<CampusBuddyApp> {
     // Cek apakah user sudah login
     bool loggedIn = _userService.isLoggedIn();
 
+    // Initialize theme mode from preferences
+    bool isDarkMode = _userService.getDarkMode();
+    CampusBuddyApp.themeNotifier.value = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+
     setState(() {
       _isLoggedIn = loggedIn;
       _isLoading = false;
@@ -44,40 +51,47 @@ class _CampusBuddyAppState extends State<CampusBuddyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Tampilkan splash screen saat loading
-    if (_isLoading) {
-      return MaterialApp(
-        title: 'CampusBuddy',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        themeMode: ThemeMode.light,
-        home: Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 20),
-                const Text('Loading CampusBuddy...'),
-              ],
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: CampusBuddyApp.themeNotifier,
+      builder: (context, currentMode, _) {
+        // Tampilkan splash screen saat loading
+        if (_isLoading) {
+          return MaterialApp(
+            title: 'CampusBuddy',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: currentMode,
+            home: Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 20),
+                    const Text('Loading CampusBuddy...'),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-      );
-    }
+          );
+        }
 
-    return MaterialApp(
-      title: 'CampusBuddy',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      themeMode: ThemeMode.light,
-      // Arahkan ke halaman sesuai status login
-      home: _isLoggedIn ? const HomePageModern() : const LoginPage(),
-      // Named routes untuk navigasi
-      routes: {
-        '/home': (context) => const HomePageModern(),
-        '/login': (context) => const LoginPage(),
-        '/profile': (context) => const ProfilePage(),
+        return MaterialApp(
+          title: 'CampusBuddy',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: currentMode,
+          // Arahkan ke halaman sesuai status login
+          home: _isLoggedIn ? const HomePageModern() : const LoginPage(),
+          // Named routes untuk navigasi
+          routes: {
+            '/home': (context) => const HomePageModern(),
+            '/login': (context) => const LoginPage(),
+            '/profile': (context) => const ProfilePage(),
+          },
+        );
       },
     );
   }

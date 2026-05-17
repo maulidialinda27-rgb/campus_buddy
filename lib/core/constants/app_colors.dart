@@ -1,96 +1,100 @@
 import 'package:flutter/material.dart';
 
-/// Warna-warna untuk aplikasi CampusBuddy - Modern Clean Colorful Theme
-/// Konsep: Biru Modern, Ungu Soft, Putih, Abu Muda
+/// Warna-warna untuk aplikasi CampusBuddy - Soft Blue Minimalist Theme
+/// Konsep: Modern minimalist, soft blue aesthetic, clean UI
 class AppColors {
-  // Primary Colors - Modern Blue (VIBRANT & CLEAR)
-  static const Color primary = Color(0xFF3B82F6); // Bright Modern Blue
-  static const Color primaryDark = Color(0xFF1E40AF);
-  static const Color primaryLight = Color(0xFFDEF7FF); // Very light blue
+  // Main Theme Colors (Requested)
+  static const Color lightBg = Color(0xFFF8FAFC);
+  static const Color primary = Color(0xFF3B82F6);
+  static const Color secondary = Color(0xFF60A5FA);
+  static const Color accent = Color(0xFFBFDBFE);
 
-  // Secondary Colors - Soft Purple (VIBRANT & CLEAR)
-  static const Color secondary = Color(0xFFA78BFA); // Vibrant Soft Purple
-  static const Color secondaryDark = Color(0xFF7C3AED);
-  static const Color secondaryLight = Color(0xFFF3E8FF);
+  static const Color lightText = Color(0xFF1E293B);
+  static const Color lightSubText = Color(0xFF64748B);
+  static const Color lightBorder = Color(0xFFE2E8F0);
+  static const Color lightSurface = Colors.white;
 
-  // Accent Colors - Additional Vibrant Colors
-  static const Color accent = Color(0xFF06B6D4); // Cyan
-  static const Color accentDark = Color(0xFF0891B2);
-  static const Color accentLight = Color(0xFFCFFAFE);
+  // Primary Shades
+  static const Color primaryLight = Color(0xFFDBEAFE);
 
-  // Status Colors - More Vibrant
-  static const Color success = Color(0xFF10B981); // Vibrant Green
-  static const Color warning = Color(0xFFFCD34D); // Vibrant Yellow
-  static const Color error = Color(0xFFF87171); // Vibrant Red
-  static const Color info = Color(0xFF06B6D4); // Vibrant Cyan
+  // Secondary Shades
+  static const Color secondaryDark = Color(0xFF3B82F6);
+  static const Color secondaryLight = Color(0xFFEFF6FF);
 
-  // Background & Surface - Clean & Modern
-  static const Color lightBg = Color(0xFFFAFBFC); // Clean white-ish
-  static const Color lightSurface = Color(0xFFFFFFFF); // Pure white
-  static const Color lightBorder = Color(0xFFE5E7EB); // Clean light gray
-  static const Color lightText = Color(0xFF111827); // Deep dark gray
-  static const Color lightSubText = Color(0xFF6B7280); // Medium gray
+  // Accent Shades
+  static const Color accentDark = Color(0xFF93C5FD);
+  static const Color accentLight = Color(0xFFEFF6FF);
 
-  // Gray Scale - For sophisticated look
-  static const Color gray50 = Color(0xFFFAFAFA);
-  static const Color gray100 = Color(0xFFF3F4F6);
-  static const Color gray200 = Color(0xFFE5E7EB);
-  static const Color gray300 = Color(0xFFD1D5DB);
-  static const Color gray400 = Color(0xFF9CA3AF);
-  static const Color gray500 = Color(0xFF6B7280);
-  static const Color gray600 = Color(0xFF4B5563);
+  // Status Colors - Soft & Elegant
+  static const Color success = Color(0xFF34D399); // Soft Green
+  static const Color warning = Color(0xFFFBBF24); // Soft Yellow
+  static const Color error = Color(0xFFF87171); // Soft Red
+  static const Color info = Color(0xFF60A5FA); // Soft Blue
 
-  // Category Colors - Vibrant & Clear
-  static const Color categoryTugas = Color(0xFF3B82F6); // Vibrant Blue
-  static const Color categoryScan = Color(0xFFA78BFA); // Vibrant Purple
-  static const Color categoryKeuangan = Color(0xFF10B981); // Vibrant Green
-  static const Color categoryJadwal = Color(0xFFFCD34D); // Vibrant Yellow
-  static const Color categoryOther = Color(0xFF06B6D4); // Vibrant Cyan
+  // Gray Scale
+  static const Color gray50 = Color(0xFFF8FAFC);
+  static const Color gray100 = Color(0xFFF1F5F9);
+  static const Color gray200 = Color(0xFFE2E8F0);
+  static const Color gray300 = Color(0xFFCBD5E1);
+  static const Color gray400 = Color(0xFF94A3B8);
+  static const Color gray500 = Color(0xFF64748B);
+  static const Color gray600 = Color(0xFF475569);
 
-  // Vibrant Additional Colors - For colorful design
-  static const Color vibrantPink = Color(0xFFEC4899); // Hot Pink
-  static const Color vibrantOrange = Color(0xFFFB923C); // Vibrant Orange
-  static const Color vibrantRed = Color(0xFFEF4444); // Vibrant Red
-  static const Color vibrantCyan = Color(0xFF06B6D4); // Vibrant Cyan
-  static const Color softGray = Color(0xFFD1D5DB);
-  static const Color veryLightGray = Color(0xFFFAFBFC);
+  // Category Colors - Soft & Elegant
+  static const Color categoryTugas = primary;
+  static const Color categoryScan = secondary;
+  static const Color categoryKeuangan = success;
+  static const Color categoryJadwal = warning;
+  static const Color categoryOther = accent;
 
-  // Backward Compatibility - Aliases for old color names
-  static const Color darkBg = lightBg;
-  static const Color darkSurface = lightSurface;
-  static const Color darkBorder = lightBorder;
-  static const Color darkText = lightText;
-  static const Color darkSubText = lightSubText;
+  // Previous Vibrant Colors mapped to Soft versions to prevent breaking
+  static const Color vibrantPink = Color(0xFFF472B6);
+  static const Color vibrantOrange = Color(0xFFFB923C);
+  static const Color vibrantRed = error;
+  static const Color vibrantCyan = Color(0xFF38BDF8);
+  static const Color softGray = gray300;
+  static const Color veryLightGray = gray50;
+
+  // Backward Compatibility (Now explicitly defining Dark Navy colors)
+  static const Color darkBg = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkBorder = Color(0xFF334155);
+  static const Color darkText = Colors.white;
+  static const Color darkSubText = Color(0xFFCBD5E1);
+
+  // Custom dark shades for primary elements
+  static const Color primaryDark = Color(0xFF60A5FA);
   static const Color lightGray = gray100;
-  static const Color neonBlue = vibrantCyan;
-  static const Color neonPurple = vibrantPink;
 
-  // Gradients - Modern & Professional
+  // No more neon, but we keep the variable names for compatibility
+  static const Color neonBlue = primary;
+  static const Color neonPurple = secondary;
+
+  // Gradients - Minimalist & Soft
   static const List<Color> gradientPrimary = [
-    Color(0xFF3B82F6), // Bright Blue
-    Color(0xFF06B6D4), // Cyan
+    Color(0xFF3B82F6),
+    Color(0xFF60A5FA),
   ];
 
   static const List<Color> gradientSecondary = [
-    Color(0xFFA78BFA), // Soft Purple
-    Color(0xFFEC4899), // Hot Pink
+    Color(0xFF60A5FA),
+    Color(0xFFBFDBFE),
   ];
 
   static const List<Color> gradientSuccess = [
-    Color(0xFF10B981), // Vibrant Green
-    Color(0xFF34D399), // Light Green
+    Color(0xFF34D399),
+    Color(0xFF6EE7B7),
   ];
 
   static const List<Color> gradientWarning = [
-    Color(0xFFFCD34D), // Vibrant Yellow
-    Color(0xFFFB923C), // Vibrant Orange
+    Color(0xFFFBBF24),
+    Color(0xFFFCD34D),
   ];
 
-  static const List<Color> gradientClean = [
-    Color(0xFFFAFBFC), // Light gray
-    Color(0xFFFFFFFF), // Pure white
-  ];
+  static const List<Color> gradientClean = [Color(0xFFF8FAFC), Colors.white];
 
-  // Shadow Color - Soft & Professional
-  static const Color shadowColor = Color(0xFF000000); // For shadow with alpha
+  // Shadow Color - Thin & Natural
+  static const Color shadowColor = Color(
+    0xFF0F172A,
+  ); // Very dark blue for natural shadow with low alpha
 }

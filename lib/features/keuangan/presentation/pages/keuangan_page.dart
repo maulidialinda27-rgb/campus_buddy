@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:campus_buddy/core/constants/app_strings.dart';
+import 'package:campus_buddy/core/constants/app_colors.dart';
 import 'package:campus_buddy/services/local_storage_service.dart';
 import 'package:campus_buddy/models/expense_model.dart';
 
@@ -205,22 +206,16 @@ class _KeuanganPageState extends State<KeuanganPage> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFFE0F2FE),
-            Color(0xFFBAE6FD),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Theme.of(context).cardColor,
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Grafik Pengeluaran Bulanan',
             style: TextStyle(
-              color: Color(0xFF0F172A),
+              color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -247,8 +242,8 @@ class _KeuanganPageState extends State<KeuanganPage> {
                       getTitlesWidget: (value, meta) {
                         return Text(
                           value == 0 ? '0' : _formatCurrency(value),
-                          style: const TextStyle(
-                            color: Colors.black54,
+                          style: TextStyle(
+                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                             fontSize: 10,
                           ),
                         );
@@ -269,8 +264,8 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                         return Text(
                           monthLabels[index],
-                          style: const TextStyle(
-                            color: Colors.black87,
+                          style: TextStyle(
+                            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -296,7 +291,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                     barRods: [
                       BarChartRodData(
                         toY: previousValue,
-                        color: const Color(0xFF38BDF8),
+                        color: AppColors.categoryKeuangan.withValues(alpha: 0.5),
                         width: 24,
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -308,7 +303,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                     barRods: [
                       BarChartRodData(
                         toY: currentValue,
-                        color: const Color(0xFF0EA5E9),
+                        color: AppColors.categoryKeuangan,
                         width: 24,
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -347,29 +342,32 @@ class _KeuanganPageState extends State<KeuanganPage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
 
         leading: CircleAvatar(
-          backgroundColor: const Color(0xFFE0F2FE),
-          child: const Icon(
+          backgroundColor: AppColors.categoryKeuangan.withValues(alpha: 0.15),
+          child: Icon(
             Icons.account_balance_wallet,
-            color: Color(0xFF0EA5E9),
+            color: AppColors.categoryKeuangan,
           ),
         ),
 
         title: Text(
           expense.title,
-          style: const TextStyle(
+          style: TextStyle(
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
             fontWeight: FontWeight.bold,
           ),
         ),
 
         subtitle: Text(
           '${expense.category} • ${_formatDate(expense.date)}',
+          style: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
         ),
 
         trailing: Column(
@@ -377,8 +375,8 @@ class _KeuanganPageState extends State<KeuanganPage> {
           children: [
             Text(
               _formatCurrency(expense.amount),
-              style: const TextStyle(
-                color: Color(0xFF0EA5E9),
+              style: TextStyle(
+                color: AppColors.categoryKeuangan,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -387,9 +385,9 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
             GestureDetector(
               onTap: () => _removeExpenseAt(index),
-              child: const Icon(
+              child: Icon(
                 Icons.delete_outline,
-                color: Colors.red,
+                color: AppColors.error,
               ),
             ),
           ],
@@ -399,13 +397,13 @@ class _KeuanganPageState extends State<KeuanganPage> {
   }
 
   Widget _buildEmptyState() {
-    return const Center(
+    return Center(
       child: Padding(
         padding: EdgeInsets.all(20),
         child: Text(
           'Belum ada pengeluaran',
           style: TextStyle(
-            color: Colors.black54,
+            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
             fontSize: 16,
           ),
         ),
@@ -434,8 +432,8 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
           builder: (context, scrollController) {
             return Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(28),
                 ),
@@ -451,7 +449,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                       width: 60,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: Theme.of(context).dividerColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -459,9 +457,10 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                   const SizedBox(height: 24),
 
-                  const Text(
+                  Text(
                     'Tambah Pengeluaran',
                     style: TextStyle(
+                      color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -475,10 +474,12 @@ class _KeuanganPageState extends State<KeuanganPage> {
                       children: [
                         TextFormField(
                           controller: _nameController,
+                          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                           decoration: InputDecoration(
                             labelText: 'Nama Pengeluaran',
                             filled: true,
-                            fillColor: const Color(0xFFF0F9FF),
+                            fillColor: Theme.of(context).scaffoldBackgroundColor,
+                            labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: BorderSide.none,
@@ -491,10 +492,12 @@ class _KeuanganPageState extends State<KeuanganPage> {
                         TextFormField(
                           controller: _amountController,
                           keyboardType: TextInputType.number,
+                          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                           decoration: InputDecoration(
                             labelText: 'Nominal',
                             filled: true,
-                            fillColor: const Color(0xFFF0F9FF),
+                            fillColor: Theme.of(context).scaffoldBackgroundColor,
+                            labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: BorderSide.none,
@@ -506,10 +509,13 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                         DropdownButtonFormField<String>(
                           initialValue: _selectedCategory,
+                          dropdownColor: Theme.of(context).cardColor,
+                          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                           decoration: InputDecoration(
                             labelText: 'Kategori',
                             filled: true,
-                            fillColor: const Color(0xFFF0F9FF),
+                            fillColor: Theme.of(context).scaffoldBackgroundColor,
+                            labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: BorderSide.none,
@@ -519,7 +525,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                               .map(
                                 (category) => DropdownMenuItem(
                                   value: category,
-                                  child: Text(category),
+                                  child: Text(category, style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText))),
                                 ),
                               )
                               .toList(),
@@ -554,14 +560,17 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                           child: AbsorbPointer(
                             child: TextFormField(
+                              style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                               decoration: InputDecoration(
                                 labelText: AppStrings.tanggal,
                                 hintText: _formatDate(_selectedDate),
                                 filled: true,
-                                fillColor: const Color(0xFFF0F9FF),
-                                suffixIcon: const Icon(
+                                fillColor: Theme.of(context).scaffoldBackgroundColor,
+                                hintStyle: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+                                labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
+                                suffixIcon: Icon(
                                   Icons.calendar_month,
-                                  color: Color(0xFF0EA5E9),
+                                  color: AppColors.categoryKeuangan,
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -578,7 +587,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0EA5E9),
+                              backgroundColor: AppColors.categoryKeuangan,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
                                 vertical: 16,
@@ -610,7 +619,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                               Navigator.pop(context);
                             },
 
-                            child: const Text(
+                            child: Text(
                               'Simpan',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -633,17 +642,21 @@ class _KeuanganPageState extends State<KeuanganPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).cardColor,
         elevation: 0,
         centerTitle: true,
 
-        title: const Text(
+        iconTheme: IconThemeData(
+          color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+        ),
+
+        title: Text(
           'Keuangan',
           style: TextStyle(
-            color: Color(0xFF0F172A),
+            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -651,9 +664,9 @@ class _KeuanganPageState extends State<KeuanganPage> {
         actions: [
           IconButton(
             onPressed: _openAddExpenseModal,
-            icon: const Icon(
+            icon: Icon(
               Icons.add_circle_outline,
-              color: Color(0xFF0EA5E9),
+              color: AppColors.categoryKeuangan,
             ),
           ),
         ],
@@ -661,8 +674,8 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: _openAddExpenseModal,
-        backgroundColor: const Color(0xFF0EA5E9),
-        child: const Icon(Icons.add),
+        backgroundColor: AppColors.categoryKeuangan,
+        child: Icon(Icons.add, color: Colors.white),
       ),
 
       body: SafeArea(
@@ -671,10 +684,10 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
           child: ListView(
             children: [
-              const Text(
+              Text(
                 'Pantau pengeluaranmu dengan mudah',
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                 ),
               ),
 
@@ -689,19 +702,13 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
-
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF38BDF8),
-                      Color(0xFF0EA5E9),
-                    ],
-                  ),
+                  color: AppColors.categoryKeuangan,
                 ),
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Total Pengeluaran',
                       style: TextStyle(
                         color: Colors.white70,
@@ -712,7 +719,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                     Text(
                       _formatCurrency(_totalExpense),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 34,
                         fontWeight: FontWeight.bold,
@@ -731,9 +738,10 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
               const SizedBox(height: 24),
 
-              const Text(
+              Text(
                 'Riwayat Pengeluaran',
                 style: TextStyle(
+                  color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

@@ -122,15 +122,15 @@ class _ModernTextFieldState extends State<ModernTextField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF2563EB), width: 2),
+              borderSide: BorderSide(color: Color(0xFF2563EB), width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFFEF4444), width: 1),
+              borderSide: BorderSide(color: Color(0xFFEF4444), width: 1),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFFEF4444), width: 2),
+              borderSide: BorderSide(color: Color(0xFFEF4444), width: 2),
             ),
             filled: true,
             fillColor: _isFocused

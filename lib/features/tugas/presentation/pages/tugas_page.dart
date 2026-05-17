@@ -98,13 +98,12 @@ class _TugasPageState extends State<TugasPage> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: AppColors.neonBlue,
-              onPrimary: Colors.white,
-              surface: AppColors.darkSurface,
-              onSurface: AppColors.darkText,
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary,
+              surface: Theme.of(context).cardColor,
+              onSurface: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
             ),
-            dialogTheme: DialogThemeData(backgroundColor: AppColors.darkBg),
+            dialogTheme: DialogThemeData(backgroundColor: Theme.of(context).scaffoldBackgroundColor),
           ),
           child: child!,
         );
@@ -195,11 +194,11 @@ class _TugasPageState extends State<TugasPage> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.darkSurface.withValues(alpha: 0.96),
+              color: Theme.of(context).cardColor,
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(28),
               ),
-              border: Border.all(color: AppColors.neonBlue.withValues(alpha: 0.2)),
+              border: Border.all(color: Theme.of(context).dividerColor),
             ),
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
             child: Column(
@@ -211,7 +210,7 @@ class _TugasPageState extends State<TugasPage> {
                     width: 50,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: AppColors.darkText.withValues(alpha: 0.2),
+                      color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -223,7 +222,7 @@ class _TugasPageState extends State<TugasPage> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.darkText,
+                    color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -251,7 +250,7 @@ class _TugasPageState extends State<TugasPage> {
                           onPressed: _saveTask,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: AppColors.neonBlue,
+                            backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
                             ),
@@ -291,28 +290,28 @@ class _TugasPageState extends State<TugasPage> {
         }
         return null;
       },
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.darkSubText.withValues(alpha: 0.9)),
-        prefixIcon: Icon(icon, color: AppColors.neonBlue),
+        hintStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText).withValues(alpha: 0.9)),
+        prefixIcon: Icon(icon, color: AppColors.primary),
         filled: true,
-        fillColor: AppColors.darkSurface.withValues(alpha: 0.7),
+        fillColor: AppColors.gray50,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 18,
           horizontal: 20,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: AppColors.darkBorder.withValues(alpha: 0.3)),
+          borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: AppColors.darkBorder.withValues(alpha: 0.3)),
+          borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: AppColors.neonBlue.withValues(alpha: 0.9)),
+          borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.9)),
         ),
       ),
     );
@@ -325,13 +324,13 @@ class _TugasPageState extends State<TugasPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         decoration: BoxDecoration(
-          color: AppColors.darkSurface.withValues(alpha: 0.7),
+          color: AppColors.gray50,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.darkBorder.withValues(alpha: 0.3)),
+          border: Border.all(color: Theme.of(context).dividerColor),
         ),
         child: Row(
           children: [
-            Icon(Icons.calendar_today, color: AppColors.neonPurple),
+            Icon(Icons.calendar_today, color: AppColors.primary),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -340,15 +339,15 @@ class _TugasPageState extends State<TugasPage> {
                     : 'Pilih tanggal deadline',
                 style: TextStyle(
                   color: _selectedDeadline != null
-                      ? AppColors.darkText
-                      : AppColors.darkSubText.withValues(alpha: 0.9),
+                      ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                      : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText).withValues(alpha: 0.9),
                 ),
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: 16,
-              color: Colors.white54,
+              color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
             ),
           ],
         ),
@@ -387,7 +386,7 @@ class _TugasPageState extends State<TugasPage> {
     return FadeInUp(
       delay: Duration(milliseconds: 80 * index),
       child: GlassmorphismCard(
-        glowColor: AppColors.neonBlue,
+        glowColor: AppColors.primary.withValues(alpha: 0.05),
         child: Padding(
           padding: const EdgeInsets.all(18),
           child: Column(
@@ -406,7 +405,7 @@ class _TugasPageState extends State<TugasPage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                             decoration: task.completed
                                 ? TextDecoration.lineThrough
                                 : null,
@@ -418,7 +417,7 @@ class _TugasPageState extends State<TugasPage> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
-                            color: AppColors.darkSubText,
+                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                           ),
                         ),
                       ],
@@ -466,10 +465,10 @@ class _TugasPageState extends State<TugasPage> {
                       onChanged: (value) {
                         _toggleTaskCompleted(index, value ?? false);
                       },
-                      activeColor: AppColors.neonBlue,
-                      checkColor: Colors.black,
+                      activeColor: AppColors.primary,
+                      checkColor: Colors.white,
                       side: BorderSide(
-                        color: AppColors.neonBlue.withValues(alpha: 0.7),
+                        color: AppColors.primary.withValues(alpha: 0.7),
                       ),
                     ),
                   ),
@@ -488,11 +487,15 @@ class _TugasPageState extends State<TugasPage> {
     final pendingCount = _tasks.length - completedCount;
 
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Tugas Saya'),
+        title: Text(
+          'Tugas Saya',
+          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+        ),
         elevation: 0,
         centerTitle: false,
+        iconTheme: IconThemeData(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
         backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
@@ -502,7 +505,7 @@ class _TugasPageState extends State<TugasPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GlassmorphismCard(
-                glowColor: AppColors.neonPurple,
+                glowColor: AppColors.primary.withValues(alpha: 0.05),
                 child: Padding(
                   padding: const EdgeInsets.all(18),
                   child: Row(
@@ -517,7 +520,7 @@ class _TugasPageState extends State<TugasPage> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -526,7 +529,7 @@ class _TugasPageState extends State<TugasPage> {
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 13,
-                                color: AppColors.darkSubText,
+                                color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                               ),
                             ),
                             const SizedBox(height: 14),
@@ -534,12 +537,12 @@ class _TugasPageState extends State<TugasPage> {
                               children: [
                                 _buildInfoChip(
                                   '$pendingCount Pending',
-                                  AppColors.neonBlue,
+                                  AppColors.primary,
                                 ),
                                 const SizedBox(width: 10),
                                 _buildInfoChip(
                                   '$completedCount Selesai',
-                                  AppColors.neonPurple,
+                                  AppColors.accent,
                                 ),
                               ],
                             ),
@@ -550,12 +553,12 @@ class _TugasPageState extends State<TugasPage> {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [AppColors.neonBlue, AppColors.neonPurple],
+                          gradient: const LinearGradient(
+                            colors: [AppColors.primary, AppColors.accent],
                           ),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.checklist,
                           color: Colors.white,
                           size: 28,
@@ -573,7 +576,7 @@ class _TugasPageState extends State<TugasPage> {
                           AppStrings.tugasKosong,
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
-                            color: AppColors.darkSubText,
+                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                             fontSize: 16,
                           ),
                         ),
@@ -596,14 +599,14 @@ class _TugasPageState extends State<TugasPage> {
         height: 66,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [AppColors.neonBlue, AppColors.neonPurple],
+            colors: [AppColors.primary, AppColors.accent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.neonBlue.withValues(alpha: 0.35),
+              color: AppColors.primary.withValues(alpha: 0.35),
               blurRadius: 20,
               spreadRadius: 1,
             ),
@@ -613,7 +616,7 @@ class _TugasPageState extends State<TugasPage> {
           onPressed: _openAddTaskSheet,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: const Icon(Icons.add, size: 30),
+          child: Icon(Icons.add, size: 30),
         ),
       ),
     );

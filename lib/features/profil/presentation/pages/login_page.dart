@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
+      backgroundColor: isDark ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.school_outlined,
                           color: Colors.white,
                           size: 40,
@@ -162,8 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: isDark
-                              ? AppColors.darkText
-                              : AppColors.lightText,
+                              ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                              : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -176,8 +176,8 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: isDark
-                              ? AppColors.darkSubText
-                              : AppColors.lightSubText,
+                              ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                              : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                         ),
                       ),
                     ],
@@ -206,41 +206,41 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color: isDark
-                                    ? AppColors.darkBorder
-                                    : AppColors.lightBorder,
+                                    ? Theme.of(context).dividerColor
+                                    : Theme.of(context).dividerColor,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color: isDark
-                                    ? AppColors.darkBorder
-                                    : AppColors.lightBorder,
+                                    ? Theme.of(context).dividerColor
+                                    : Theme.of(context).dividerColor,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 2,
                               ),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.error,
                               ),
                             ),
                             filled: true,
                             fillColor: isDark
-                                ? AppColors.darkSurface
+                                ? Theme.of(context).cardColor
                                 : Colors.white,
                           ),
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             color: isDark
-                                ? AppColors.darkText
-                                : AppColors.lightText,
+                                ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                                : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -269,41 +269,41 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color: isDark
-                                    ? AppColors.darkBorder
-                                    : AppColors.lightBorder,
+                                    ? Theme.of(context).dividerColor
+                                    : Theme.of(context).dividerColor,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color: isDark
-                                    ? AppColors.darkBorder
-                                    : AppColors.lightBorder,
+                                    ? Theme.of(context).dividerColor
+                                    : Theme.of(context).dividerColor,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 2,
                               ),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.error,
                               ),
                             ),
                             filled: true,
                             fillColor: isDark
-                                ? AppColors.darkSurface
+                                ? Theme.of(context).cardColor
                                 : Colors.white,
                           ),
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             color: isDark
-                                ? AppColors.darkText
-                                : AppColors.lightText,
+                                ? (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)
+                                : (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -377,8 +377,8 @@ class _LoginPageState extends State<LoginPage> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12,
                       color: isDark
-                          ? AppColors.darkSubText
-                          : AppColors.lightSubText,
+                          ? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)
+                          : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                     ),
                   ),
                 ),

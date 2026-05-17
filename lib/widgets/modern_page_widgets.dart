@@ -62,10 +62,10 @@ class ModernPageHeader extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 51),
+                      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.20),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_back_ios_new_rounded,
                       color: Colors.white,
                       size: 18,
@@ -144,13 +144,13 @@ class ModernListCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.lightSurface,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.gray100, width: 1),
             boxShadow: [
               BoxShadow(
                 blurRadius: 10,
-                color: AppColors.lightText.withValues(alpha: 13),
+                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withValues(alpha: 13),
                 offset: const Offset(0, 4),
               ),
             ],
@@ -177,7 +177,7 @@ class ModernListCard extends StatelessWidget {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.lightText,
+                        color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                       ),
                     ),
                     if (subtitle != null) ...[
@@ -254,13 +254,13 @@ class _ModernSettingToggleState extends State<ModernSettingToggle> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: AppColors.gray100, width: 1),
           boxShadow: [
             BoxShadow(
               blurRadius: 10,
-              color: AppColors.lightText.withValues(alpha: 13),
+              color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText).withValues(alpha: 13),
               offset: const Offset(0, 4),
             ),
           ],
@@ -287,7 +287,7 @@ class _ModernSettingToggleState extends State<ModernSettingToggle> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.lightText,
+                      color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                     ),
                   ),
                   if (widget.subtitle != null) ...[
@@ -368,9 +368,9 @@ class ModernProfileCard extends StatelessWidget {
               height: 70,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 77),
+                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.30),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 128),
+                  color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.50),
                   width: 2,
                 ),
               ),
@@ -413,10 +413,10 @@ class ModernProfileCard extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 51),
+                    color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.20),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.edit_rounded,
                     color: Colors.white,
                     size: 20,

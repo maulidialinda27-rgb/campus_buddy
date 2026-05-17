@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/core/utils/time_helper.dart';
+import 'package:campus_buddy/core/constants/app_colors.dart';
 
 const uuid = Uuid();
 
@@ -35,12 +36,12 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
   ];
 
   final Map<String, Color> kategoriWarna = {
-    'Kuliah': const Color(0xFF00D4FF), // Neon blue
-    'Tugas': const Color(0xFF8B5CF6), // Purple
-    'Meeting': const Color(0xFFFF5E78), // Neon pink
-    'Olahraga': const Color(0xFF10B981), // Green
-    'Istirahat': const Color(0xFF6366F1), // Indigo
-    'Lainnya': const Color(0xFF64748B), // Gray
+    'Kuliah': AppColors.primary,
+    'Tugas': AppColors.secondary,
+    'Meeting': AppColors.accent,
+    'Olahraga': AppColors.success,
+    'Istirahat': AppColors.warning,
+    'Lainnya': AppColors.gray500,
   };
 
   @override
@@ -144,11 +145,13 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: const Color(0xFF1E293B), // Navy surface
+      backgroundColor: Theme.of(context).cardColor,
+      elevation: 0,
       child: Container(
         decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 1),
+          border: Border.all(color: Theme.of(context).dividerColor, width: 1),
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -168,7 +171,7 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -176,7 +179,7 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                       onPressed: () => Navigator.pop(context),
                       icon: Icon(
                         Icons.close,
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                       ),
                     ),
                   ],
@@ -186,36 +189,36 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                 // Judul Input
                 TextField(
                   controller: judulController,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                   decoration: InputDecoration(
                     labelText: 'Nama Kegiatan',
                     hintText: 'Contoh: Kuliah Algoritma',
-                    labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
-                    hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                    labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
+                    hintStyle: TextStyle(color: AppColors.gray300),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF00D4FF),
+                      borderSide: BorderSide(
+                        color: AppColors.primary,
                         width: 2,
                       ),
                     ),
                     filled: true,
-                    fillColor: const Color(0xFF0F172A),
+                    fillColor: Theme.of(context).scaffoldBackgroundColor,
                     prefixIcon: Icon(
                       Icons.event,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -224,15 +227,15 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                 // Pilih Hari
                 DropdownButtonFormField<String>(
                   initialValue: selectedHari,
-                  dropdownColor: const Color(0xFF1E293B),
-                  style: const TextStyle(color: Colors.white),
+                  dropdownColor: Theme.of(context).cardColor,
+                  style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                   items: daftarHari
                       .map(
                         (hari) => DropdownMenuItem(
                           value: hari,
                           child: Text(
                             hari,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                           ),
                         ),
                       )
@@ -244,31 +247,31 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Pilih Hari',
-                    labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF00D4FF),
+                      borderSide: BorderSide(
+                        color: AppColors.primary,
                         width: 2,
                       ),
                     ),
                     filled: true,
-                    fillColor: const Color(0xFF0F172A),
+                    fillColor: Theme.of(context).scaffoldBackgroundColor,
                     prefixIcon: Icon(
                       Icons.calendar_today,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -281,45 +284,45 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                       child: TextField(
                         controller: jamMulaiController,
                         readOnly: true,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                         onTap: () => _selectTime(context, jamMulaiController),
                         decoration: InputDecoration(
                           labelText: 'Jam Mulai',
                           hintText: 'HH:MM',
                           labelStyle: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                           ),
                           hintStyle: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: AppColors.gray300,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Theme.of(context).dividerColor,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Theme.of(context).dividerColor,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Color(0xFF00D4FF),
+                            borderSide: BorderSide(
+                              color: AppColors.primary,
                               width: 2,
                             ),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFF0F172A),
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           prefixIcon: Icon(
                             Icons.access_time,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AppColors.primary,
                           ),
                           suffixIcon: Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
@@ -329,45 +332,45 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                       child: TextField(
                         controller: jamSelesaiController,
                         readOnly: true,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                         onTap: () => _selectTime(context, jamSelesaiController),
                         decoration: InputDecoration(
                           labelText: 'Jam Selesai',
                           hintText: 'HH:MM',
                           labelStyle: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                           ),
                           hintStyle: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: AppColors.gray300,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Theme.of(context).dividerColor,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Theme.of(context).dividerColor,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Color(0xFF00D4FF),
+                            borderSide: BorderSide(
+                              color: AppColors.primary,
                               width: 2,
                             ),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFF0F172A),
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           prefixIcon: Icon(
                             Icons.access_time,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AppColors.primary,
                           ),
                           suffixIcon: Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
@@ -379,8 +382,8 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                 // Kategori
                 DropdownButtonFormField<String>(
                   initialValue: selectedKategori,
-                  dropdownColor: const Color(0xFF1E293B),
-                  style: const TextStyle(color: Colors.white),
+                  dropdownColor: Theme.of(context).cardColor,
+                  style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                   items: kategoriWarna.keys
                       .map(
                         (kategori) => DropdownMenuItem(
@@ -393,19 +396,12 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                                 decoration: BoxDecoration(
                                   color: kategoriWarna[kategori],
                                   shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: kategoriWarna[kategori]!
-                                          .withValues(alpha: 0.5),
-                                      blurRadius: 4,
-                                    ),
-                                  ],
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Text(
                                 kategori,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
                               ),
                             ],
                           ),
@@ -419,31 +415,31 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Kategori',
-                    labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF00D4FF),
+                      borderSide: BorderSide(
+                        color: AppColors.primary,
                         width: 2,
                       ),
                     ),
                     filled: true,
-                    fillColor: const Color(0xFF0F172A),
+                    fillColor: Theme.of(context).scaffoldBackgroundColor,
                     prefixIcon: Icon(
                       Icons.category,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -454,11 +450,11 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: Theme.of(context).dividerColor,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xFF0F172A),
+                    color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -467,7 +463,7 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                         children: [
                           Icon(
                             Icons.notifications_active,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AppColors.primary,
                           ),
                           const SizedBox(width: 12),
                           Column(
@@ -477,14 +473,14 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                                 'Aktifkan Notifikasi',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                                  color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
                                 '10 menit sebelum jadwal',
                                 style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.6),
+                                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                                   fontSize: 12,
                                 ),
                               ),
@@ -499,10 +495,8 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                             enableNotifikasi = value;
                           });
                         },
-                        activeThumbColor: const Color(0xFF00D4FF),
-                        activeTrackColor: const Color(
-                          0xFF00D4FF,
-                        ).withValues(alpha: 0.3),
+                        activeThumbColor: AppColors.primary,
+                        activeTrackColor: AppColors.primary.withValues(alpha: 0.3),
                       ),
                     ],
                   ),
@@ -520,14 +514,14 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                             side: BorderSide(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Theme.of(context).dividerColor,
                             ),
                           ),
                         ),
                         child: Text(
                           'Batal',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -540,14 +534,15 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                         onPressed: _saveJadwal,
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: const Color(0xFF00D4FF),
+                          backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Text(
                           widget.jadwalEdit != null ? 'Update' : 'Simpan',
-                          style: const TextStyle(
+                          style: TextStyle(
+                            color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -564,4 +559,3 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
     );
   }
 }
-
