@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:campus_buddy/core/constants/app_strings.dart';
+
 import 'package:campus_buddy/core/utils/time_helper.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/features/jadwal/presentation/pages/tambah_jadwal_dialog.dart';
@@ -115,7 +115,7 @@ class _JadwalPageState extends State<JadwalPage> {
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
-              color: primaryColor.withOpacity(0.25),
+              color: primaryColor.withValues(alpha: 0.25),
               offset: const Offset(0, 10),
             ),
           ],
@@ -127,7 +127,7 @@ class _JadwalPageState extends State<JadwalPage> {
               padding: const EdgeInsets.all(14),
 
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.18),
+                color: Colors.white.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(18),
               ),
 
@@ -147,7 +147,7 @@ class _JadwalPageState extends State<JadwalPage> {
                   Text(
                     'Jadwal Berikutnya',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
+                      color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -268,15 +268,15 @@ class _JadwalPageState extends State<JadwalPage> {
 
             border: Border.all(
               color: isOngoing
-                  ? kategoriColor.withOpacity(0.5)
-                  : Colors.grey.withOpacity(0.12),
+                  ? kategoriColor.withValues(alpha: 0.5)
+                  : Colors.grey.withValues(alpha: 0.12),
               width: 1.5,
             ),
 
             boxShadow: [
               BoxShadow(
                 blurRadius: 14,
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 offset: const Offset(0, 6),
               ),
             ],
@@ -358,10 +358,10 @@ class _JadwalPageState extends State<JadwalPage> {
 
                           decoration: BoxDecoration(
                             color: isOngoing
-                                ? Colors.green.withOpacity(
+                                ? Colors.green.withValues(alpha: 
                                     0.12,
                                   )
-                                : kategoriColor.withOpacity(
+                                : kategoriColor.withValues(alpha: 
                                     0.12,
                                   ),
 
@@ -390,7 +390,7 @@ class _JadwalPageState extends State<JadwalPage> {
 
                           decoration: BoxDecoration(
                             color:
-                                kategoriColor.withOpacity(0.1),
+                                kategoriColor.withValues(alpha: 0.1),
 
                             borderRadius:
                                 BorderRadius.circular(18),
@@ -487,12 +487,14 @@ class _JadwalPageState extends State<JadwalPage> {
               );
             }
 
-            if (!mounted) return;
+            if (!context.mounted) return;
 
             Navigator.pop(context);
 
             _loadJadwal();
-          } catch (e) {}
+          } catch (e) {
+            debugPrint(e.toString());
+          }
         },
 
         jadwalEdit: jadwalEdit,
@@ -632,7 +634,7 @@ class _JadwalPageState extends State<JadwalPage> {
                             width: 2,
 
                             decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(
+                              color: Colors.grey.withValues(alpha: 
                                 0.25,
                               ),
                             ),

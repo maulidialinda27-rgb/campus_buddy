@@ -330,7 +330,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
         vertical: 6,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -505,7 +505,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                         const SizedBox(height: 16),
 
                         DropdownButtonFormField<String>(
-                          value: _selectedCategory,
+                          initialValue: _selectedCategory,
                           decoration: InputDecoration(
                             labelText: 'Kategori',
                             filled: true,
@@ -605,7 +605,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                                 ),
                               );
 
-                              if (!mounted) return;
+                              if (!context.mounted) return;
 
                               Navigator.pop(context);
                             },

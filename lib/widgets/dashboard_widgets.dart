@@ -156,7 +156,7 @@ class DashboardNotificationItem extends StatelessWidget {
             BoxShadow(
               blurRadius: 8,
               offset: const Offset(0, 3),
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
             ),
           ],
         ),
@@ -280,7 +280,7 @@ class MenuGridButton extends StatelessWidget {
             BoxShadow(
               blurRadius: 6,
               offset: const Offset(0, 3),
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
             ),
           ],
         ),

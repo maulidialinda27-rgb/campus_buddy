@@ -45,7 +45,7 @@ class ModernPageHeader extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 20,
-            color: colors.first.withOpacity(0.25),
+            color: colors.first.withValues(alpha: 0.25),
             offset: const Offset(0, 12),
           ),
         ],

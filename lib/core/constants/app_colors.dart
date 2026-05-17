@@ -93,9 +93,4 @@ class AppColors {
 
   // Shadow Color - Soft & Professional
   static const Color shadowColor = Color(0xFF000000); // For shadow with alpha
-
-  // Utility function for rgba colors
-  static Color withOpacity(Color color, double opacity) {
-    return color.withOpacity(opacity);
-  }
 }

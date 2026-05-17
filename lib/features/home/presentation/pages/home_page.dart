@@ -11,6 +11,7 @@ import 'package:campus_buddy/services/notification_generator_service.dart';
 import 'package:campus_buddy/services/local_storage_service.dart';
 import 'package:campus_buddy/services/jadwal_service.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
+import 'package:campus_buddy/services/user_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,6 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  String _userName = 'Pengguna';
   List<DashboardNotification> _notifications = [];
   List<StudyTask> _tasks = [];
   List<Jadwal> _schedules = [];
@@ -29,7 +31,17 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _loadUserName();
     _loadAllData();
+  }
+
+  void _loadUserName() {
+    final name = UserService().getUserName();
+    if (name != null && name.trim().isNotEmpty) {
+      setState(() {
+        _userName = name;
+      });
+    }
   }
 
   Future<void> _loadAllData() async {
@@ -146,7 +158,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Halo, Mila! 👋',
+                _userName == 'Pengguna' ? 'Halo Pengguna 👋' : 'Halo $_userName 👋',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 28,
@@ -706,7 +718,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 16,
       color: AppColors.lightSurface,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

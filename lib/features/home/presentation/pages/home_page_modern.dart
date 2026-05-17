@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:campus_buddy/core/constants/app_colors.dart';
+
 import 'package:campus_buddy/widgets/dashboard_widgets.dart';
 import 'package:campus_buddy/features/tugas/presentation/pages/tugas_page.dart';
 import 'package:campus_buddy/features/scan/presentation/pages/scan_page.dart';
@@ -12,6 +12,8 @@ import 'package:campus_buddy/services/notification_generator_service.dart';
 import 'package:campus_buddy/services/local_storage_service.dart';
 import 'package:campus_buddy/services/jadwal_service.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
+import 'package:campus_buddy/services/user_service.dart';
+
 
 class HomePageModern extends StatefulWidget {
   const HomePageModern({super.key});
@@ -23,7 +25,8 @@ class HomePageModern extends StatefulWidget {
 class _HomePageModernState extends State<HomePageModern> {
   int _selectedIndex = 0;
 
-  String userName = 'Mila';
+  String userName = 'Pengguna';
+
 
   List<DashboardNotification> _notifications = [];
   List<StudyTask> _tasks = [];
@@ -33,7 +36,17 @@ class _HomePageModernState extends State<HomePageModern> {
   @override
   void initState() {
     super.initState();
+    _loadUserName();
     _loadAllData();
+  }
+
+  void _loadUserName() {
+    final name = UserService().getUserName();
+    if (name != null && name.trim().isNotEmpty) {
+      setState(() {
+        userName = name;
+      });
+    }
   }
 
   Future<void> _loadAllData() async {
@@ -171,7 +184,7 @@ class _HomePageModernState extends State<HomePageModern> {
                       'Pantau tugas, jadwal, dan pengeluaranmu dengan tampilan modern.',
                       style: TextStyle(
                         color:
-                            Colors.white.withOpacity(0.9),
+                            Colors.white.withValues(alpha: 0.9),
                         fontSize: 13,
                         height: 1.5,
                         fontFamily: 'PlusJakartaSans',
@@ -366,7 +379,7 @@ class _HomePageModernState extends State<HomePageModern> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.18),
+        color: Colors.white.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -396,7 +409,7 @@ class _HomePageModernState extends State<HomePageModern> {
           Text(
             title,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 11,
               fontFamily: 'PlusJakartaSans',
             ),
@@ -437,7 +450,7 @@ class _HomePageModernState extends State<HomePageModern> {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 18,
-          vertical: 10,
+          vertical: 6,
         ),
         child: Row(
           mainAxisAlignment:
@@ -528,7 +541,7 @@ class _HomePageModernState extends State<HomePageModern> {
       timeInfo: notification.getTimeRemaining(),
       icon: Icons.notifications_active_rounded,
       iconBackgroundColor:
-          const Color(0xFF5B67F1).withOpacity(0.1),
+          const Color(0xFF5B67F1).withValues(alpha: 0.1),
       iconColor: const Color(0xFF5B67F1),
       onDismiss: () =>
           _dismissNotification(notification.id),
@@ -610,7 +623,7 @@ class _HomePageModernState extends State<HomePageModern> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.12),
+                color: color.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
               child: Icon(
