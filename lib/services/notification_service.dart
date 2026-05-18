@@ -137,12 +137,10 @@ class NotificationService {
             channelDescription: 'Notifikasi untuk pengingat jadwal',
             importance: Importance.max,
             priority: Priority.high,
-            sound: RawResourceAndroidNotificationSound('notification'),
             enableVibration: true,
             playSound: true,
           ),
           iOS: DarwinNotificationDetails(
-            sound: 'notification.aiff',
             presentAlert: true,
             presentBadge: true,
             presentSound: true,

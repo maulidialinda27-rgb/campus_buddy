@@ -94,106 +94,108 @@ class _JadwalPageState extends State<JadwalPage> {
         kategoriWarna[nextSchedule.deskripsi] ??
         kategoriWarna['Lainnya']!;
 
-    return FadeInDown(
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 18,
-        ),
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
 
-          color: AppColors.primary,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 15,
-              color: AppColors.primary.withValues(alpha: 0.15),
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
+        color: AppColors.primary,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 15,
+            color: AppColors.primary.withValues(alpha: 0.15),
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
 
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(14),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(14),
 
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.18),
-                borderRadius: BorderRadius.circular(18),
-              ),
-
-              child: Icon(
-                Icons.schedule_rounded,
-                color: Colors.white,
-                size: 28,
-              ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(18),
             ),
 
-            const SizedBox(width: 18),
+            child: Icon(
+              Icons.schedule_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Jadwal Berikutnya',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+          const SizedBox(width: 18),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Jadwal Berikutnya',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.85),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
                   ),
+                ),
 
-                  const SizedBox(height: 6),
+                const SizedBox(height: 6),
 
-                  Text(
-                    nextSchedule.judul,
-                    style: TextStyle(
+                Text(
+                  nextSchedule.judul,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+
+                const SizedBox(height: 8),
+
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_filled_rounded,
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      size: 16,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
 
-                  const SizedBox(height: 8),
+                    const SizedBox(width: 6),
 
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.access_time_filled_rounded,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-
-                      const SizedBox(width: 6),
-
-                      Text(
+                    Expanded(
+                      child: Text(
                         '${nextSchedule.jamMulai} • $minutes menit lagi',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 13,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
+          ),
 
-            Container(
-              width: 6,
-              height: 55,
-              decoration: BoxDecoration(
-                color: kategoriColor,
-                borderRadius: BorderRadius.circular(20),
-              ),
+          Container(
+            width: 6,
+            height: 55,
+            decoration: BoxDecoration(
+              color: kategoriColor,
+              borderRadius: BorderRadius.circular(20),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -214,15 +216,12 @@ class _JadwalPageState extends State<JadwalPage> {
       jadwal.jamSelesai,
     );
 
-    return FadeInUp(
-      delay: Duration(milliseconds: index * 100),
+    return Dismissible(
+      key: Key(jadwal.id),
 
-      child: Dismissible(
-        key: Key(jadwal.id),
-
-        onDismissed: (direction) {
-          _deleteJadwal(jadwal.id);
-        },
+      onDismissed: (direction) {
+        _deleteJadwal(jadwal.id);
+      },
 
         background: Container(
           margin: const EdgeInsets.only(
@@ -342,59 +341,69 @@ class _JadwalPageState extends State<JadwalPage> {
                           MainAxisAlignment.spaceBetween,
 
                       children: [
-                        Container(
-                          padding:
-                              const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
+                        Flexible(
+                          child: Container(
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
 
-                          decoration: BoxDecoration(
-                            color: isOngoing
-                                ? Colors.green.withValues(alpha: 
-                                    0.12,
-                                  )
-                                : kategoriColor.withValues(alpha: 
-                                    0.12,
-                                  ),
-
-                            borderRadius:
-                                BorderRadius.circular(18),
-                          ),
-
-                          child: Text(
-                            statusText,
-                            style: TextStyle(
+                            decoration: BoxDecoration(
                               color: isOngoing
-                                  ? Colors.green
-                                  : kategoriColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
+                                  ? Colors.green.withValues(alpha: 
+                                      0.12,
+                                    )
+                                  : kategoriColor.withValues(alpha: 
+                                      0.12,
+                                    ),
+
+                              borderRadius:
+                                  BorderRadius.circular(18),
+                            ),
+
+                            child: Text(
+                              statusText,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: isOngoing
+                                    ? Colors.green
+                                    : kategoriColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
+                        
+                        const SizedBox(width: 8),
 
-                        Container(
-                          padding:
-                              const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
+                        Flexible(
+                          child: Container(
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+
+                            decoration: BoxDecoration(
+                              color:
+                                  kategoriColor.withValues(alpha: 0.1),
+
+                              borderRadius:
+                                  BorderRadius.circular(18),
+                            ),
+
+                            child: Text(
+                              jadwal.deskripsi ?? 'Lainnya',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: kategoriColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
                               ),
-
-                          decoration: BoxDecoration(
-                            color:
-                                kategoriColor.withValues(alpha: 0.1),
-
-                            borderRadius:
-                                BorderRadius.circular(18),
-                          ),
-
-                          child: Text(
-                            jadwal.deskripsi ?? 'Lainnya',
-                            style: TextStyle(
-                              color: kategoriColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -457,8 +466,7 @@ class _JadwalPageState extends State<JadwalPage> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   Future<void> _showTambahJadwalDialog({

@@ -457,37 +457,40 @@ class _TambahJadwalDialogState extends State<TambahJadwalDialog> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.notifications_active,
-                            color: AppColors.primary,
-                          ),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Aktifkan Notifikasi',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Text(
-                                '10 menit sebelum jadwal',
-                                style: TextStyle(
-                                  color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      Icon(
+                        Icons.notifications_active,
+                        color: AppColors.primary,
                       ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Aktifkan Notifikasi',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+                                fontSize: 14,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              '10 menit sebelum jadwal',
+                              style: TextStyle(
+                                color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
+                                fontSize: 12,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Switch(
                         value: enableNotifikasi,
                         onChanged: (value) {

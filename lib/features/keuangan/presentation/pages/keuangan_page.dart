@@ -598,9 +598,18 @@ class _KeuanganPageState extends State<KeuanganPage> {
                             ),
 
                             onPressed: () async {
-                              final amount = double.parse(
-                                _amountController.text,
-                              );
+                              final amountText = _amountController.text.trim();
+
+                              if (amountText.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Nominal tidak boleh kosong"),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              final amount = double.tryParse(amountText) ?? 0.0;
 
                               await _addExpense(
                                 ExpenseItem(
