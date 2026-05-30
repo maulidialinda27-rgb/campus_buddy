@@ -129,6 +129,32 @@ class _KeuanganPageState extends State<KeuanganPage> {
     return 'Rp $formatted';
   }
 
+  String _formatShortCurrency(double value) {
+    if (value >= 1000000) {
+      double val = value / 1000000;
+      return 'Rp ${val.toStringAsFixed(val.truncateToDouble() == val ? 0 : 1)}jt';
+    } else if (value >= 1000) {
+      double val = value / 1000;
+      return 'Rp ${val.toStringAsFixed(val.truncateToDouble() == val ? 0 : 1)}rb';
+    }
+    return 'Rp ${value.toInt()}';
+  }
+
+  IconData _getCategoryIcon(String category) {
+    switch (category) {
+      case 'Makan':
+        return Icons.restaurant_rounded;
+      case 'Transport':
+        return Icons.directions_car_rounded;
+      case 'Buku':
+        return Icons.menu_book_rounded;
+      case 'Hiburan':
+        return Icons.sports_esports_rounded;
+      default:
+        return Icons.local_mall_rounded;
+    }
+  }
+
   String _formatDate(DateTime date) {
     return '${date.day.toString().padLeft(2, '0')}/'
         '${date.month.toString().padLeft(2, '0')}/'
@@ -189,17 +215,15 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
   Widget _buildMonthlyExpenseChart() {
     final totals = _monthlyExpenseTotals();
-
     final monthLabels = totals.keys.toList();
-
     final previousValue = totals.values.elementAt(0);
     final currentValue = totals.values.elementAt(1);
 
-    final maxValue =
-        (previousValue > currentValue ? previousValue : currentValue)
-            .clamp(100, double.infinity);
+    final maxValue = (previousValue > currentValue ? previousValue : currentValue)
+        .clamp(100.0, double.infinity);
+    final chartMax = maxValue * 1.3; // Extra headroom for the tooltip on top
 
-    final chartMax = maxValue * 1.2;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: double.infinity,
@@ -207,7 +231,17 @@ class _KeuanganPageState extends State<KeuanganPage> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         color: Theme.of(context).cardColor,
-        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: isDark ? 0.05 : 0.1),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,21 +249,40 @@ class _KeuanganPageState extends State<KeuanganPage> {
           Text(
             'Grafik Pengeluaran Bulanan',
             style: TextStyle(
-              color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+              color: isDark ? AppColors.darkText : AppColors.lightText,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
 
           SizedBox(
             height: 220,
             child: BarChart(
+              swapAnimationDuration: const Duration(milliseconds: 500),
+              swapAnimationCurve: Curves.easeOutCubic,
               BarChartData(
                 maxY: chartMax,
                 alignment: BarChartAlignment.spaceAround,
-                barTouchData: BarTouchData(enabled: false),
+                barTouchData: BarTouchData(
+                  enabled: false,
+                  touchTooltipData: BarTouchTooltipData(
+                    getTooltipColor: (_) => Colors.transparent,
+                    tooltipPadding: EdgeInsets.zero,
+                    tooltipMargin: 6,
+                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      return BarTooltipItem(
+                        _formatCurrency(rod.toY),
+                        TextStyle(
+                          color: isDark ? AppColors.darkText : AppColors.lightText,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11,
+                        ),
+                      );
+                    },
+                  ),
+                ),
 
                 titlesData: FlTitlesData(
                   show: true,
@@ -237,14 +290,19 @@ class _KeuanganPageState extends State<KeuanganPage> {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 40,
-
+                      reservedSize: 64,
+                      interval: (chartMax / 4).clamp(1.0, double.infinity),
                       getTitlesWidget: (value, meta) {
-                        return Text(
-                          value == 0 ? '0' : _formatCurrency(value),
-                          style: TextStyle(
-                            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
-                            fontSize: 10,
+                        if (value == meta.max) return const SizedBox.shrink();
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          child: Text(
+                            value == 0 ? '0' : _formatShortCurrency(value),
+                            style: TextStyle(
+                              color: isDark ? AppColors.darkSubText : AppColors.lightSubText,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         );
                       },
@@ -254,7 +312,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-
+                      reservedSize: 32,
                       getTitlesWidget: (value, meta) {
                         final index = value.toInt();
 
@@ -262,27 +320,43 @@ class _KeuanganPageState extends State<KeuanganPage> {
                           return const SizedBox.shrink();
                         }
 
-                        return Text(
-                          monthLabels[index],
-                          style: TextStyle(
-                            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
-                            fontWeight: FontWeight.bold,
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          space: 8,
+                          child: Text(
+                            monthLabels[index],
+                            style: TextStyle(
+                              color: isDark ? AppColors.darkText : AppColors.lightText,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                         );
                       },
                     ),
                   ),
 
-                  rightTitles: AxisTitles(
+                  rightTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
 
-                  topTitles: AxisTitles(
+                  topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
                 ),
 
-                gridData: FlGridData(show: false),
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: false,
+                  horizontalInterval: (chartMax / 4).clamp(1.0, double.infinity),
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: Theme.of(context).dividerColor.withValues(alpha: isDark ? 0.08 : 0.15),
+                      strokeWidth: 1,
+                      dashArray: [6, 6],
+                    );
+                  },
+                ),
                 borderData: FlBorderData(show: false),
 
                 barGroups: [
@@ -291,11 +365,22 @@ class _KeuanganPageState extends State<KeuanganPage> {
                     barRods: [
                       BarChartRodData(
                         toY: previousValue,
-                        color: AppColors.categoryKeuangan.withValues(alpha: 0.5),
-                        width: 24,
-                        borderRadius: BorderRadius.circular(14),
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF22C55E).withValues(alpha: 0.3),
+                            const Color(0xFF4ADE80).withValues(alpha: 0.3),
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        ),
+                        width: 28,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8),
+                        ),
                       ),
                     ],
+                    showingTooltipIndicators: const [0],
                   ),
 
                   BarChartGroupData(
@@ -303,11 +388,22 @@ class _KeuanganPageState extends State<KeuanganPage> {
                     barRods: [
                       BarChartRodData(
                         toY: currentValue,
-                        color: AppColors.categoryKeuangan,
-                        width: 24,
-                        borderRadius: BorderRadius.circular(14),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF22C55E),
+                            Color(0xFF4ADE80),
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        ),
+                        width: 28,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8),
+                        ),
                       ),
                     ],
+                    showingTooltipIndicators: const [0],
                   ),
                 ],
               ),
@@ -318,77 +414,79 @@ class _KeuanganPageState extends State<KeuanganPage> {
     );
   }
 
-  Widget _buildBadge(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 6,
-      ),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
   Widget _buildExpenseCard(ExpenseItem expense, int index) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: isDark ? 0.05 : 0.1),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-
-        leading: CircleAvatar(
-          backgroundColor: AppColors.categoryKeuangan.withValues(alpha: 0.15),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        leading: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF22C55E).withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Icon(
-            Icons.account_balance_wallet,
-            color: AppColors.categoryKeuangan,
+            _getCategoryIcon(expense.category),
+            color: const Color(0xFF22C55E),
+            size: 24,
           ),
         ),
-
         title: Text(
           expense.title,
           style: TextStyle(
-            color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+            color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.darkText,
             fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
         ),
-
-        subtitle: Text(
-          '${expense.category} • ${_formatDate(expense.date)}',
-          style: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4.0),
+          child: Text(
+            '${expense.category} • ${_formatDate(expense.date)}',
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.darkSubText,
+              fontSize: 13,
+            ),
+          ),
         ),
-
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _formatCurrency(expense.amount),
-              style: TextStyle(
-                color: AppColors.categoryKeuangan,
+              '- ${_formatCurrency(expense.amount)}',
+              style: const TextStyle(
+                color: Color(0xFFEF4444),
                 fontWeight: FontWeight.bold,
+                fontSize: 15,
               ),
             ),
-
-            const SizedBox(height: 6),
-
-            GestureDetector(
-              onTap: () => _removeExpenseAt(index),
-              child: Icon(
-                Icons.delete_outline,
-                color: AppColors.error,
+            const SizedBox(width: 8),
+            IconButton(
+              icon: Icon(
+                Icons.delete_outline_rounded,
+                color: isDark ? const Color(0xFF9CA3AF) : AppColors.lightSubText,
+                size: 20,
               ),
+              onPressed: () => _removeExpenseAt(index),
+              constraints: const BoxConstraints(),
+              padding: EdgeInsets.zero,
+              splashRadius: 20,
             ),
           ],
         ),
@@ -397,16 +495,51 @@ class _KeuanganPageState extends State<KeuanganPage> {
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Text(
-          'Belum ada pengeluaran',
-          style: TextStyle(
-            color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText),
-            fontSize: 16,
-          ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: isDark ? 0.05 : 0.1),
+          width: 1,
         ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: const Color(0xFF22C55E).withValues(alpha: 0.05),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.receipt_long_rounded,
+              size: 64,
+              color: const Color(0xFF22C55E).withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Belum Ada Pengeluaran',
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.darkText,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Catat pengeluaran harianmu untuk memantau keuanganmu di sini.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.darkSubText,
+              fontSize: 14,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -417,6 +550,12 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
     _selectedCategory = _categories.first;
     _selectedDate = DateTime.now();
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fieldFillColor = isDark ? const Color(0xFF1F2937) : AppColors.gray100;
+    final inputTextColor = isDark ? const Color(0xFFD1D5DB) : AppColors.lightText;
+    final labelStyleColor = isDark ? const Color(0xFF9CA3AF) : AppColors.lightSubText;
+    final borderColor = isDark ? const Color(0xFF374151) : AppColors.lightBorder;
 
     showModalBottomSheet(
       context: context,
@@ -434,14 +573,14 @@ class _KeuanganPageState extends State<KeuanganPage> {
             return Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.vertical(
+                borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(28),
                 ),
               ),
 
               child: ListView(
                 controller: scrollController,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
 
                 children: [
                   Center(
@@ -449,7 +588,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                       width: 60,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).dividerColor,
+                        color: Theme.of(context).dividerColor.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -460,7 +599,7 @@ class _KeuanganPageState extends State<KeuanganPage> {
                   Text(
                     'Tambah Pengeluaran',
                     style: TextStyle(
-                      color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText),
+                      color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.darkText,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -474,15 +613,20 @@ class _KeuanganPageState extends State<KeuanganPage> {
                       children: [
                         TextFormField(
                           controller: _nameController,
-                          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+                          style: TextStyle(color: inputTextColor),
                           decoration: InputDecoration(
                             labelText: 'Nama Pengeluaran',
+                            labelStyle: TextStyle(color: labelStyleColor),
                             filled: true,
-                            fillColor: Theme.of(context).scaffoldBackgroundColor,
-                            labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
-                            border: OutlineInputBorder(
+                            fillColor: fieldFillColor,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(color: borderColor, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: const BorderSide(color: Color(0xFF22C55E), width: 2),
                             ),
                           ),
                         ),
@@ -492,15 +636,20 @@ class _KeuanganPageState extends State<KeuanganPage> {
                         TextFormField(
                           controller: _amountController,
                           keyboardType: TextInputType.number,
-                          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+                          style: TextStyle(color: inputTextColor),
                           decoration: InputDecoration(
                             labelText: 'Nominal',
+                            labelStyle: TextStyle(color: labelStyleColor),
                             filled: true,
-                            fillColor: Theme.of(context).scaffoldBackgroundColor,
-                            labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
-                            border: OutlineInputBorder(
+                            fillColor: fieldFillColor,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(color: borderColor, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: const BorderSide(color: Color(0xFF22C55E), width: 2),
                             ),
                           ),
                         ),
@@ -510,22 +659,27 @@ class _KeuanganPageState extends State<KeuanganPage> {
                         DropdownButtonFormField<String>(
                           initialValue: _selectedCategory,
                           dropdownColor: Theme.of(context).cardColor,
-                          style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+                          style: TextStyle(color: inputTextColor),
                           decoration: InputDecoration(
                             labelText: 'Kategori',
+                            labelStyle: TextStyle(color: labelStyleColor),
                             filled: true,
-                            fillColor: Theme.of(context).scaffoldBackgroundColor,
-                            labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
-                            border: OutlineInputBorder(
+                            fillColor: fieldFillColor,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(color: borderColor, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: const BorderSide(color: Color(0xFF22C55E), width: 2),
                             ),
                           ),
                           items: _categories
                               .map(
                                 (category) => DropdownMenuItem(
                                   value: category,
-                                  child: Text(category, style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText))),
+                                  child: Text(category, style: TextStyle(color: inputTextColor)),
                                 ),
                               )
                               .toList(),
@@ -560,43 +714,60 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                           child: AbsorbPointer(
                             child: TextFormField(
-                              style: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
+                              style: TextStyle(color: inputTextColor),
                               decoration: InputDecoration(
                                 labelText: AppStrings.tanggal,
+                                labelStyle: TextStyle(color: labelStyleColor),
                                 hintText: _formatDate(_selectedDate),
+                                hintStyle: TextStyle(color: inputTextColor),
                                 filled: true,
-                                fillColor: Theme.of(context).scaffoldBackgroundColor,
-                                hintStyle: TextStyle(color: (Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.lightText)),
-                                labelStyle: TextStyle(color: (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.lightSubText)),
-                                suffixIcon: Icon(
+                                fillColor: fieldFillColor,
+                                suffixIcon: const Icon(
                                   Icons.calendar_month,
-                                  color: AppColors.categoryKeuangan,
+                                  color: Color(0xFF22C55E),
                                 ),
-                                border: OutlineInputBorder(
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                                enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide.none,
+                                  borderSide: BorderSide(color: borderColor, width: 1),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: const BorderSide(color: Color(0xFF22C55E), width: 2),
                                 ),
                               ),
                             ),
                           ),
                         ),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 28),
 
-                        SizedBox(
+                        Container(
                           width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF22C55E), Color(0xFF15803D)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF22C55E).withValues(alpha: 0.25),
+                                blurRadius: 16,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.categoryKeuangan,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16,
-                              ),
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
                             ),
-
                             onPressed: () async {
                               final amountText = _amountController.text.trim();
 
@@ -627,11 +798,12 @@ class _KeuanganPageState extends State<KeuanganPage> {
 
                               Navigator.pop(context);
                             },
-
-                            child: Text(
+                            child: const Text(
                               'Simpan',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -707,39 +879,80 @@ class _KeuanganPageState extends State<KeuanganPage> {
               const SizedBox(height: 24),
 
               Container(
-                padding: const EdgeInsets.all(20),
-
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  color: AppColors.categoryKeuangan,
+                  borderRadius: BorderRadius.circular(28),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF15803D), Color(0xFF22C55E)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF22C55E).withValues(alpha: 0.25),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
                 ),
-
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      'Total Pengeluaran',
-                      style: TextStyle(
-                        color: Colors.white70,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'TOTAL PENGELUARAN',
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.8),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            _formatCurrency(_totalExpense),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              '${_expenses.length} Item',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-
-                    const SizedBox(height: 10),
-
-                    Text(
-                      _formatCurrency(_totalExpense),
-                      style: TextStyle(
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.trending_up_rounded,
                         color: Colors.white,
-                        fontSize: 34,
-                        fontWeight: FontWeight.bold,
+                        size: 32,
                       ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    _buildBadge(
-                      '${_expenses.length} Item',
-                      Colors.white,
                     ),
                   ],
                 ),

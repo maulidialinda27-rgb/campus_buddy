@@ -1,6 +1,6 @@
 import 'package:campus_buddy/models/notification_model.dart';
 import 'package:campus_buddy/models/expense_model.dart';
-import 'package:campus_buddy/features/tugas/presentation/pages/tugas_page.dart';
+import 'package:campus_buddy/features/tugas/data/models/tugas_model.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/core/utils/time_helper.dart';
 
@@ -8,7 +8,7 @@ import 'package:campus_buddy/core/utils/time_helper.dart';
 class NotificationGeneratorService {
   /// Generate semua notifikasi berdasarkan data terkini
   static List<DashboardNotification> generateNotifications({
-    required List<StudyTask> tasks,
+    required List<Tugas> tasks,
     required List<Jadwal> schedules,
     required List<ExpenseItem> expenses,
   }) {
@@ -40,15 +40,16 @@ class NotificationGeneratorService {
 
   /// Generate notifikasi dari tugas (deadline)
   static List<DashboardNotification> _generateTaskNotifications(
-    List<StudyTask> tasks,
+    List<Tugas> tasks,
   ) {
     final notifications = <DashboardNotification>[];
     final now = DateTime.now();
 
     for (final task in tasks) {
-      if (task.completed) continue;
+      if (task.status == 'completed') continue;
 
-      final daysUntilDeadline = task.deadline.difference(now).inDays;
+      final deadline = DateTime.tryParse(task.deadline ?? '') ?? DateTime.now();
+      final daysUntilDeadline = deadline.difference(now).inDays;
 
       // Skip jika sudah lewat atau lebih dari 7 hari
       if (daysUntilDeadline < -1 || daysUntilDeadline > 7) {
@@ -69,17 +70,17 @@ class NotificationGeneratorService {
         priority = NotificationPriority.low; // 5-7 hari
       }
 
-      final timeRemaining = _formatDeadlineTime(task.deadline);
+      final timeRemaining = _formatDeadlineTime(deadline);
 
       notifications.add(
         DashboardNotification(
           id: 'task_${task.hashCode}',
-          title: 'Tugas: ${task.title}',
-          description: '${task.subject} • $timeRemaining',
+          title: 'Tugas: ${task.judul}',
+          description: '${task.deskripsi ?? ''} • $timeRemaining',
           type: NotificationType.deadline,
           priority: priority,
           createdAt: now,
-          actionDate: task.deadline,
+          actionDate: deadline,
           icon: '📝',
           color: 0xFF8B5CF6, // Purple
           actionLabel: 'Lihat Tugas',

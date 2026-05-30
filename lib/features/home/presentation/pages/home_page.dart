@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
+import 'package:campus_buddy/features/tugas/data/models/tugas_model.dart';
 import 'package:campus_buddy/features/tugas/presentation/pages/tugas_page.dart';
 import 'package:campus_buddy/features/scan/presentation/pages/scan_page.dart';
 import 'package:campus_buddy/features/keuangan/presentation/pages/keuangan_page.dart';
@@ -9,6 +10,7 @@ import 'package:campus_buddy/models/notification_model.dart';
 import 'package:campus_buddy/models/expense_model.dart';
 import 'package:campus_buddy/services/notification_generator_service.dart';
 import 'package:campus_buddy/services/local_storage_service.dart';
+import 'package:campus_buddy/services/tugas_service.dart';
 import 'package:campus_buddy/services/jadwal_service.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/services/user_service.dart';
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   String _userName = 'Pengguna';
   List<DashboardNotification> _notifications = [];
-  List<StudyTask> _tasks = [];
+  List<Tugas> _tasks = [];
   List<Jadwal> _schedules = [];
   List<ExpenseItem> _expenses = [];
 
@@ -46,10 +48,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadAllData() async {
     try {
-      final tasksData = await LocalStorageService.instance.loadJsonList(
-        'study_tasks',
-      );
-      final tasks = tasksData.map((t) => StudyTask.fromMap(t)).toList();
+      final tugasService = TugasService();
+      final tasks = await tugasService.getAllTugas();
 
       final jadwalService = JadwalService();
       final schedules = jadwalService.getAllJadwal();

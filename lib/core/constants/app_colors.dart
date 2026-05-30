@@ -26,9 +26,9 @@ class AppColors {
   static const Color accentLight = Color(0xFFEFF6FF);
 
   // Status Colors - Soft & Elegant
-  static const Color success = Color(0xFF34D399); // Soft Green
+  static const Color success = Color(0xFF22C55E); // Soft Green
   static const Color warning = Color(0xFFFBBF24); // Soft Yellow
-  static const Color error = Color(0xFFF87171); // Soft Red
+  static const Color error = Color(0xFFEF4444); // Soft Red
   static const Color info = Color(0xFF60A5FA); // Soft Blue
 
   // Gray Scale
@@ -52,15 +52,16 @@ class AppColors {
   static const Color vibrantOrange = Color(0xFFFB923C);
   static const Color vibrantRed = error;
   static const Color vibrantCyan = Color(0xFF38BDF8);
+  static const Color vibrantPurple = Color(0xFF8B5CF6);
   static const Color softGray = gray300;
   static const Color veryLightGray = gray50;
 
   // Backward Compatibility (Now explicitly defining Dark Navy colors)
-  static const Color darkBg = Color(0xFF0F172A);
-  static const Color darkSurface = Color(0xFF1E293B);
-  static const Color darkBorder = Color(0xFF334155);
-  static const Color darkText = Colors.white;
-  static const Color darkSubText = Color(0xFFCBD5E1);
+  static const Color darkBg = Color(0xFF0B1120);
+  static const Color darkSurface = Color(0xFF111827);
+  static const Color darkBorder = Color(0xFF1F2937);
+  static const Color darkText = Color(0xFFF9FAFB);
+  static const Color darkSubText = Color(0xFF9CA3AF);
 
   // Custom dark shades for primary elements
   static const Color primaryDark = Color(0xFF60A5FA);

@@ -42,6 +42,27 @@ class LocalStorageService {
     return [];
   }
 
+  List<Map<String, dynamic>> loadJsonListSync(String key) {
+    if (_prefs == null) return [];
+    final raw = _prefs!.getString(key);
+    if (raw == null || raw.isEmpty) {
+      return [];
+    }
+
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is List) {
+        return decoded
+            .map((item) => Map<String, dynamic>.from(item as Map))
+            .toList();
+      }
+    } catch (_) {
+      return [];
+    }
+
+    return [];
+  }
+
   Future<void> deleteJsonKey(String key) async {
     await init();
     await _prefs!.remove(key);

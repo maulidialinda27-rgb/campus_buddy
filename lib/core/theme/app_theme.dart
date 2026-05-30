@@ -56,6 +56,8 @@ class AppTheme {
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryDark,
     scaffoldBackgroundColor: AppColors.darkBg,
+    cardColor: AppColors.darkSurface,
+    dividerColor: AppColors.darkBorder,
     
     // Color Scheme
     colorScheme: ColorScheme.dark(

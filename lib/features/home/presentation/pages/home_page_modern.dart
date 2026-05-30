@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:campus_buddy/core/constants/app_colors.dart';
 
 import 'package:campus_buddy/widgets/dashboard_widgets.dart';
+import 'package:campus_buddy/features/tugas/data/models/tugas_model.dart';
 import 'package:campus_buddy/features/tugas/presentation/pages/tugas_page.dart';
 import 'package:campus_buddy/features/scan/presentation/pages/scan_page.dart';
 import 'package:campus_buddy/features/keuangan/presentation/pages/keuangan_page.dart';
 import 'package:campus_buddy/features/jadwal/presentation/pages/jadwal_page.dart';
+import 'package:campus_buddy/features/catatan/presentation/pages/catatan_page.dart';
 import 'package:campus_buddy/features/profil/presentation/pages/profil_page.dart';
 import 'package:campus_buddy/models/notification_model.dart';
 import 'package:campus_buddy/models/expense_model.dart';
 import 'package:campus_buddy/services/notification_generator_service.dart';
 import 'package:campus_buddy/services/local_storage_service.dart';
+import 'package:campus_buddy/services/tugas_service.dart';
 import 'package:campus_buddy/services/jadwal_service.dart';
+import 'package:campus_buddy/features/search/presentation/pages/global_search_delegate.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/services/user_service.dart';
 
@@ -30,7 +34,7 @@ class _HomePageModernState extends State<HomePageModern> {
 
 
   List<DashboardNotification> _notifications = [];
-  List<StudyTask> _tasks = [];
+  List<Tugas> _tasks = [];
   List<Jadwal> _schedules = [];
   List<ExpenseItem> _expenses = [];
 
@@ -52,11 +56,8 @@ class _HomePageModernState extends State<HomePageModern> {
 
   Future<void> _loadAllData() async {
     try {
-      final tasksData = await LocalStorageService.instance.loadJsonList(
-        'study_tasks',
-      );
-
-      final tasks = tasksData.map((t) => StudyTask.fromMap(t)).toList();
+      final tugasService = TugasService();
+      final tasks = await tugasService.getAllTugas();
 
       final jadwalService = JadwalService();
 
@@ -146,6 +147,12 @@ class _HomePageModernState extends State<HomePageModern> {
                 notificationCount: _notifications.length,
                 onNotificationTap: () {},
                 onProfileTap: () => _navigateTo(4),
+                onSearchTap: () {
+                  showSearch(
+                    context: context,
+                    delegate: GlobalSearchDelegate(),
+                  );
+                },
               ),
 
               const SizedBox(height: 24),
@@ -227,6 +234,14 @@ class _HomePageModernState extends State<HomePageModern> {
                     ),
                   ],
                 ),
+              ),
+
+              const SizedBox(height: 30),
+
+              /// PROGRESS TUGAS
+              _buildTaskProgress(
+                completedTasks: _tasks.where((t) => t.status == 'completed').length,
+                totalTasks: taskCount,
               ),
 
               const SizedBox(height: 30),
@@ -367,6 +382,88 @@ class _HomePageModernState extends State<HomePageModern> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// PROGRESS TUGAS WIDGET
+  Widget _buildTaskProgress({required int completedTasks, required int totalTasks}) {
+    final progress = totalTasks == 0 ? 0.0 : completedTasks / totalTasks;
+    final percentage = (progress * 100).toInt();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: isDark ? 0.05 : 0.1),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Progress Tugas',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'PlusJakartaSans',
+                  color: isDark ? AppColors.darkText : AppColors.lightText,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '$percentage%',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'PlusJakartaSans',
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            totalTasks == 0 
+                ? 'Belum ada tugas tersimpan'
+                : '$completedTasks dari $totalTasks tugas telah selesai',
+            style: TextStyle(
+              fontSize: 13,
+              fontFamily: 'PlusJakartaSans',
+              color: isDark ? AppColors.darkSubText : AppColors.lightSubText,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 10,
+              backgroundColor: isDark ? Colors.white.withValues(alpha: 0.05) : AppColors.gray100,
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -595,6 +692,22 @@ class _HomePageModernState extends State<HomePageModern> {
                     const ScanPage(),
               ),
             );
+          },
+        ),
+
+        _buildMenuItem(
+          label: 'Catatan',
+          icon: Icons.sticky_note_2_rounded,
+          color: AppColors.vibrantPurple,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CatatanPage(),
+              ),
+            ).then((_) {
+              if (mounted) setState(() => _selectedIndex = 0);
+            });
           },
         ),
       ],

@@ -13,7 +13,7 @@ class AppConstants {
 
   // Database
   static const String databaseName = 'campus_buddy.db';
-  static const int databaseVersion = 1;
+  static const int databaseVersion = 3;
 
   // Table Names
   static const String tugasTable = 'tugas';
@@ -21,6 +21,7 @@ class AppConstants {
   static const String keuanganTable = 'keuangan';
   static const String jadwalTable = 'jadwal';
   static const String profilTable = 'profil';
+  static const String catatanTable = 'catatan';
 
   // Common Strings
   static const String beranda = 'Beranda';

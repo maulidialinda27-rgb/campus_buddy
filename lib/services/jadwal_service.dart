@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:campus_buddy/services/local_storage_service.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/services/notification_service.dart';
 import 'dart:developer';
@@ -13,31 +13,15 @@ class JadwalService {
 
   JadwalService._internal();
 
-  static const String _jadwalKey = 'jadwal_list';
-  late SharedPreferences _prefs;
+  static const String _key = 'jadwal_list';
   final NotificationService _notificationService = NotificationService();
 
-  /// Initialize SharedPreferences
-  Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
-  }
+  // Initialization not required for LocalStorageService
 
   /// Ambil semua jadwal
   List<Jadwal> getAllJadwal() {
-    final jsonString = _prefs.getString(_jadwalKey);
-    if (jsonString == null) {
-      return [];
-    }
-
-    try {
-      final List<dynamic> jsonList = jsonDecode(jsonString);
-      return jsonList
-          .map((item) => Jadwal.fromMap(item as Map<String, dynamic>))
-          .toList();
-    } catch (e) {
-      log('Error loading jadwal: $e');
-      return [];
-    }
+    final list = LocalStorageService.instance.loadJsonListSync(_key);
+    return list.map((m) => Jadwal.fromMap(m)).toList();
   }
 
   /// Ambil jadwal untuk hari tertentu
@@ -51,12 +35,9 @@ class JadwalService {
   /// Tambah jadwal baru
   Future<void> addJadwal(Jadwal jadwal) async {
     try {
-      final allJadwal = getAllJadwal();
-      allJadwal.add(jadwal);
-
-      // Simpan ke SharedPreferences
-      final jsonString = jsonEncode(allJadwal.map((j) => j.toMap()).toList());
-      await _prefs.setString(_jadwalKey, jsonString);
+      final list = await LocalStorageService.instance.loadJsonList(_key);
+      list.add(jadwal.toMap());
+      await LocalStorageService.instance.saveJsonList(_key, list);
 
       // Jadwalkan notifikasi
       if (jadwal.notifikasi == 1) {
@@ -80,20 +61,16 @@ class JadwalService {
   /// Update jadwal
   Future<void> updateJadwal(Jadwal jadwal) async {
     try {
-      final allJadwal = getAllJadwal();
-      final index = allJadwal.indexWhere((j) => j.id == jadwal.id);
+      final list = await LocalStorageService.instance.loadJsonList(_key);
+      final index = list.indexWhere((j) => j['id'] == jadwal.id);
 
       if (index != -1) {
         // Batalkan notifikasi lama
-        await _notificationService.cancelNotification(
-          allJadwal[index].id.hashCode,
-        );
+        await _notificationService.cancelNotification(jadwal.id.hashCode);
 
-        // Update jadwal
-        allJadwal[index] = jadwal;
-
-        final jsonString = jsonEncode(allJadwal.map((j) => j.toMap()).toList());
-        await _prefs.setString(_jadwalKey, jsonString);
+        // Update data
+        list[index] = jadwal.toMap();
+        await LocalStorageService.instance.saveJsonList(_key, list);
 
         // Jadwalkan notifikasi baru
         if (jadwal.notifikasi == 1) {
@@ -118,11 +95,9 @@ class JadwalService {
   /// Hapus jadwal
   Future<void> deleteJadwal(String jadwalId) async {
     try {
-      final allJadwal = getAllJadwal();
-      allJadwal.removeWhere((j) => j.id == jadwalId);
-
-      final jsonString = jsonEncode(allJadwal.map((j) => j.toMap()).toList());
-      await _prefs.setString(_jadwalKey, jsonString);
+      final list = await LocalStorageService.instance.loadJsonList(_key);
+      list.removeWhere((j) => j['id'] == jadwalId);
+      await LocalStorageService.instance.saveJsonList(_key, list);
 
       // Batalkan notifikasi
       await _notificationService.cancelNotification(jadwalId.hashCode);
@@ -137,37 +112,32 @@ class JadwalService {
   /// Toggle notifikasi untuk jadwal tertentu
   Future<void> toggleNotifikasi(String jadwalId) async {
     try {
-      final allJadwal = getAllJadwal();
-      final index = allJadwal.indexWhere((j) => j.id == jadwalId);
+      final list = await LocalStorageService.instance.loadJsonList(_key);
+      final index = list.indexWhere((j) => j['id'] == jadwalId);
 
       if (index != -1) {
-        final jadwal = allJadwal[index];
-        final newNotifikasi = jadwal.notifikasi == 1 ? 0 : 1;
-
-        final updatedJadwal = jadwal.copyWith(notifikasi: newNotifikasi);
-        allJadwal[index] = updatedJadwal;
-
-        final jsonString = jsonEncode(allJadwal.map((j) => j.toMap()).toList());
-        await _prefs.setString(_jadwalKey, jsonString);
+        final jadwalMap = list[index];
+        final currentNotifikasi = jadwalMap['notifikasi'] ?? 0;
+        final newNotifikasi = currentNotifikasi == 1 ? 0 : 1;
+        jadwalMap['notifikasi'] = newNotifikasi;
+        await LocalStorageService.instance.saveJsonList(_key, list);
 
         // Batalkan notifikasi lama
         await _notificationService.cancelNotification(jadwalId.hashCode);
 
         // Jadwalkan notifikasi baru jika diaktifkan
         if (newNotifikasi == 1) {
-          final tanggal = _parseTanggalDariHari(updatedJadwal.hari);
+          final tanggal = _parseTanggalDariHari(jadwalMap['hari']);
           await _notificationService.scheduleNotification(
             id: jadwalId.hashCode,
-            judul: updatedJadwal.judul,
-            jadwalJam: updatedJadwal.jamMulai,
+            judul: jadwalMap['judul'],
+            jadwalJam: jadwalMap['jamMulai'],
             tanggal: tanggal,
             menitSebelum: 10,
           );
         }
 
-        log(
-          'Notifikasi untuk jadwal $jadwalId: ${newNotifikasi == 1 ? "aktif" : "nonaktif"}',
-        );
+        log('Notifikasi untuk jadwal $jadwalId: ${newNotifikasi == 1 ? "aktif" : "nonaktif"}');
       }
     } catch (e) {
       log('Error toggling notifikasi: $e');
@@ -178,7 +148,7 @@ class JadwalService {
   /// Clear semua jadwal
   Future<void> clearAllJadwal() async {
     try {
-      await _prefs.remove(_jadwalKey);
+      await LocalStorageService.instance.deleteJsonKey(_key);
       await _notificationService.cancelAllNotifications();
       log('Semua jadwal dihapus');
     } catch (e) {

@@ -7,6 +7,7 @@ class DashboardHeader extends StatelessWidget {
   final String subtitle;
   final VoidCallback? onNotificationTap;
   final VoidCallback? onProfileTap;
+  final VoidCallback? onSearchTap;
   final int notificationCount;
 
   const DashboardHeader({
@@ -15,6 +16,7 @@ class DashboardHeader extends StatelessWidget {
     this.subtitle = 'Mari tingkatkan produktivitas hari ini! ✨',
     this.onNotificationTap,
     this.onProfileTap,
+    this.onSearchTap,
     this.notificationCount = 0,
   });
 
@@ -90,6 +92,23 @@ class DashboardHeader extends StatelessWidget {
                     ),
                   ),
               ],
+            ),
+          ),
+        ),
+
+        const SizedBox(width: 12),
+
+        GestureDetector(
+          onTap: onSearchTap,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              Icons.search_rounded,
+              color: AppColors.primary,
             ),
           ),
         ),
