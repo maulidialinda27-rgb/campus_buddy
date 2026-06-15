@@ -12,12 +12,10 @@ void main() async {
   // Inisialisasi locale id_ID untuk DateFormat
   await initializeDateFormatting('id_ID', null);
 
-  // Inisialisasi Notification Service
-  final notificationService = NotificationService();
-  await notificationService.initNotification();
+  // Inisialisasi Notification Service + minta izin otomatis
+  await NotificationService().initNotification();
 
-  // Inisialisasi Jadwal Service
-  // Inisialisasi service yang butuh init async
+  // Inisialisasi local storage
   await LocalStorageService.instance.init();
 
   // Jalankan aplikasi

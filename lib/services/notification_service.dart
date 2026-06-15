@@ -1,85 +1,208 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tzdata;
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
 
-  factory NotificationService() {
-    return _instance;
-  }
-
+  factory NotificationService() => _instance;
   NotificationService._internal();
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
-  /// Inisialisasi notifikasi
-  Future<void> initNotification() async {
-    // Initialize timezone
-    tzdata.initializeTimeZones();
+  bool _isInitialized = false;
 
-    // Android setup
-    const AndroidInitializationSettings initializationSettingsAndroid =
+  // ─── INISIALISASI ─────────────────────────────────────────────────────────
+
+  Future<void> initNotification() async {
+    if (_isInitialized) return;
+
+    // 1) Timezone
+    tzdata.initializeTimeZones();
+    try {
+      tz.setLocalLocation(tz.getLocation('Asia/Jakarta'));
+    } catch (_) {}
+
+    // 2) Inisialisasi plugin
+    const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    // iOS setup
-    final DarwinInitializationSettings initializationSettingsIOS =
+    const DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings(
           requestAlertPermission: true,
           requestBadgePermission: true,
           requestSoundPermission: true,
-          onDidReceiveLocalNotification: onDidReceiveLocalNotification,
         );
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: initializationSettingsAndroid,
-          iOS: initializationSettingsIOS,
-        );
-
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: onSelectNotification,
+    await _plugin.initialize(
+      const InitializationSettings(
+        android: androidSettings,
+        iOS: iosSettings,
+      ),
+      onDidReceiveNotificationResponse: _onNotificationTapped,
+      onDidReceiveBackgroundNotificationResponse: _onNotificationTapped,
     );
 
-    // Request iOS permissions
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin
-        >()
-        ?.requestPermissions(alert: true, badge: true, sound: true);
+    // 3) Buat channels Android
+    await _createChannels();
 
-    // Request Android permissions for API 31+
-    await flutterLocalNotificationsPlugin
+    // 4) Minta izin notifikasi (Android 13+ / iOS)
+    await _requestPermissions();
+
+    _isInitialized = true;
+    debugPrint('[NotifService] Initialized ✓');
+  }
+
+  // ─── CHANNELS ─────────────────────────────────────────────────────────────
+
+  Future<void> _createChannels() async {
+    final android = _plugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.requestNotificationsPermission();
+        >();
+    if (android == null) return;
+
+    // Hapus channel lama jika ada (agar importance tidak ter-cache)
+    await android.deleteNotificationChannel('jadwal_channel_v1');
+    await android.deleteNotificationChannel('tugas_channel_v1');
+
+    // Channel jadwal — Importance.max agar muncul sebagai heads-up banner
+    await android.createNotificationChannel(
+      const AndroidNotificationChannel(
+        'jadwal_ch',
+        'Pengingat Jadwal',
+        description: 'Notifikasi pengingat jadwal kuliah',
+        importance: Importance.max,
+        playSound: true,
+        enableVibration: true,
+        showBadge: true,
+        enableLights: true,
+      ),
+    );
+
+    // Channel tugas
+    await android.createNotificationChannel(
+      const AndroidNotificationChannel(
+        'tugas_ch',
+        'Pengingat Tugas',
+        description: 'Notifikasi deadline tugas',
+        importance: Importance.max,
+        playSound: true,
+        enableVibration: true,
+        showBadge: true,
+        enableLights: true,
+      ),
+    );
+
+    debugPrint('[NotifService] Channels created ✓');
   }
 
-  /// Callback ketika notifikasi diterima di foreground (iOS)
-  static void onDidReceiveLocalNotification(
-    int id,
-    String? title,
-    String? body,
+  // ─── IZIN ─────────────────────────────────────────────────────────────────
+
+  /// Minta izin notifikasi. Mengembalikan true jika diizinkan.
+  Future<bool> requestPermissions() async {
+    return _requestPermissions();
+  }
+
+  Future<bool> _requestPermissions() async {
+    // Android 13+ (API 33) butuh izin runtime
+    final status = await Permission.notification.status;
+
+    if (status.isGranted) {
+      debugPrint('[NotifService] Notif permission: GRANTED');
+      return true;
+    }
+
+    if (status.isDenied) {
+      final result = await Permission.notification.request();
+      final granted = result.isGranted;
+      debugPrint('[NotifService] Notif permission request: ${result.name}');
+
+      // Juga minta izin exact alarm (Android 12+)
+      if (granted) {
+        await Permission.scheduleExactAlarm.request();
+      }
+      return granted;
+    }
+
+    if (status.isPermanentlyDenied) {
+      debugPrint('[NotifService] Notif permission PERMANENTLY DENIED');
+      // User harus buka Settings manual
+      await openAppSettings();
+      return false;
+    }
+
+    return false;
+  }
+
+  /// Cek apakah izin notifikasi sudah diberikan
+  Future<bool> isPermissionGranted() async {
+    return await Permission.notification.isGranted;
+  }
+
+  // ─── TAMPILKAN NOTIFIKASI LANGSUNG (HEADS-UP BANNER) ─────────────────────
+
+  /// Tampilkan notifikasi SEKARANG — muncul sebagai banner di atas layar HP
+  Future<void> showImmediateNotification({
+    required int id,
+    required String title,
+    required String body,
+    String channelId = 'jadwal_ch',
     String? payload,
-  ) {
-    debugPrint('Local Notification: id=$id, title=$title, body=$body');
+  }) async {
+    if (!_isInitialized) await initNotification();
+
+    final hasPermission = await isPermissionGranted();
+    if (!hasPermission) {
+      debugPrint('[NotifService] Tidak bisa tampilkan notif — izin belum diberikan');
+      final granted = await _requestPermissions();
+      if (!granted) return;
+    }
+
+    try {
+      await _plugin.show(
+        id,
+        title,
+        body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channelId,
+            channelId == 'tugas_ch' ? 'Pengingat Tugas' : 'Pengingat Jadwal',
+            channelDescription: 'Notifikasi CampusBuddy',
+            importance: Importance.max,
+            priority: Priority.max,
+            enableVibration: true,
+            playSound: true,
+            showWhen: true,
+            ticker: title,
+            // Heads-up notification (muncul di atas layar)
+            fullScreenIntent: false,
+            styleInformation: BigTextStyleInformation(
+              body,
+              contentTitle: title,
+              htmlFormatContentTitle: false,
+              htmlFormatBigText: false,
+            ),
+          ),
+          iOS: const DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
+        ),
+        payload: payload,
+      );
+      debugPrint('[NotifService] Notif ditampilkan: "$title"');
+    } catch (e) {
+      debugPrint('[NotifService] Error show: $e');
+    }
   }
 
-  /// Callback ketika user tap notifikasi
-  static void onSelectNotification(NotificationResponse notificationResponse) {
-    final String? payload = notificationResponse.payload;
-    debugPrint('Notification tapped: payload=$payload');
-  }
+  // ─── JADWALKAN NOTIFIKASI ──────────────────────────────────────────────────
 
-  /// Jadwalkan notifikasi sebelum jadwal dimulai
-  /// [id] - unique identifier untuk notifikasi
-  /// [judul] - judul kegiatan
-  /// [jadwalJam] - jam jadwal (format: "HH:MM")
-  /// [menit] - berapa menit sebelum jadwal (default: 10)
   Future<void> scheduleNotification({
     required int id,
     required String judul,
@@ -87,122 +210,105 @@ class NotificationService {
     required DateTime tanggal,
     int menitSebelum = 10,
   }) async {
+    if (!_isInitialized) await initNotification();
+
+    final hasPermission = await isPermissionGranted();
+    if (!hasPermission) {
+      final granted = await _requestPermissions();
+      if (!granted) return;
+    }
+
     try {
-      // Parse jam jadwal
       final parts = jadwalJam.split(':');
-      if (parts.length != 2) {
-        debugPrint('Format jam tidak valid: $jadwalJam');
+      if (parts.length != 2) return;
+
+      final scheduledDT = DateTime(
+        tanggal.year, tanggal.month, tanggal.day,
+        int.parse(parts[0]), int.parse(parts[1]),
+      );
+      final notifTime = scheduledDT.subtract(Duration(minutes: menitSebelum));
+
+      if (notifTime.isBefore(DateTime.now())) {
+        debugPrint('[NotifService] Waktu sudah lewat, skip');
         return;
       }
 
-      int jam = int.parse(parts[0]);
-      int menit = int.parse(parts[1]);
+      final tzTime = tz.TZDateTime.from(notifTime, tz.local);
 
-      // Buat DateTime untuk jadwal
-      final scheduledDateTime = DateTime(
-        tanggal.year,
-        tanggal.month,
-        tanggal.day,
-        jam,
-        menit,
-      );
-
-      // Hitung waktu notifikasi (10 menit sebelumnya)
-      final notificationTime = scheduledDateTime.subtract(
-        Duration(minutes: menitSebelum),
-      );
-
-      // Jangan jadwalkan jika waktu sudah lewat
-      if (notificationTime.isBefore(DateTime.now())) {
-        debugPrint('Waktu notifikasi sudah lewat: $notificationTime');
-        return;
-      }
-
-      // Convert ke timezone lokal
-      final tz.TZDateTime tzNotificationTime = tz.TZDateTime.from(
-        notificationTime,
-        tz.local,
-      );
-
-      // Jadwalkan notifikasi
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        id,
-        'Pengingat Jadwal',
-        'Kegiatan "$judul" akan dimulai dalam $menitSebelum menit',
-        tzNotificationTime,
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'jadwal_channel',
-            'Notifikasi Jadwal',
-            channelDescription: 'Notifikasi untuk pengingat jadwal',
-            importance: Importance.max,
-            priority: Priority.high,
-            enableVibration: true,
-            playSound: true,
-          ),
-          iOS: DarwinNotificationDetails(
-            presentAlert: true,
-            presentBadge: true,
-            presentSound: true,
-          ),
+      const details = NotificationDetails(
+        android: AndroidNotificationDetails(
+          'jadwal_ch',
+          'Pengingat Jadwal',
+          channelDescription: 'Notifikasi pengingat jadwal kuliah',
+          importance: Importance.max,
+          priority: Priority.max,
+          enableVibration: true,
+          playSound: true,
         ),
-        androidScheduleMode: AndroidScheduleMode.exact,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
       );
 
-      debugPrint('Notifikasi dijadwalkan untuk: $tzNotificationTime, id: $id');
+      try {
+        await _plugin.zonedSchedule(
+          id,
+          '⏰ Pengingat Jadwal',
+          'Kegiatan "$judul" mulai dalam $menitSebelum menit!',
+          tzTime,
+          details,
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: 'jadwal_$id',
+        );
+        debugPrint('[NotifService] Dijadwalkan exact: $tzTime');
+      } catch (_) {
+        // Fallback inexact jika exact alarm diblokir sistem
+        await _plugin.zonedSchedule(
+          id,
+          '⏰ Pengingat Jadwal',
+          'Kegiatan "$judul" mulai dalam $menitSebelum menit!',
+          tzTime,
+          details,
+          androidScheduleMode: AndroidScheduleMode.inexact,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: 'jadwal_$id',
+        );
+        debugPrint('[NotifService] Dijadwalkan inexact: $tzTime');
+      }
     } catch (e) {
-      debugPrint('Error scheduling notification: $e');
+      debugPrint('[NotifService] Error schedule: $e');
     }
   }
 
-  /// Batalkan notifikasi berdasarkan ID
-  Future<void> cancelNotification(int id) async {
-    try {
-      await flutterLocalNotificationsPlugin.cancel(id);
-      debugPrint('Notifikasi dibatalkan: id=$id');
-    } catch (e) {
-      debugPrint('Error canceling notification: $e');
-    }
-  }
+  // ─── TEST NOTIFIKASI ───────────────────────────────────────────────────────
 
-  /// Batalkan semua notifikasi
-  Future<void> cancelAllNotifications() async {
-    try {
-      await flutterLocalNotificationsPlugin.cancelAll();
-      debugPrint('Semua notifikasi dibatalkan');
-    } catch (e) {
-      debugPrint('Error canceling all notifications: $e');
-    }
-  }
-
-  /// Test notifikasi (akan muncul 5 detik)
   Future<void> showTestNotification(String judul) async {
-    try {
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Test Notifikasi',
-        'Ini adalah notifikasi test untuk: $judul',
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'jadwal_channel',
-            'Notifikasi Jadwal',
-            channelDescription: 'Notifikasi untuk pengingat jadwal',
-            importance: Importance.max,
-            priority: Priority.high,
-            enableVibration: true,
-            playSound: true,
-          ),
-          iOS: DarwinNotificationDetails(
-            presentAlert: true,
-            presentBadge: true,
-            presentSound: true,
-          ),
-        ),
-      );
-    } catch (e) {
-      debugPrint('Error showing test notification: $e');
-    }
+    await showImmediateNotification(
+      id: 9999,
+      title: '🔔 CampusBuddy',
+      body: 'Notifikasi untuk "$judul" aktif! Sistem pengingat berjalan normal.',
+      channelId: 'jadwal_ch',
+    );
+  }
+
+  // ─── BATALKAN NOTIFIKASI ───────────────────────────────────────────────────
+
+  Future<void> cancelNotification(int id) async {
+    await _plugin.cancel(id);
+  }
+
+  Future<void> cancelAllNotifications() async {
+    await _plugin.cancelAll();
+  }
+
+  // ─── CALLBACK ─────────────────────────────────────────────────────────────
+
+  static void _onNotificationTapped(NotificationResponse response) {
+    debugPrint('[NotifService] Tapped: ${response.payload}');
   }
 }

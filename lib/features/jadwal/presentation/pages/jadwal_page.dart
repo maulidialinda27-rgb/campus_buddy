@@ -4,6 +4,7 @@ import 'package:campus_buddy/core/utils/time_helper.dart';
 import 'package:campus_buddy/features/jadwal/data/models/jadwal_model.dart';
 import 'package:campus_buddy/features/jadwal/presentation/pages/tambah_jadwal_dialog.dart';
 import 'package:campus_buddy/services/jadwal_service.dart';
+import 'package:campus_buddy/services/notification_service.dart';
 
 class JadwalTheme {
   static const Color primary = Color(0xFFF59E0B);
@@ -410,6 +411,59 @@ class _JadwalPageState extends State<JadwalPage> {
     await _jadwalService.toggleNotifikasi(jadwal.id);
     if (!mounted) return;
     _loadJadwal();
+
+    // Cek status baru setelah toggle
+    final updatedList = _jadwalService.getAllJadwal();
+    final updated = updatedList.firstWhere(
+      (j) => j.id == jadwal.id,
+      orElse: () => jadwal,
+    );
+
+    if (updated.notifikasi == 1) {
+      // Tampilkan notifikasi langsung di layar HP sebagai konfirmasi
+      await NotificationService().showImmediateNotification(
+        id: jadwal.id.hashCode,
+        title: '🔔 Notifikasi Aktif',
+        body: 'Pengingat untuk "${jadwal.judul}" (${jadwal.jamMulai}) telah diaktifkan. Anda akan diingatkan 10 menit sebelumnya.',
+        channelId: 'jadwal_channel',
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Icons.notifications_active, color: Colors.white, size: 18),
+                SizedBox(width: 8),
+                Expanded(child: Text('Notifikasi diaktifkan! Cek status bar HP Anda.')),
+              ],
+            ),
+            backgroundColor: JadwalTheme.primary,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Icons.notifications_off, color: Colors.white, size: 18),
+                SizedBox(width: 8),
+                Text('Notifikasi dinonaktifkan'),
+              ],
+            ),
+            backgroundColor: Colors.grey.shade600,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 
   @override
